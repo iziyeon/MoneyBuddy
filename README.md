@@ -150,6 +150,5 @@ gitmoji -c
 | ESLint        | 린트 검사           |
 | Prettier      | 코드 포맷 자동 정리 |
 | Spell Checker | 오타 및 변수명 검증 |
-| Gitmoji       | 이모지 커밋 지원    |
 
 ---
