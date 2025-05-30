@@ -1,39 +1,58 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosError,
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+  AxiosHeaders,
+} from 'axios';
 
-const API_BASE_URL = "https://example.com/api"; // 👉 실제 API 서버 주소
-const API_TOKEN = "your_api_token"; // 👉 추후 zustand 등에서 관리
+const API_BASE_URL = 'https://example.com/api';
+const API_TOKEN = 'your_api_token'; // 나중에 Zustand 등에서 관리 예정
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
-// 요청 인터셉터
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
-    config.headers.Authorization = `Bearer ${API_TOKEN}`;
+  (config: InternalAxiosRequestConfig) => {
+    // headers가 없을 경우, AxiosHeaders 인스턴스 생성
+    if (!config.headers) {
+      config.headers = new AxiosHeaders();
+    }
+    // Authorization 헤더 설정
+    (config.headers as AxiosHeaders).set(
+      'Authorization',
+      `Bearer ${API_TOKEN}`,
+    );
     return config;
   },
-  (error: AxiosError) => Promise.reject(error)
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  },
 );
 
-// 응답 인터셉터
 axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
-  (error: AxiosError) => Promise.reject(error)
+  (response: AxiosResponse) => {
+    return response.data;
+  },
+  (error: AxiosError) => {
+    // 에러 처리 확장 가능
+    return Promise.reject(error);
+  },
 );
 
-export async function fetchCall<T, D = unknown>(
+export async function fetchCall<T>(
   url: string,
-  method: "get" | "post" | "put" | "delete",
-  data?: D
+  method: 'get' | 'post' | 'put' | 'delete',
+  data?: unknown,
 ): Promise<T> {
   const config: AxiosRequestConfig = {
-    method,
     url,
-    ...(data && { data }),
+    method,
+    ...(data ? { data } : {}),
   };
   return axiosInstance(config);
 }
