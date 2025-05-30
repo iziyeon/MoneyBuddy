@@ -12,30 +12,34 @@
 | 언어   | React + TypeScript |
 
 ---
-
 ## 📁 폴더 구조
 
-src/
-assets/ # 정적 리소스 (이미지, 폰트 등)
-components/
-common/ # 공통 컴포넌트
-layout/ # 레이아웃 전용 컴포넌트 (Header, Footer 등)
-pages/ # 페이지별 전용 컴포넌트
-data/ # 더미 데이터 및 임시 데이터
-fakedata/
-hooks/ # 커스텀 훅
-pages/ # 라우팅 진입 엔트리
-routes/ # 라우터 관리 (라우팅 모듈 분리)
-services/ # API 통신 로직
-api.ts
-stores/ # 상태관리 (zustand 등 → 여기로 통합)
-types/ # 타입 정의 (interface, DTO 등)
-utils/ # 유틸리티 함수 모음
-Regex.ts # 정규표현식 관리
-App.tsx
-index.css
-main.tsx
-vite-env.d.ts
+- `.vscode/settings.json` # VSCode 공용 세팅 (Prettier, ESLint, Gitmoji 등)
+- `.gitignore` # Git 버전관리 제외 목록
+- `eslint.config.js` # ESLint 설정파일
+- `vite.config.ts` # Vite 설정파일
+- `index.html` # 루트 엔트리 HTML
+- `package.json` # 패키지 매니저 설정
+- `package-lock.json` # 패키지 버전 잠금 파일
+- `tsconfig.json` # 타입스크립트 전체 설정
+- `tsconfig.app.json` # 앱 전용 타입 설정
+- `tsconfig.node.json` # Node 전용 타입 설정
+- `src/assets/` # 정적 리소스 (이미지, 폰트 등)
+- `src/components/common/` # 공통 컴포넌트 (버튼, 인풋 등 재사용)
+- `src/components/layout/` # 전체 레이아웃 컴포넌트 (Header, Footer 등)
+- `src/components/pages/` # 페이지별 전용 하위 컴포넌트
+- `src/data/fakedata/` # 개발용 더미 데이터
+- `src/hooks/` # 커스텀 훅
+- `src/pages/` # 라우팅 진입 엔트리
+- `src/routes/` # 라우터 설정 모듈
+- `src/services/api.ts` # API 통신 로직 (axios 인스턴스)
+- `src/stores/` # 상태관리 (zustand 등)
+- `src/types/` # 타입 및 인터페이스 정의
+- `src/utils/Regex.ts` # 정규표현식 유틸리티
+- `src/App.tsx` # 앱 엔트리 컴포넌트
+- `src/index.css` # 전역 스타일 파일
+- `src/main.tsx` # React DOM 렌더링 엔트리
+- `src/vite-env.d.ts` # Vite 타입 정의 보조 파일
 
 ---
 
