@@ -119,6 +119,17 @@
 
 ---
 
+## ✅ Gitmoji 사용 방법
+
+- 깃모지 사용은 필수이나,
+- VSCode Gitmoji 확장 또는 CLI 중 선택하여 사용 가능
+
+```bash
+npm install -g gitmoji-cli
+gitmoji -c
+```
+
+---
 ## 📝 Gitmoji 커밋 규칙
 
 모든 커밋은 다음 Gitmoji 규칙을 따릅니다.
@@ -158,17 +169,6 @@
 
 ---
 
-## ✅ Gitmoji 사용 방법
-
-- 깃모지 사용은 필수이나,
-- VSCode Gitmoji 확장 또는 CLI 중 선택하여 사용 가능
-
-```bash
-npm install -g gitmoji-cli
-gitmoji -c
-```
-
----
 
 ## ✅ 필수 VSCode 확장
 
