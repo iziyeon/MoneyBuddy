@@ -1,0 +1,112 @@
+{
+  // === 포맷터 ===
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": false,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+
+  // === ESLint ===
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+
+  // === 언어별 formatter 확정
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+  // === import 자동 경로수정
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // === 자동저장 onFocusChange
+  "files.autoSave": "onFocusChange",
+
+  // === TailwindCSS IntelliSense 설정
+  "tailwindCSS.includeLanguages": {
+    "typescriptreact": "typescriptreact"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "clsx\\(([^)]*)\\)",
+    "className={`([^`}]+)"
+  ],
+
+  // === Prettier 보조 설정
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": true,
+
+  // === javascript 내장포맷터 차단 (Prettier 우선)
+  "javascript.format.enable": false,
+
+  // === Gitmoji 확장 (자동화 템플릿 세팅)
+  "gitmoji.addCustomEmoji": [
+    {
+      "emoji": "✨ [new features]",
+      "code": ":sparkles:",
+      "description": "[new features] 기능 및 코드 추가"
+    },
+    {
+      "emoji": "🔥 [remove]",
+      "code": ":fire:",
+      "description": "[remove] 기능 및 코드 제거"
+    },
+    {
+      "emoji": "🎨 [styling]",
+      "code": ":art:",
+      "description": "[styling] 코드의 구조/형태 개선"
+    },
+    {
+      "emoji": "➕ [add]",
+      "code": ":heavy_plus_sign:",
+      "description": "[add] 파일 추가"
+    },
+    {
+      "emoji": "➖ [remove]",
+      "code": ":heavy_minus_sign:",
+      "description": "[remove] 파일 제거"
+    },
+    {
+      "emoji": "💄 [style]",
+      "code": ":lipstick:",
+      "description": "[style] 스타일링"
+    },
+    {
+      "emoji": "🏗️ [structure]",
+      "code": ":card_file_box:",
+      "description": "[structure] 프로젝트 구조 변경"
+    },
+    { "emoji": "🐛 [fix]", "code": ":bug:", "description": "[fix] 버그 수정" },
+    {
+      "emoji": "♻️ [refactor]",
+      "code": ":recycle:",
+      "description": "[refactor] 코드 리팩토링"
+    },
+    {
+      "emoji": "📝 [doc]",
+      "code": ":memo:",
+      "description": "[doc] 문서작성 및 편집"
+    },
+    {
+      "emoji": "🎉 [init]",
+      "code": ":tada:",
+      "description": "[init] 프로젝트 개시"
+    },
+    {
+      "emoji": "🚀 [deploy]",
+      "code": ":rocket:",
+      "description": "[deploy] 프로젝트 배포"
+    },
+    {
+      "emoji": "📌 [setup]",
+      "code": ":pushpin:",
+      "description": "[setup] 패키지 설치"
+    }
+  ],
+  "gitmoji.onlyUseCustomEmoji": true
+}
