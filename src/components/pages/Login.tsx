@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import Text from '../common/Text';
 import Input from '../common/Input';
+import { EMAIL_REGEX } from '../../utils/Regex';
 
 type LoginFormValues = {
   email: string;
@@ -12,7 +13,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
   } = useForm<LoginFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -30,17 +31,34 @@ export default function Login() {
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* 이메일 입력 */}
       <div>
-        <Input {...register('email')} placeholder="이메일을 입력해주세요" />
+        <Input
+          {...register('email', {
+            required: '이메일을 입력해주세요',
+            pattern: {
+              value: EMAIL_REGEX,
+              message: '이메일 형식이 올바르지 않습니다',
+            },
+          })}
+          placeholder="이메일을 입력해주세요"
+        />
+        {errors.email && <p>{errors.email.message}</p>}
       </div>
 
       {/* 비밀번호 입력 */}
       <div>
         <Input
-          {...register('password')}
+          {...register('password', {
+            required: '비밀번호를 입력해주세요',
+            minLength: {
+              value: 6,
+              message: '비밀번호는 6자리 이상이어야 합니다',
+            },
+          })}
           placeholder="비밀번호를 입력해주세요"
           type="password"
           hasToggle
         />
+        {errors.password && <p>{errors.password.message}</p>}
       </div>
 
       {/* 로그인 버튼 */}
