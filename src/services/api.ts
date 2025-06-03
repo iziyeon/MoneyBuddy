@@ -6,8 +6,8 @@ import axios, {
   AxiosHeaders,
 } from 'axios';
 
-const API_BASE_URL = 'https://example.com/api';
-const API_TOKEN = 'your_api_token'; // 나중에 Zustand 등에서 관리 예정
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
+let API_TOKEN = '';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -18,30 +18,23 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // headers가 없을 경우, AxiosHeaders 인스턴스 생성
     if (!config.headers) {
       config.headers = new AxiosHeaders();
     }
-    // Authorization 헤더 설정
-    (config.headers as AxiosHeaders).set(
-      'Authorization',
-      `Bearer ${API_TOKEN}`,
-    );
+    if (API_TOKEN) {
+      (config.headers as AxiosHeaders).set(
+        'Authorization',
+        `Bearer ${API_TOKEN}`,
+      );
+    }
     return config;
   },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  },
+  (error: AxiosError) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
-  (error: AxiosError) => {
-    // 에러 처리 확장 가능
-    return Promise.reject(error);
-  },
+  (response: AxiosResponse) => response.data,
+  (error: AxiosError) => Promise.reject(error),
 );
 
 export async function fetchCall<T>(
@@ -56,4 +49,7 @@ export async function fetchCall<T>(
   };
   return axiosInstance(config);
 }
-//rlt
+
+export function setApiToken(token: string) {
+  API_TOKEN = token;
+}
