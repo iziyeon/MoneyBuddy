@@ -1,12 +1,23 @@
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import Router from './routes/Router';
-import { BrowserRouter } from 'react-router-dom';
+import GlobalHeader from './components/layout/GlobalHeader';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const hideHeader = ['/login', '/signup'].includes(location.pathname);
+
   return (
-    <BrowserRouter>
+    <>
+      {!hideHeader && <GlobalHeader />}
       <Router />
-    </BrowserRouter>
+    </>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
