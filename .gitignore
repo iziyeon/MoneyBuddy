@@ -29,6 +29,3 @@ dist-ssr/
 
 # Test coverage
 coverage/
-
-# MSW mock service worker
-public/mockServiceWorker.js

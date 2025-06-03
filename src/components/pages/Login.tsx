@@ -1,19 +1,25 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import Text from '../common/Text';
 import Input from '../common/Input';
 import { EMAIL_REGEX } from '../../utils/Regex';
+import { loginApi } from '../../services/auth/loginApi';
+import type { LoginRequest } from '../../types/api/auth/login';
+import { setApiToken } from '../../services/api';
 
-type LoginFormValues = {
-  email: string;
-  password: string;
+// 실제 폼에서 사용하는 타입: API 요청 타입 + 추가 UI 상태
+type LoginFormValues = LoginRequest & {
   autoLogin: boolean;
 };
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isSubmitting, isValid, errors },
+    setError,
   } = useForm<LoginFormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -23,8 +29,22 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log('제출 데이터:', data);
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      // autoLogin은 api에 안 보내므로 분리
+      const { autoLogin, ...loginData } = data;
+      const response = await loginApi(loginData);
+      setApiToken(response.accessToken);
+      navigate('/');
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        setError('password', {
+          message: '이메일 또는 비밀번호가 올바르지 않습니다.',
+        });
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
+    }
   };
 
   return (
@@ -49,10 +69,6 @@ export default function Login() {
         <Input
           {...register('password', {
             required: '비밀번호를 입력해주세요',
-            minLength: {
-              value: 6,
-              message: '비밀번호는 6자리 이상이어야 합니다',
-            },
           })}
           placeholder="비밀번호를 입력해주세요"
           type="password"
@@ -63,8 +79,8 @@ export default function Login() {
 
       {/* 로그인 버튼 */}
       <div>
-        <button type="submit" disabled={!isValid}>
-          로그인
+        <button type="submit" disabled={!isValid || isSubmitting}>
+          {isSubmitting ? '로그인 중...' : '로그인'}
         </button>
       </div>
 
