@@ -5,15 +5,15 @@ import Input from '../common/Input';
 import { EMAIL_REGEX } from '../../utils/Regex';
 import { loginApi } from '../../services/auth/loginApi';
 import type { LoginRequest } from '../../types/api/auth/login';
-import { setApiToken } from '../../services/api';
+import { useAuthStore } from '../../stores/useAuthStore';
 
-// 실제 폼에서 사용하는 타입: API 요청 타입 + 추가 UI 상태
 type LoginFormValues = LoginRequest & {
   autoLogin: boolean;
 };
 
 export default function Login() {
   const navigate = useNavigate();
+  const setAuth = useAuthStore(state => state.setAuth);
 
   const {
     register,
@@ -31,10 +31,12 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      // autoLogin은 api에 안 보내므로 분리
       const { autoLogin, ...loginData } = data;
       const response = await loginApi(loginData);
-      setApiToken(response.accessToken);
+
+      // zustand에 토큰과 유저정보 저장
+      setAuth(response.user, response.accessToken, response.refreshToken);
+
       navigate('/');
     } catch (err: any) {
       if (err?.response?.status === 401) {
@@ -104,7 +106,6 @@ export default function Login() {
         <button type="button">네이버 계정으로 시작하기</button>
       </div>
 
-      {/* 하단 링크 */}
       <div>
         <button type="button">회원가입</button>
         <button type="button">아이디 · 비밀번호 재설정</button>
