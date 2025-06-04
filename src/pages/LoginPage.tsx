@@ -1,14 +1,12 @@
-import PageHeader from '../components/layout/PageHeader';
 import PageWrapper from '../components/layout/PageWrapper';
-import Login from '../components/pages/Login';
+import PageHeader from '../components/layout/PageHeader';
+import Login from '../components/pages/Login/Login';
 
-function LoginPage() {
+export default function LoginPage() {
   return (
     <PageWrapper>
-      <PageHeader title="로그인" showBackButton={false} />
+      <PageHeader title="로그인" />
       <Login />
     </PageWrapper>
   );
 }
-
-export default LoginPage;
