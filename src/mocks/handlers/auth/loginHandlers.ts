@@ -1,4 +1,4 @@
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { API_ENDPOINTS } from '../../../config/api';
 import type {
   LoginRequest,
@@ -16,12 +16,12 @@ export const loginHandlers = [
         user: { id: 1, nickname: '사용자닉네임', role: 'USER' },
       };
 
-      return new Response(JSON.stringify(response), { status: 200 });
-    } else {
-      return new Response(
-        JSON.stringify({ message: '이메일 또는 비밀번호가 올바르지 않습니다' }),
-        { status: 401 },
-      );
+      return HttpResponse.json(response, { status: 200 });
     }
+
+    return HttpResponse.json(
+      { message: '이메일 또는 비밀번호가 올바르지 않습니다' },
+      { status: 401 },
+    );
   }),
 ];

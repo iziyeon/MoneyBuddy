@@ -1,6 +1,6 @@
-import { loginHandlers } from './handlers/auth/loginHandlers';
+// src/mocks/handlers/index.ts
 
-export const handlers = [
-  ...loginHandlers,
-  // 이후 계속 핸들러 확장
-];
+import { authHandlers } from './handlers/auth/index';
+import { userInfoHandlers } from '../mocks/handlers/user/userInfoHandlers';
+
+export const handlers = [...authHandlers, ...userInfoHandlers];
