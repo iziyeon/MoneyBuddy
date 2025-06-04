@@ -36,22 +36,10 @@ axiosInstance.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error),
 );
 
-// 응답 인터셉터 (에러처리 확장 가능)
+// 응답 인터셉터 → 항상 data만 반환 (핵심)
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => response.data,
   (error: AxiosError) => Promise.reject(error),
 );
 
-// fetchCall 공통 API 호출 래퍼
-export async function fetchCall<T>(
-  url: string,
-  method: 'get' | 'post' | 'put' | 'patch' | 'delete',
-  data?: unknown,
-): Promise<T> {
-  const config: AxiosRequestConfig = {
-    url,
-    method,
-    ...(data ? { data } : {}),
-  };
-  return axiosInstance(config);
-}
+export { axiosInstance };
