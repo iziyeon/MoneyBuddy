@@ -1,7 +1,7 @@
-import { fetchCall } from '../api';
-import { API_ENDPOINTS } from '../../config/api';
+import axios from 'axios';
 import type { LoginRequest, LoginResponse } from '../../types/api/auth/login';
 
 export async function loginApi(data: LoginRequest): Promise<LoginResponse> {
-  return fetchCall<LoginResponse>(API_ENDPOINTS.login, 'post', data);
+  const response = await axios.post<LoginResponse>('/api/v1/users/login', data);
+  return response.data;
 }
