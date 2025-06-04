@@ -26,6 +26,7 @@ module.exports = {
         font1: '#111111',
         font2: '#777777',
         font3: '#9C9C9C',
+        disabled: '#DBDBDB',
       },
       fontSize: {
         h1: ['24px', '32px'],
