@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, JSX } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'disabled' | 'white' | 'border' | 'grayBtn';
+  variant?: 'primary' | 'disabled' | 'white' | 'border' | 'grayBtn' | 'text';
 }
 
 export default function Button({
@@ -15,6 +15,7 @@ export default function Button({
     white: 'bg-white text-primary',
     border: 'bg-white border border-primary text-primary',
     grayBtn: 'bg-white border border-stroke text-font2',
+    text: 'bg-transparent text-black',
   };
 
   return (
