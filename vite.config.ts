@@ -24,4 +24,5 @@ export default defineConfig({
       },
     },
   },
+  publicDir: 'public', // public 디렉토리 설정
 });

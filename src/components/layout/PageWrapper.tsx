@@ -9,5 +9,7 @@ export default function PageWrapper({
   children,
   className = '',
 }: PageWrapperProps) {
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={`w-full min-h-full px-5 ${className}`}>{children}</div>
+  );
 }

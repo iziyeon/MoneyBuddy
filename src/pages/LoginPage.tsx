@@ -5,7 +5,7 @@ import Login from '../components/pages/Login/Login';
 export default function LoginPage() {
   return (
     <PageWrapper>
-      <PageHeader title="로그인" />
+      <PageHeader title="로그인" isLoginPage showBackButton={false} />
       <Login />
     </PageWrapper>
   );
