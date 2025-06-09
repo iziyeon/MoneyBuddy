@@ -5,4 +5,5 @@ export interface FindIdRequest {
 
 export interface FindIdResponse {
   email: string;
+  joinDate: string;
 }
