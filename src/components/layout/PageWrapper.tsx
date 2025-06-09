@@ -10,6 +10,8 @@ export default function PageWrapper({
   className = '',
 }: PageWrapperProps) {
   return (
-    <div className={`w-full min-h-full px-5 ${className}`}>{children}</div>
+    <div className="flex justify-center items-start w-full min-h-screen bg-white">
+      <div className={`w-[390px] min-h-[844px] ${className}`}>{children}</div>
+    </div>
   );
 }
