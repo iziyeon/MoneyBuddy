@@ -12,16 +12,4 @@
   .social-login-button {
     @apply w-full h-12 flex items-center justify-center gap-2 rounded-lg mb-3 text-base font-medium;
   }
-
-  .kakao-button {
-    @apply bg-[#FEE500] text-[#000000] hover:bg-[#FDD835];
-  }
-
-  .google-button {
-    @apply bg-white border border-stroke text-font1 hover:bg-gray-50;
-  }
-
-  .naver-button {
-    @apply bg-[#03C75A] text-white hover:bg-[#02b351];
-  }
 }
