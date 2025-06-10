@@ -13,7 +13,7 @@ import {
   isValidPhone,
   hasRequiredTerms,
 } from '../../../utils/Validation';
-import { useSignupStore } from '../../../stores/usesignupStore';
+import { useSignupStore } from '../../../stores/useSignupStore';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignupPage(): JSX.Element {
