@@ -5,6 +5,8 @@ import { loginApi } from '../../../services/auth/loginApi';
 import { EMAIL_REGEX } from '../../../utils/Regex';
 import { useAuthStore } from '../../../stores/useAuthStore';
 import type { LoginRequest } from '../../../types/api/auth/login';
+import Button from '../../common/Button';
+import { loginStyles } from '../../../styles/login.styles';
 
 type LoginFormValues = LoginRequest & { autoLogin: boolean };
 
@@ -44,7 +46,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <Input
           {...register('email', {
@@ -55,30 +57,37 @@ export default function LoginForm() {
             },
           })}
           placeholder="이메일을 입력해주세요"
+          className={loginStyles.input}
         />
-        {errors.email && <p>{errors.email.message}</p>}
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+        )}
       </div>
 
       <div>
         <Input
           {...register('password', { required: '비밀번호를 입력해주세요' })}
-          placeholder="비밀번호를 입력해주세요"
           type="password"
           hasToggle
+          placeholder="비밀번호를 입력해주세요"
+          className={loginStyles.input}
         />
-        {errors.password && <p>{errors.password.message}</p>}
+        {errors.password && (
+          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+        )}
       </div>
 
-      <div>
-        <button type="submit" disabled={!isValid || isSubmitting}>
-          {isSubmitting ? '로그인 중...' : '로그인'}
-        </button>
-      </div>
-
-      <div>
-        <input type="checkbox" id="auto-login" {...register('autoLogin')} />
-        <label htmlFor="auto-login">자동 로그인</label>
-      </div>
+      <Button
+        type="submit"
+        disabled={!isValid || isSubmitting || Object.keys(errors).length > 0}
+        variant={
+          !isValid || isSubmitting || Object.keys(errors).length > 0
+            ? 'disabled'
+            : 'primary'
+        }
+      >
+        {isSubmitting ? '로그인 중...' : '로그인'}
+      </Button>
     </form>
   );
 }

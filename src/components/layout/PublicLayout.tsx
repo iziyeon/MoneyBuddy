@@ -1,13 +1,12 @@
-//헤더 없는 전체 공개 페이지의 틀 담당
-import GlobalHeader from './GlobalHeader';
 import PageWrapper from './PageWrapper';
 import type { ReactNode } from 'react';
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <>
-      <GlobalHeader />
-      <PageWrapper>{children}</PageWrapper>
-    </>
+    <div className="w-[390px] h-[844px] mx-auto bg-white relative">
+      <PageWrapper>
+        <div className="pt-[243px]">{children}</div>
+      </PageWrapper>
+    </div>
   );
 }

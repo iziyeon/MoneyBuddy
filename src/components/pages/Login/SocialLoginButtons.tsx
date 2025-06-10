@@ -1,3 +1,5 @@
+import { loginStyles } from '../../../styles/login.styles';
+
 type SocialProvider = 'kakao' | 'google' | 'naver';
 
 type SocialLoginButtonsProps = {
@@ -7,22 +9,42 @@ type SocialLoginButtonsProps = {
 export default function SocialLoginButtons({
   onSocialLogin,
 }: SocialLoginButtonsProps) {
-  const handleClick = (provider: SocialProvider) => {
-    if (onSocialLogin) {
-      onSocialLogin(provider);
-    }
-  };
-
   return (
-    <div>
-      <button type="button" onClick={() => handleClick('kakao')}>
-        카카오 계정으로 1초 만에 시작하기
+    <div className={loginStyles.socialButtonsWrapper}>
+      <button
+        type="button"
+        onClick={() => onSocialLogin?.('kakao')}
+        className={loginStyles.socialButton}
+      >
+        <img
+          src="/jpg/SocialLoginButton/kakao.png"
+          alt="카카오 계정으로 1초 만에 시작하기"
+          className="w-full h-full"
+        />
       </button>
-      <button type="button" onClick={() => handleClick('google')}>
-        구글 계정으로 시작하기
+
+      <button
+        type="button"
+        onClick={() => onSocialLogin?.('google')}
+        className={loginStyles.socialButton}
+      >
+        <img
+          src="/jpg/SocialLoginButton/google.png"
+          alt="구글 계정으로 시작하기"
+          className="w-full h-full"
+        />
       </button>
-      <button type="button" onClick={() => handleClick('naver')}>
-        네이버 계정으로 시작하기
+
+      <button
+        type="button"
+        onClick={() => onSocialLogin?.('naver')}
+        className={loginStyles.socialButton}
+      >
+        <img
+          src="/jpg/SocialLoginButton/naver.png"
+          alt="네이버 계정으로 시작하기"
+          className="w-full h-full"
+        />
       </button>
     </div>
   );
