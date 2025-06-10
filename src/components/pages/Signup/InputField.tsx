@@ -27,7 +27,7 @@ export default function InputField({
         {...props}
       />
       {errorMessage && (
-        <p className="mt-1 text-xs text-error">{errorMessage}</p>
+        <p className="mt-1 text-xs p-2 text-error">{errorMessage}</p>
       )}
     </div>
   );
