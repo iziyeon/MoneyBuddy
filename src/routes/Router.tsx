@@ -11,6 +11,7 @@ import ResetPasswordPage from '../pages/FindPage/ResetPasswordPage';
 import PrivateRoute from './PrivateRoute';
 import DefaultLayout from '../components/layout/DefaultLayout';
 import PublicLayout from '../components/layout/PublicLayout';
+import ExpertPage from '../pages/ExpertPage';
 
 export default function Router() {
   return (
@@ -63,6 +64,7 @@ export default function Router() {
           </PublicLayout>
         }
       />
+      <Route path="/expert" element={<ExpertPage />} />
       <Route
         path="/mypage"
         element={
