@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, JSX } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'disabled';
+  variant?: 'primary' | 'secondary' | 'disabled' | 'text';
 }
 
 export default function Button({
@@ -34,6 +34,11 @@ export default function Button({
       bg-[#DBDBDB]
       cursor-not-allowed
     `,
+    text: `
+			text-primary
+			text-h4
+			bg-transparent
+		`,
   };
 
   return (
