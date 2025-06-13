@@ -1,12 +1,12 @@
 // src/components/pages/auth/ResetPasswordRequestForm.tsx
 import { useForm } from 'react-hook-form';
-import { EMAIL_REGEX } from '../../../utils/Regex';
+import { EMAIL_REGEX } from '../../../utils';
 import Input from '../../common/Input';
 import Button from '../../common/Button';
 import Text from '../../common/Text';
 import { authStyles } from '../../../styles/auth.styles';
 import { requestResetPasswordApi } from '../../../services/auth/resetPasswordApi';
-import type { RequestResetPasswordRequest } from '../../../types/api/auth/resetPassword';
+import type { RequestResetPasswordRequest } from '../../../types/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

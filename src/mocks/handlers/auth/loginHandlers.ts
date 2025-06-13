@@ -1,9 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { API_ENDPOINTS } from '../../../config/api';
-import type {
-  LoginRequest,
-  LoginResponse,
-} from '../../../types/api/auth/login';
+import type { LoginRequest, LoginResponse } from '../../../types/auth';
 
 export const loginHandlers = [
   http.post(API_ENDPOINTS.login, async ({ request }) => {

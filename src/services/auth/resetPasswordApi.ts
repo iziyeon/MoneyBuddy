@@ -4,7 +4,7 @@ import type {
   RequestResetPasswordRequest,
   ResetPasswordRequest,
   VerifyResetCodeRequest,
-} from '../../types/api/auth/resetPassword';
+} from '../../types/auth';
 
 export const requestResetPasswordApi = async (
   data: RequestResetPasswordRequest,
