@@ -13,7 +13,7 @@ export default function FixedBottom({
   handleLikeClick,
 }: FixedBottomProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-4 px-5 flex items-center justify-between">
+    <div className="w-full bg-white border-t border-gray-200 py-4 px-5 flex items-center justify-between">
       <button
         onClick={handleLikeClick}
         className="flex flex-col items-center justify-center"
