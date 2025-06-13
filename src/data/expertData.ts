@@ -1,0 +1,907 @@
+// HASHTAGS 타입 정의
+type ExpertField = '소비' | '지역' | '투자' | '부채' | '기타';
+type HashtagMap = Record<ExpertField | '부동산', readonly string[]>;
+
+// 프로필 이미지 배열 생성
+const profileImages = [
+  '/jpg/experts/expert1.png',
+  '/jpg/experts/expert2.png',
+  '/jpg/experts/expert3.png',
+];
+
+// 각 분야별 해시태그 정의
+const HASHTAGS: HashtagMap = {
+  소비: ['가계부작성', '소비분석', '재무설계'],
+  투자: ['부동산', '해외주식', '국내주식', '코인'],
+  부채: ['빚투', '전세대출', '담보대출', '학자금대출'],
+  기타: ['근로장려금', '청년지원사업', '실업급여', '연말정산'],
+  지역: ['부동산', '주택시장', '상권분석'],
+  부동산: ['부동산', '주택시장', '상권분석'],
+} as const;
+
+export type Expert = {
+  id: number;
+  nickname: string;
+  field: ExpertField;
+  category: ExpertField;
+  rating: number;
+  price: number;
+  experience: number;
+  consultation_count: number;
+  review_count: number;
+  bookmarks: number;
+  profile_image: string;
+  description: string;
+  bio: string;
+  is_online: boolean;
+  hashtags: string[];
+};
+
+export const expertData: Expert[] = [
+  // 소비 분야 전문가들
+  {
+    id: 1,
+    nickname: '김소비',
+    field: '소비',
+    category: '소비',
+    rating: 4.8,
+    price: 50000,
+    experience: 5,
+    consultation_count: 128,
+    review_count: 98,
+    bookmarks: 45,
+    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    description: '체계적인 소비 습관 개선을 도와드립니다',
+    bio: '소비 분석가', // 6자
+    is_online: true,
+    hashtags: ['가계부작성'], // 한 개만 선택
+  },
+  {
+    id: 2,
+    nickname: '이지선',
+    field: '기타',
+    category: '기타',
+    rating: 4.5,
+    price: 30000,
+    experience: 3,
+    consultation_count: 45,
+    review_count: 20,
+    bookmarks: 12,
+    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    description: '친절한 머니 엑스퍼트',
+    bio: '재무 상담가', // 6자
+    is_online: true,
+    hashtags: ['근로장려금'], // 한 개만 선택
+  },
+  {
+    id: 3,
+    nickname: '박재현',
+    field: '소비',
+    category: '소비',
+    rating: 4.8,
+    price: 40000,
+    experience: 4,
+    consultation_count: 120,
+    review_count: 98,
+    bookmarks: 45,
+    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    description: '재무설계 전문가',
+    bio: '재무 설계사', // 6자
+    is_online: false,
+    hashtags: ['소비분석', '재무설계'], // 두 개 선택
+  },
+  {
+    id: 4,
+    nickname: '한예산',
+    field: '소비',
+    category: '소비',
+    rating: 4.6,
+    price: 35000,
+    experience: 2,
+    consultation_count: 60,
+    review_count: 45,
+    bookmarks: 25,
+    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    description: '가계부 관리 전문가',
+    bio: '가계부 관리사', // 7자
+    is_online: false,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  {
+    id: 5,
+    nickname: '박재무',
+    field: '소비',
+    category: '소비',
+    rating: 4.7,
+    price: 45000,
+    experience: 6,
+    consultation_count: 198,
+    review_count: 156,
+    bookmarks: 67,
+    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    description: '현직 은행원 재무설계사',
+    bio: '재무 설계 전문가', // 9자
+    is_online: true,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  {
+    id: 6,
+    nickname: '김소비2',
+    field: '소비',
+    category: '소비',
+    rating: 4.7,
+    price: 48000,
+    experience: 5,
+    consultation_count: 150,
+    review_count: 110,
+    bookmarks: 50,
+    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    description: '소비 심리 전문가',
+    bio: '소비 심리 분석가', // 8자
+    is_online: true,
+    hashtags: ['가계부작성', '소비분석'], // 개별 해시태그 설정
+  },
+  {
+    id: 7,
+    nickname: '이소비',
+    field: '소비',
+    category: '소비',
+    rating: 4.9,
+    price: 55000,
+    experience: 7,
+    consultation_count: 200,
+    review_count: 130,
+    bookmarks: 70,
+    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    description: '스마트 소비 코치',
+    bio: '스마트한 소비 코치', // 8자
+    is_online: true,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  {
+    id: 8,
+    nickname: '최소비',
+    field: '소비',
+    category: '소비',
+    rating: 4.6,
+    price: 35000,
+    experience: 4,
+    consultation_count: 90,
+    review_count: 60,
+    bookmarks: 30,
+    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    description: '가계부 및 재무 상담 전문가',
+    bio: '가계부 및 재무 상담가', // 8자
+    is_online: true,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  {
+    id: 9,
+    nickname: '장소비',
+    field: '소비',
+    category: '소비',
+    rating: 4.8,
+    price: 60000,
+    experience: 6,
+    consultation_count: 180,
+    review_count: 140,
+    bookmarks: 80,
+    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    description: '소비 패턴 분석 및 개선 전문가',
+    bio: '소비 패턴 분석가', // 8자
+    is_online: true,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  {
+    id: 10,
+    nickname: '윤소비',
+    field: '소비',
+    category: '소비',
+    rating: 4.7,
+    price: 52000,
+    experience: 5,
+    consultation_count: 160,
+    review_count: 120,
+    bookmarks: 75,
+    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    description: '효율적인 소비 전략 제안 전문가',
+    bio: '소비 전략 제안가', // 8자
+    is_online: true,
+    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+  },
+  // 지역 분야 전문가들 (10명)
+  {
+    id: 11,
+    nickname: '이부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.9,
+    price: 70000,
+    experience: 7,
+    consultation_count: 256,
+    review_count: 156,
+    bookmarks: 89,
+    profile_image: profileImages[1],
+    description: '부동산 투자 전문가입니다',
+    bio: '부동산 투자가', // 7자
+    is_online: false,
+    hashtags: ['부동산'], // 한 개만 선택
+  },
+  {
+    id: 12,
+    nickname: '임부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.9,
+    price: 80000,
+    experience: 8,
+    consultation_count: 250,
+    review_count: 223,
+    bookmarks: 100,
+    profile_image: profileImages[2],
+    description: '전문적인 부동산 투자 및 관리',
+    bio: '부동산 관리사', // 7자
+    is_online: true,
+    hashtags: ['주택시장', '상권분석'], // 두 개 선택
+  },
+  {
+    id: 13,
+    nickname: '윤방부',
+    field: '지역',
+    category: '지역',
+    rating: 4.8,
+    price: 55000,
+    experience: 6,
+    consultation_count: 150,
+    review_count: 134,
+    bookmarks: 55,
+    profile_image: profileImages[0],
+    description: '부동산 중개 및 투자 컨설팅',
+    bio: '부동산 중개 및 투자', // 8자
+    is_online: true,
+    hashtags: ['부동산', '주택시장'], // 2개로 제한
+  },
+  {
+    id: 14,
+    nickname: '한부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.7,
+    price: 60000,
+    experience: 5,
+    consultation_count: 180,
+    review_count: 120,
+    bookmarks: 70,
+    profile_image: profileImages[1],
+    description: '신뢰할 수 있는 부동산 파트너',
+    bio: '신뢰할 수 있는 파트너', // 8자
+    is_online: true,
+    hashtags: ['부동산'], // 1개로 제한
+  },
+  {
+    id: 15,
+    nickname: '김부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.6,
+    price: 50000,
+    experience: 4,
+    consultation_count: 128,
+    review_count: 98,
+    bookmarks: 45,
+    profile_image: profileImages[2],
+    description: '부동산 투자 및 자산 관리 전문가',
+    bio: '부동산 투자 및 자산 관리', // 8자
+    is_online: true,
+    hashtags: ['상권분석'], // 1개로 제한
+  },
+  {
+    id: 16,
+    nickname: '이부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.8,
+    price: 75000,
+    experience: 7,
+    consultation_count: 220,
+    review_count: 140,
+    bookmarks: 80,
+    profile_image: profileImages[0],
+    description: '전문가의 부동산 투자 전략',
+    bio: '부동산 투자 전략', // 8자
+    is_online: true,
+    hashtags: ['부동산', '주택시장'], // 2개로 제한
+  },
+  {
+    id: 17,
+    nickname: '최부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.7,
+    price: 65000,
+    experience: 6,
+    consultation_count: 190,
+    review_count: 130,
+    bookmarks: 75,
+    profile_image: profileImages[1],
+    description: '부동산 시장 분석 및 투자 상담',
+    bio: '부동산 시장 분석가', // 8자
+    is_online: true,
+    hashtags: ['주택시장', '상권분석'], // 2개로 제한
+  },
+  {
+    id: 18,
+    nickname: '장부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.9,
+    price: 80000,
+    experience: 8,
+    consultation_count: 300,
+    review_count: 200,
+    bookmarks: 100,
+    profile_image: profileImages[2],
+    description: '부동산 개발 및 투자 전문가',
+    bio: '부동산 개발 및 투자', // 8자
+    is_online: true,
+    hashtags: ['부동산', '상권분석'], // 2개로 제한
+  },
+  {
+    id: 19,
+    nickname: '윤부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.8,
+    price: 70000,
+    experience: 7,
+    consultation_count: 250,
+    review_count: 160,
+    bookmarks: 90,
+    profile_image: profileImages[0],
+    description: '프리미엄 부동산 투자 컨설턴트',
+    bio: '프리미엄 부동산 투자', // 8자
+    is_online: true,
+    hashtags: ['부동산', '주택시장'], // 2개로 제한
+  },
+  {
+    id: 20,
+    nickname: '한부동산',
+    field: '지역',
+    category: '지역',
+    rating: 4.7,
+    price: 60000,
+    experience: 5,
+    consultation_count: 180,
+    review_count: 120,
+    bookmarks: 70,
+    profile_image: profileImages[1],
+    description: '신뢰할 수 있는 부동산 투자 고수',
+    bio: '신뢰할 수 있는 투자 고수', // 8자
+    is_online: true,
+    hashtags: ['주택시장', '상권분석'], // 2개로 제한
+  },
+  // 투자 분야 전문가들 (10명)
+  {
+    id: 21,
+    nickname: '김투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.9,
+    price: 75000,
+    experience: 15,
+    consultation_count: 245,
+    review_count: 178,
+    bookmarks: 89,
+    profile_image: profileImages[2], // 수정
+    description: '주식투자 15년차 전문가',
+    bio: '주식 투자 전문', // 8자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 22,
+    nickname: '정주식',
+    field: '투자',
+    category: '투자',
+    rating: 4.8,
+    price: 65000,
+    experience: 10,
+    consultation_count: 200,
+    review_count: 184,
+    bookmarks: 75,
+    profile_image: profileImages[0], // 수정
+    description: '주식투자 전문가',
+    bio: '투자 전략가', // 6자
+    is_online: true,
+    hashtags: ['코인'], // 한 개만 선택
+  },
+  {
+    id: 23,
+    nickname: '김창영',
+    field: '투자',
+    category: '투자',
+    rating: 4.9,
+    price: 70000,
+    experience: 20,
+    consultation_count: 180,
+    review_count: 215,
+    bookmarks: 60,
+    profile_image: profileImages[1], // 수정
+    description: '20년차 투자전문가',
+    bio: '20년차 투자 엑스퍼트',
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 24,
+    nickname: '이투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.8,
+    price: 60000,
+    experience: 12,
+    consultation_count: 150,
+    review_count: 134,
+    bookmarks: 55,
+    profile_image: profileImages[2], // 수정
+    description: '스마트한 투자 전략 제안',
+    bio: '스마트한 투자 전략', // 8자
+    is_online: true,
+    hashtags: ['국내주식', '코인'], // 2개로 제한
+  },
+  {
+    id: 25,
+    nickname: '최투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.7,
+    price: 55000,
+    experience: 8,
+    consultation_count: 120,
+    review_count: 98,
+    bookmarks: 45,
+    profile_image: profileImages[0], // 수정
+    description: '안정적인 수익을 추구하는 투자 전문가',
+    bio: '안정적인 수익 투자', // 8자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 26,
+    nickname: '장투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.9,
+    price: 80000,
+    experience: 18,
+    consultation_count: 300,
+    review_count: 200,
+    bookmarks: 100,
+    profile_image: profileImages[1], // 수정
+    description: '부동산 및 주식 투자 전문가',
+    bio: '부동산 및 주식 투자', // 8자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 27,
+    nickname: '윤투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.8,
+    price: 70000,
+    experience: 15,
+    consultation_count: 250,
+    review_count: 156,
+    bookmarks: 89,
+    profile_image: profileImages[2], // 수정
+    description: '투자 포트폴리오 전문가',
+    bio: '투자 포트폴리오 엑스퍼트',
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 28,
+    nickname: '한투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.6,
+    price: 50000,
+    experience: 10,
+    consultation_count: 200,
+    review_count: 120,
+    bookmarks: 70,
+    profile_image: profileImages[0], // 수정
+    description: '위험 관리 및 수익 극대화 전문가',
+    bio: '위험 관리 및 수익 극대화', // 12자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 29,
+    nickname: '이투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.7,
+    price: 55000,
+    experience: 8,
+    consultation_count: 180,
+    review_count: 130,
+    bookmarks: 75,
+    profile_image: profileImages[1], // 수정
+    description: '단기 및 장기 투자 전략 전문가',
+    bio: '단기 및 장기 투자 전략', // 12자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  {
+    id: 30,
+    nickname: '최투자',
+    field: '투자',
+    category: '투자',
+    rating: 4.8,
+    price: 60000,
+    experience: 12,
+    consultation_count: 220,
+    review_count: 140,
+    bookmarks: 80,
+    profile_image: profileImages[2], // 수정
+    description: '글로벌 투자 및 자산 배분 전문가',
+    bio: '글로벌 투자 및 자산 배분', // 12자
+    is_online: true,
+    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+  },
+  // 부채 분야 전문가들 (10명)
+  {
+    id: 31,
+    nickname: '김채무',
+    field: '부채',
+    category: '부채',
+    rating: 4.7,
+    price: 40000,
+    experience: 5,
+    consultation_count: 90,
+    review_count: 67,
+    bookmarks: 30,
+    profile_image: profileImages[0], // 수정
+    description: '체계적인 부채 관리와 맞춤형 상환 계획을 제시합니다',
+    bio: '부채 관리사',
+    is_online: true,
+    hashtags: ['빚투', '전세대출'], // 두 개 선택
+  },
+  {
+    id: 32,
+    nickname: '강채무',
+    field: '부채',
+    category: '부채',
+    rating: 4.7,
+    price: 45000,
+    experience: 6,
+    consultation_count: 110,
+    review_count: 89,
+    bookmarks: 40,
+    profile_image: profileImages[1], // 수정
+    description: '개인 맞춤형 채무조정 방안을 제시하는 전문가입니다',
+    bio: '채무 조정가',
+    is_online: false,
+    hashtags: ['담보대출'], // 한 개만 선택
+  },
+  {
+    id: 33,
+    nickname: '한상담',
+    field: '부채',
+    category: '부채',
+    rating: 4.6,
+    price: 50000,
+    experience: 5,
+    consultation_count: 145,
+    review_count: 89,
+    bookmarks: 34,
+    profile_image: profileImages[2], // 수정
+    description: '신용회복과 채무조정을 통한 재기를 도와드립니다',
+    bio: '신용 상담사',
+    is_online: true,
+    hashtags: ['빚투'], // 1개로 제한
+  },
+  {
+    id: 34,
+    nickname: '김부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.8,
+    price: 60000,
+    experience: 7,
+    consultation_count: 200,
+    review_count: 150,
+    bookmarks: 80,
+    profile_image: profileImages[0], // 수정
+    description: '부채 문제 해결을 위한 종합 재무 상담을 제공합니다',
+    bio: '재무 상담사',
+    is_online: true,
+    hashtags: ['빚투', '담보대출'], // 2개로 제한
+  },
+  {
+    id: 35,
+    nickname: '이부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.7,
+    price: 55000,
+    experience: 6,
+    consultation_count: 180,
+    review_count: 120,
+    bookmarks: 70,
+    profile_image: profileImages[1], // 수정
+    description: '합리적인 부채 해결 방안과 재무 설계를 제안합니다',
+    bio: '부채 해결사',
+    is_online: true,
+    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+  },
+  {
+    id: 36,
+    nickname: '최부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.9,
+    price: 70000,
+    experience: 8,
+    consultation_count: 250,
+    review_count: 160,
+    bookmarks: 90,
+    profile_image: profileImages[2], // 수정
+    description: '전문적인 채무 상담과 효율적인 부채 관리 방안을 제시합니다',
+    bio: '채무 상담가',
+    is_online: true,
+    hashtags: ['담보대출', '빚투'], // 2개로 제한
+  },
+  {
+    id: 37,
+    nickname: '장부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.8,
+    price: 65000,
+    experience: 7,
+    consultation_count: 220,
+    review_count: 140,
+    bookmarks: 85,
+    profile_image: profileImages[0], // 수정
+    description: '신용회복과 재무상태 개선을 위한 전문 상담을 제공합니다',
+    bio: '신용 전문가',
+    is_online: true,
+    hashtags: ['빚투', '전세대출'], // 2개로 제한
+  },
+  {
+    id: 38,
+    nickname: '윤부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.7,
+    price: 60000,
+    experience: 6,
+    consultation_count: 200,
+    review_count: 130,
+    bookmarks: 75,
+    profile_image: profileImages[1], // 수정
+    description: '개인 맞춤형 부채 해결 방안과 재무 구조 개선을 제안합니다',
+    bio: '부채 컨설턴트',
+    is_online: true,
+    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+  },
+  {
+    id: 39,
+    nickname: '한부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.6,
+    price: 50000,
+    experience: 5,
+    consultation_count: 150,
+    review_count: 100,
+    bookmarks: 60,
+    profile_image: profileImages[2], // 수정
+    description: '개인과 기업의 부채 문제 해결을 위한 전문 상담을 제공합니다',
+    bio: '부채 전문가',
+    is_online: true,
+    hashtags: ['빚투', '전세대출'], // 2개로 제한
+  },
+  {
+    id: 40,
+    nickname: '이부채',
+    field: '부채',
+    category: '부채',
+    rating: 4.8,
+    price: 70000,
+    experience: 8,
+    consultation_count: 280,
+    review_count: 180,
+    bookmarks: 95,
+    profile_image: profileImages[0], // 수정
+    description: '전문적인 재무 상담으로 건강한 금융 생활을 도와드립니다',
+    bio: '재무 전문가',
+    is_online: true,
+    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+  },
+  // 기타 분야 전문가들 (10명)
+  {
+    id: 41,
+    nickname: '이재무',
+    field: '기타',
+    category: '기타',
+    rating: 5.0,
+    price: 90000,
+    experience: 10,
+    consultation_count: 180,
+    review_count: 156,
+    bookmarks: 85,
+    profile_image: profileImages[1], // 수정
+    description: '종합 재무설계 전문가',
+    bio: '종합 재무 설계', // 8자
+    is_online: true,
+    hashtags: ['근로장려금'], // 한 개만 선택
+  },
+  {
+    id: 42,
+    nickname: '김세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.9,
+    price: 95000,
+    experience: 12,
+    consultation_count: 212,
+    review_count: 167,
+    bookmarks: 91,
+    profile_image: profileImages[2], // 수정
+    description: '세무사 & 절세 전문가',
+    bio: '세무 전문가', // 6자
+    is_online: true,
+    hashtags: ['청년지원사업', '연말정산'], // 두 개 선택
+  },
+  {
+    id: 43,
+    nickname: '이세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.8,
+    price: 85000,
+    experience: 8,
+    consultation_count: 150,
+    review_count: 134,
+    bookmarks: 78,
+    profile_image: profileImages[0], // 수정
+    description: '세무 및 회계 전문가',
+    bio: '세무 및 회계 엑스퍼트',
+    is_online: true,
+    hashtags: ['근로장려금', '연말정산'], // 2개로 제한
+  },
+  {
+    id: 44,
+    nickname: '최세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.7,
+    price: 80000,
+    experience: 10,
+    consultation_count: 200,
+    review_count: 120,
+    bookmarks: 75,
+    profile_image: profileImages[1], // 수정
+    description: '전문 세무 상담 및 절세 전략',
+    bio: '세무 상담 및 절세 전략', // 12자
+    is_online: true,
+    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+  },
+  {
+    id: 45,
+    nickname: '장세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.9,
+    price: 90000,
+    experience: 15,
+    consultation_count: 250,
+    review_count: 180,
+    bookmarks: 90,
+    profile_image: profileImages[2], // 수정
+    description: '세무 및 재무 상담의 권위자',
+    bio: '세무 및 재무 상담 엑스퍼트',
+    is_online: true,
+    hashtags: ['연말정산', '근로장려금'], // 2개로 제한
+  },
+  {
+    id: 46,
+    nickname: '윤세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.8,
+    price: 85000,
+    experience: 12,
+    consultation_count: 220,
+    review_count: 140,
+    bookmarks: 85,
+    profile_image: profileImages[0], // 수정
+    description: '글로벌 세무 및 재무 전문가',
+    bio: '글로벌 세무 및 재무 엑스퍼트',
+    is_online: true,
+    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+  },
+  {
+    id: 47,
+    nickname: '한세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.7,
+    price: 80000,
+    experience: 10,
+    consultation_count: 200,
+    review_count: 130,
+    bookmarks: 75,
+    profile_image: profileImages[1], // 수정
+    description: '전문가의 세무 및 회계 서비스',
+    bio: '세무 및 회계 서비스 엑스퍼트',
+    is_online: true,
+    hashtags: ['연말정산', '근로장려금'], // 2개로 제한
+  },
+  {
+    id: 48,
+    nickname: '이세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.9,
+    price: 95000,
+    experience: 15,
+    consultation_count: 300,
+    review_count: 200,
+    bookmarks: 100,
+    profile_image: profileImages[2], // 수정
+    description: '세무 및 재무 컨설팅 전문가',
+    bio: '세무 및 재무 컨설팅', // 12자
+    is_online: true,
+    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+  },
+  {
+    id: 49,
+    nickname: '최세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.8,
+    price: 90000,
+    experience: 12,
+    consultation_count: 250,
+    review_count: 160,
+    bookmarks: 90,
+    profile_image: profileImages[0], // 수정
+    description: '전문 세무 및 재무 상담가',
+    bio: '세무 및 재무 상담가', // 8자
+    is_online: true,
+    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+  },
+  {
+    id: 50,
+    nickname: '장세무',
+    field: '기타',
+    category: '기타',
+    rating: 4.7,
+    price: 85000,
+    experience: 10,
+    consultation_count: 200,
+    review_count: 130,
+    bookmarks: 75,
+    profile_image: profileImages[1], // 수정
+    description: '세무 및 회계 전문가',
+    bio: '세무 및 회계 엑스퍼트',
+    is_online: true,
+    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+  },
+];
+
+export const EXPERT_FIELDS = ['소비', '지역', '투자', '부채', '기타'] as const;
+
+// 카테고리 데이터 수정
+export const categories = [
+  { id: 1, name: '소비' as const, hashtags: [...HASHTAGS.소비] },
+  { id: 2, name: '지역' as const, hashtags: [...HASHTAGS.지역] },
+  { id: 3, name: '투자' as const, hashtags: [...HASHTAGS.투자] },
+  { id: 4, name: '부채' as const, hashtags: [...HASHTAGS.부채] },
+  { id: 5, name: '기타' as const, hashtags: [...HASHTAGS.기타] },
+];
