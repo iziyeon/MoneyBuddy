@@ -41,13 +41,13 @@ export const getExperts = async (
     // 정렬 옵션을 API 형식으로 변환
     const sortMap: Record<string, string> = {
       최신순: 'created_at,desc',
+      북마크순: 'bookmarks,desc',
       평점순: 'rating,desc',
-      리뷰많은순: 'review_count,desc',
       상담건순: 'consultation_count,desc',
       낮은가격순: 'price,asc',
       높은가격순: 'price,desc',
-      북마크순: 'bookmarks,desc',
       이름순: 'nickname,asc',
+      리뷰많은순: 'review_count,desc',
     };
     queryParams.append('sort', sortMap[params.sort] || 'created_at,desc');
   }
@@ -61,11 +61,12 @@ export const getExperts = async (
   }
 
   const response = await axiosInstance.get(
-    `${API_ENDPOINTS.advisors}?${queryParams.toString()}`,
+    `${API_ENDPOINTS.advisors}?${queryParams}`,
   );
   return response.data;
 };
 
+// 전문가 상세 정보 조회 - API 호출 제거 (직접 MSW에 요청 않고 useExpert 훅에서 처리)
 export const getExpertById = async (id: number): Promise<Expert> => {
   const response = await axiosInstance.get(`${API_ENDPOINTS.advisors}/${id}`);
   return response.data;
@@ -76,16 +77,24 @@ export const getCategories = async (): Promise<CategoryResponse[]> => {
   return response.data;
 };
 
+// 북마크 토글
 export const toggleBookmark = async (
-  advisorId: number,
+  expertId: number,
 ): Promise<{ bookmarked: boolean }> => {
   const response = await axiosInstance.post(
-    `${API_ENDPOINTS.bookmarks}/${advisorId}`,
+    `${API_ENDPOINTS.bookmarks}/${expertId}`,
   );
   return response.data;
 };
 
+// 북마크 목록 조회
 export const getBookmarks = async (): Promise<Expert[]> => {
-  const response = await axiosInstance.get(API_ENDPOINTS.bookmarks);
-  return response.data;
+  try {
+    console.log(`📡 API 호출: GET ${API_ENDPOINTS.bookmarks}`);
+    const response = await axiosInstance.get(API_ENDPOINTS.bookmarks);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 북마크 목록 조회 실패:', error);
+    throw error;
+  }
 };
