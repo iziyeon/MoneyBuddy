@@ -1,4 +1,4 @@
-import { type JSX } from 'react';
+import { type JSX, useMemo } from 'react';
 import { signupApi } from '../../../services/auth/signupApi';
 import SignupHeader from './SignupHeader';
 import InputField from './InputField';
@@ -15,6 +15,7 @@ import {
 } from '../../../utils/Validation';
 import { useSignupStore } from '../../../stores/useSignupStore';
 import { useNavigate } from 'react-router-dom';
+import { formatPhoneNumber } from '../../../utils';
 
 export default function SignupPage(): JSX.Element {
   const {
@@ -38,11 +39,9 @@ export default function SignupPage(): JSX.Element {
     resetSignup,
   } = useSignupStore();
 
-  const isNameEmpty = name.length >= 1;
-  const isNumberEmpty = phone.length >= 1;
-  const isEmailEmpty = email.length > 0 && domain.length > 0;
-  const allTermId = ['all', 'age', 'service', 'privacy', 'marketing'];
   const navigate = useNavigate();
+  const allTermId = ['all', 'age', 'service', 'privacy', 'marketing'];
+
   const handleTermCheck = (id: string, checked: boolean) => {
     if (id === 'all') {
       setAgreementTerm(checked ? [...allTermId] : []);
@@ -62,45 +61,24 @@ export default function SignupPage(): JSX.Element {
     }
   };
 
+  const isFormValid = useMemo(() => {
+    return (
+      isValidName(name) &&
+      isValidPhone(phone) &&
+      isValidEmailId(email) &&
+      domain.trim().length > 0 &&
+      isValidPassword(password) &&
+      isPasswordMatch(password, passwordCheck) &&
+      hasRequiredTerms(agreementTerm)
+    );
+  }, [name, phone, email, domain, password, passwordCheck, agreementTerm]);
+
   const handleSubmit = async () => {
     clearErrors();
 
-    if (
-      !name.trim() ||
-      !phone.trim() ||
-      !email.trim() ||
-      !domain.trim() ||
-      !password.trim() ||
-      !passwordCheck.trim()
-    ) {
-      alert('모든 항목을 빠짐없이 입력해주세요.');
+    if (!isFormValid) {
+      alert('모든 필드를 올바르게 입력해주세요.');
       return;
-    }
-
-    if (!hasRequiredTerms(agreementTerm)) {
-      alert('필수 약관에 모두 동의해야 가입할 수 있습니다.');
-    }
-    if (!isValidName(name)) {
-      setErrorForField('name', '이름은 2자 이상 입력해주세요.');
-    }
-
-    if (!isValidPhone(phone)) {
-      setErrorForField('phone', '유효한 휴대폰 번호 형식으로 입력해주세요.');
-    }
-
-    if (!isValidEmailId(email)) {
-      setErrorForField('email', '이메일 형식이 올바르지 않습니다.');
-    }
-
-    if (!isValidPassword(password)) {
-      setErrorForField(
-        'password',
-        '특수문자, 영문, 숫자를 포함해 10자 이상이어야 합니다.',
-      );
-    }
-
-    if (!isPasswordMatch(password, passwordCheck)) {
-      setErrorForField('passwordCheck', '비밀번호가 일치하지 않습니다.');
     }
 
     try {
@@ -121,17 +99,27 @@ export default function SignupPage(): JSX.Element {
   };
 
   return (
-    <div className="border border-slate-950">
+    <div>
       <SignupHeader title="이름을" description="정확한 이름을 입력해주세요" />
 
-      {isEmailEmpty && (
+      {email && domain && (
         <>
           <InputField
             id="password"
             type="password"
             label="비밀번호"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            hasToggle
+            onChange={e => {
+              const value = e.target.value;
+              setPassword(value);
+              setErrorForField(
+                'password',
+                isValidPassword(value)
+                  ? ''
+                  : '특수문자, 영문, 숫자를 포함해 10자 이상이어야 합니다.',
+              );
+            }}
             errorMessage={errors.password}
             placeholder="특수문자, 영문, 숫자 포함 10자 이상"
           />
@@ -140,36 +128,69 @@ export default function SignupPage(): JSX.Element {
             type="password"
             label="비밀번호 확인"
             value={passwordCheck}
-            onChange={e => setPasswordCheck(e.target.value)}
+            hasToggle
+            onChange={e => {
+              const value = e.target.value;
+              setPasswordCheck(value);
+              setErrorForField(
+                'passwordCheck',
+                isPasswordMatch(password, value)
+                  ? ''
+                  : '비밀번호가 일치하지 않습니다.',
+              );
+            }}
             errorMessage={errors.passwordCheck}
             placeholder="비밀번호 확인"
           />
         </>
       )}
 
-      {isNumberEmpty && (
-        <div className="flex items-center">
-          <InputField
-            id="email"
-            type="email"
-            label="이메일"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            errorMessage={errors.email}
-            placeholder="이메일 앞부분"
-          />
-          <EmailDropdown selected={domain} onSelect={setDomain} />
+      {phone && (
+        <div className="flex items-start gap-2">
+          <div className="flex-1">
+            <InputField
+              id="email"
+              type="email"
+              label="이메일"
+              value={email}
+              onChange={e => {
+                const value = e.target.value;
+                setEmail(value);
+                setErrorForField(
+                  'email',
+                  isValidEmailId(value)
+                    ? ''
+                    : '이메일 형식이 올바르지 않습니다.',
+                );
+              }}
+              errorMessage={errors.email}
+              placeholder="이메일을 입력해주세요."
+            />
+          </div>
+          <div className="mt-[25px]">
+            <EmailDropdown selected={domain} onSelect={setDomain} />
+          </div>
         </div>
       )}
 
-      {isNameEmpty && (
+      {name && (
         <InputField
           id="phone"
           label="휴대폰 번호"
           value={phone}
-          onChange={e => setPhone(e.target.value)}
+          onChange={e => {
+            const rawValue = e.target.value;
+            const formattedValue = formatPhoneNumber(rawValue);
+            setPhone(formattedValue);
+            setErrorForField(
+              'phone',
+              isValidPhone(formattedValue)
+                ? ''
+                : '유효한 휴대폰 번호를 입력해주세요.',
+            );
+          }}
           errorMessage={errors.phone}
-          placeholder="예) 010-1234-5678"
+          placeholder="휴대폰번호를 입력해주세요."
         />
       )}
 
@@ -177,20 +198,33 @@ export default function SignupPage(): JSX.Element {
         id="name"
         label="이름"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={e => {
+          const value = e.target.value;
+          setName(value);
+          setErrorForField(
+            'name',
+            isValidName(value) ? '' : '이름은 2자 이상 입력해주세요.',
+          );
+        }}
         errorMessage={errors.name}
         placeholder="예) 홍길동"
       />
 
-      {isEmailEmpty && (
+      {email && domain && (
         <TermsAgreement
           checkedItems={agreementTerm}
           onCheck={handleTermCheck}
         />
       )}
 
-      <div className="border border-stroke p-5 mt-4">
-        <Button onClick={handleSubmit}>입력완료</Button>
+      <div className="p-5 mt-4">
+        <Button
+          onClick={handleSubmit}
+          disabled={!isFormValid}
+          variant={!isFormValid ? 'disabled' : 'primary'}
+        >
+          입력완료
+        </Button>
       </div>
     </div>
   );
