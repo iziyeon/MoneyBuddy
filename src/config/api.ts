@@ -9,3 +9,10 @@ export const API_ENDPOINTS = {
   categories: '/api/v1/categories',
   bookmarks: '/api/v1/bookmarks',
 };
+
+// MSW 디버깅용 상수
+export const MSW_DEBUG = {
+  enabled: true,
+  logRequests: true,
+  logResponses: true,
+};

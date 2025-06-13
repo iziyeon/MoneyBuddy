@@ -18,12 +18,22 @@ export default function GlobalHeader() {
     '/experts-list',
   ].map(path => path.toLowerCase());
 
+  const isExpertsDetailPage = location.pathname
+    .toLowerCase()
+    .startsWith('/experts/');
+
+  if (
+    hideHeaderRoutes.includes(location.pathname.toLowerCase()) ||
+    isExpertsDetailPage
+  ) {
+    return null;
+  }
+
   const handleLogout = () => {
     clearAuth();
     navigate('/');
   };
 
-  // 현재 경로가 hideHeaderRoutes에 포함되어 있는지 확인 (대소문자 구분 없이)
   if (hideHeaderRoutes.includes(location.pathname.toLowerCase())) {
     return null;
   }
@@ -31,7 +41,11 @@ export default function GlobalHeader() {
   return (
     <header className="flex justify-between items-center px-4 py-3">
       <div onClick={() => navigate('/')} className="cursor-pointer font-bold">
-        MyProject
+        <img
+          src="/jpg/logo_small.png" // public 폴더에서 이미지 가져오기
+          alt="MoneyBuddy"
+          className="w-[120px] h-[60px]"
+        />
       </div>
 
       <div>

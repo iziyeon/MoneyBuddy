@@ -9,7 +9,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5분
-      retry: 1,
+      retry: 0, // 재시도 횟수 줄임
     },
   },
 });
@@ -17,12 +17,17 @@ const queryClient = new QueryClient({
 if (import.meta.env.MODE === 'development') {
   const { worker } = await import('./mocks/browser');
   console.log('🚀 MSW 워커 시작 중...');
+
+  // 비엄격 모드로 MSW 시작
   worker
     .start({
-      onUnhandledRequest: 'warn',
+      onUnhandledRequest: 'bypass', // 오류 방지를 위해 'warn' 대신 'bypass' 사용
     })
     .then(() => {
       console.log('✅ MSW 워커가 성공적으로 시작되었습니다.');
+    })
+    .catch(error => {
+      console.error('❌ MSW 워커 시작 실패:', error);
     });
 }
 
