@@ -129,19 +129,20 @@ export const advisorHandlers = [
   }),
 
   // 북마크 토글
-  http.post(`/api/v1/bookmarks/:advisorId`, ({ params }) => {
+  http.post('/api/v1/bookmarks/:advisorId', ({ params }) => {
+    console.log('북마크 핸들러 호출됨:', params);
     const advisorId = Number(params.advisorId);
     const expert = expertData.find(e => e.id === advisorId);
 
     if (!expert) {
+      console.log('전문가를 찾을 수 없음:', advisorId);
       return HttpResponse.json(
         { message: '전문가를 찾을 수 없습니다.' },
         { status: 404 },
       );
     }
 
-    // 실제로는 사용자별 북마크 상태를 관리해야 하지만,
-    // Mock에서는 단순히 성공 응답 반환
+    console.log('북마크 토글 성공:', expert.nickname);
     return HttpResponse.json({ bookmarked: true });
   }),
 

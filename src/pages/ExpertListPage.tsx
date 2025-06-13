@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import PageWrapper from '../components/layout/PageWrapper';
 import PageHeader from '../components/layout/PageHeader';
 import ExpertCard from '../components/pages/ExpertList/ExpertCard';
 import Text from '../components/common/Text';
-import LoadingSpinner from '../components/common/LoadingSpinner';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { expertData } from '../data/expertData';
 import { EXPERT_FIELDS, SORT_OPTIONS, PAGINATION } from '../config/constants';
@@ -13,6 +13,7 @@ import type { Expert, ExpertField, SortType } from '../types/expert';
 import type { InfiniteQueryData } from '../types/common';
 
 export default function ExpertListPage() {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState<ExpertField>('소비');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
@@ -111,9 +112,9 @@ export default function ExpertListPage() {
       >
         <div className="sticky top-0 bg-white z-20">
           <PageHeader
-            title="머니버디 엑스퍼트"
-            showSearchButton
-            onSearchClick={handleSearch}
+            title="전문가 찾기"
+            showBackButton={true}
+            onBackClick={() => navigate('/search')}
           />
 
           <div className="flex border-b">
@@ -201,7 +202,7 @@ export default function ExpertListPage() {
           <div className="px-5 pb-[10px]">
             {isLoading ? (
               <div className="flex justify-center py-8">
-                <LoadingSpinner size="lg" />
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
               </div>
             ) : (
               <>
@@ -215,7 +216,7 @@ export default function ExpertListPage() {
 
                 {isFetchingNextPage && (
                   <div className="flex justify-center py-4">
-                    <LoadingSpinner />
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                   </div>
                 )}
 

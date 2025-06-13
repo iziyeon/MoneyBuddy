@@ -1,8 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import type {
-  FindIdRequest,
-  FindIdResponse,
-} from '../../../types/api/auth/findId';
+import type { FindIdRequest, FindIdResponse } from '../../../types/auth';
 
 const MOCK_USER_DATA = {
   name: '홍길동',

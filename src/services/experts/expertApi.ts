@@ -67,7 +67,7 @@ export const getExperts = async (
 };
 
 export const getExpertById = async (id: number): Promise<Expert> => {
-  const response = await axiosInstance.get(API_ENDPOINTS.advisor(id));
+  const response = await axiosInstance.get(`${API_ENDPOINTS.advisors}/${id}`);
   return response.data;
 };
 
@@ -79,7 +79,9 @@ export const getCategories = async (): Promise<CategoryResponse[]> => {
 export const toggleBookmark = async (
   advisorId: number,
 ): Promise<{ bookmarked: boolean }> => {
-  const response = await axiosInstance.post(API_ENDPOINTS.bookmark(advisorId));
+  const response = await axiosInstance.post(
+    `${API_ENDPOINTS.bookmarks}/${advisorId}`,
+  );
   return response.data;
 };
 
