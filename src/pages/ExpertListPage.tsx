@@ -108,11 +108,15 @@ export default function ExpertListPage() {
     <PageWrapper>
       <div
         ref={containerRef}
-        className="h-[844px] overflow-y-scroll hide-scrollbar select-none"
+        className="h-[844px] overflow-y-scroll select-none"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
       >
         <div className="sticky top-0 bg-white z-20">
           <PageHeader
-            title="전문가 찾기"
+            title="머니버디 엑스퍼트"
             showBackButton={true}
             onBackClick={() => navigate('/search')}
           />
