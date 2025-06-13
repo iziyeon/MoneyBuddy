@@ -1,7 +1,6 @@
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Text from '../common/Text';
-import { ChevronLeft } from 'lucide-react';
 import Button from '../common/Button';
 
 interface PageHeaderProps {
@@ -9,7 +8,6 @@ interface PageHeaderProps {
   showBackButton?: boolean;
   isLoginPage?: boolean;
   onBackClick?: () => void;
-  isLoginPage?: boolean;
   rightButtonLabel?: string;
   onRightLabelClick?: () => void;
 }
@@ -18,6 +16,7 @@ export default function PageHeader({
   title,
   showBackButton = false,
   isLoginPage = false,
+  onBackClick,
   rightButtonLabel,
   onRightLabelClick,
 }: PageHeaderProps) {

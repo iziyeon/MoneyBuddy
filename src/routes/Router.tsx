@@ -22,9 +22,11 @@ export default function Router() {
       <Route
         path="/"
         element={
-          <DefaultLayout>
-            <Homepage />
-          </DefaultLayout>
+          <PrivateRoute>
+            <DefaultLayout>
+              <Homepage />
+            </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
