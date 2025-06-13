@@ -5,4 +5,7 @@ export const API_ENDPOINTS = {
   signup: '/api/v1/users/signup',
   findId: '/api/v1/users/find-id', // 이 경로가 mock handler의 경로와 일치하는지 확인
   getMonthlyExperts: '/api/v1/experts/monthly',
+  advisors: '/api/v1/advisors',
+  categories: '/api/v1/categories',
+  bookmarks: '/api/v1/bookmarks',
 };

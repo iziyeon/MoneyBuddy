@@ -3,7 +3,7 @@ import type {
   RequestResetPasswordRequest,
   VerifyResetCodeRequest,
   ResetPasswordRequest,
-} from '../../../types/api/auth/resetPassword';
+} from '../../../types/auth';
 
 const MOCK_USER = {
   email: 'test@example.com',

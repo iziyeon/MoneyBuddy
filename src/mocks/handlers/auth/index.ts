@@ -1,9 +1,10 @@
-import { loginHandlers } from './loginHandlers';
 import { findIdHandlers } from './findIdHandlers';
-import { signupHandlers } from './signupHandlers';
+import { loginHandlers } from './loginHandlers';
+import { resetPasswordHandlers } from './resetPasswordHandlers';
 
+// 모든 auth 핸들러를 하나로 통합
 export const authHandlers = [
-  ...loginHandlers,
   ...findIdHandlers,
-  ...signupHandlers,
+  ...loginHandlers,
+  ...resetPasswordHandlers,
 ];

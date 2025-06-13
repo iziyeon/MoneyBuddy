@@ -5,12 +5,9 @@ import Input from '../../common/Input';
 import Button from '../../common/Button';
 import Text from '../../common/Text';
 import { findIdApi } from '../../../services/auth/findIdApi';
-import { formatPhoneNumber } from '../../../utils/Regex';
+import { formatPhoneNumber } from '../../../utils/formatters';
 import { authStyles } from '../../../styles/auth.styles';
-import type {
-  FindIdRequest,
-  FindIdResponse,
-} from '../../../types/api/auth/findId';
+import type { FindIdRequest, FindIdResponse } from '../../../types/auth';
 
 interface FindIdFormProps {
   onSwitchTab?: () => void;

@@ -12,6 +12,9 @@ import PrivateRoute from './PrivateRoute';
 import DefaultLayout from '../components/layout/DefaultLayout';
 import PublicLayout from '../components/layout/PublicLayout';
 import ExpertPage from '../pages/ExpertPage';
+import ExpertListPage from '../pages/ExpertListPage';
+import ExpertDetailPage from '../pages/ExpertDetailPage';
+import SearchPage from '../pages/SearchPage';
 
 export default function Router() {
   return (
@@ -83,6 +86,30 @@ export default function Router() {
               <SettingsPage />
             </DefaultLayout>
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="/experts-list"
+        element={
+          <DefaultLayout>
+            <ExpertListPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/experts/:id"
+        element={
+          <DefaultLayout>
+            <ExpertDetailPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/search"
+        element={
+          <DefaultLayout>
+            <SearchPage />
+          </DefaultLayout>
         }
       />
     </Routes>

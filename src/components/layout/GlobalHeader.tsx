@@ -15,6 +15,7 @@ export default function GlobalHeader() {
     '/find-id',
     '/reset-password-verify',
     '/reset-password',
+    '/experts-list',
   ].map(path => path.toLowerCase());
 
   const handleLogout = () => {

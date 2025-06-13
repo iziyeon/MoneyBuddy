@@ -2,9 +2,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../common/Input';
 import { loginApi } from '../../../services/auth/loginApi';
-import { EMAIL_REGEX } from '../../../utils/Regex';
+import { EMAIL_REGEX } from '../../../utils';
 import { useAuthStore } from '../../../stores/useAuthStore';
-import type { LoginRequest } from '../../../types/api/auth/login';
+import type { LoginRequest } from '../../../types/auth';
 import Button from '../../common/Button';
 import { loginStyles } from '../../../styles/login.styles';
 

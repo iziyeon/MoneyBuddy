@@ -1,12 +1,24 @@
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from './routes/Router';
 import GlobalHeader from './components/layout/GlobalHeader';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+    },
+  },
+});
+
 export default function App() {
   return (
-    <BrowserRouter>
-      <GlobalHeader />
-      <Router />
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <GlobalHeader />
+        <Router />
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
