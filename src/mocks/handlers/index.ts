@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { advisorHandlers } from './advisor/advisorHandlers';
 import { authHandlers } from './auth';
 import { expertData } from '../../data/expertData';
+import { experthandlers } from './expert/expertHandlers';
 
 // 북마크 핸들러를 별도로 먼저 정의
 const bookmarkHandler = http.post(
@@ -68,4 +69,5 @@ export const handlers = [
 
   // Advisor handlers
   ...advisorHandlers,
+  ...experthandlers,
 ];

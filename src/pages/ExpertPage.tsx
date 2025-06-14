@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import BottomNavigation from '../components/layout/BottomNavigation';
 import PageHeader from '../components/layout/PageHeader';
 import PageWrapper from '../components/layout/PageWrapper';
 import CategoryNav from '../components/pages/Expert/CategoryNav';
@@ -17,7 +16,6 @@ export default function ExpertPage() {
       />
       <CategoryNav />
       <MonthlyExpertList />
-      <BottomNavigation />
     </PageWrapper>
   );
 }
