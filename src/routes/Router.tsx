@@ -67,7 +67,14 @@ export default function Router() {
           </PublicLayout>
         }
       />
-      <Route path="/expert" element={<ExpertPage />} />
+      <Route
+        path="/expert"
+        element={
+          <DefaultLayout>
+            <ExpertPage />
+          </DefaultLayout>
+        }
+      />
       <Route
         path="/mypage"
         element={
