@@ -1,11 +1,9 @@
 // C:\project\FE\src\components\pages\ExpertDetail\components\tabs\review\ReviewSummary.tsx
-
-import React from 'react';
 import { Star } from 'lucide-react';
 
 export default function ReviewSummary() {
   return (
-    <div className="bg-gray-100 rounded-lg p-4 flex justify-between items-center mb-3">
+    <div className="bg-gray-100 rounded-lg p-4 flex justify-between items-center mb-3 gap-8">
       <div className="text-center">
         <div className="font-semibold text-2xl">4.0</div>
         <div className="flex">
@@ -19,7 +17,7 @@ export default function ReviewSummary() {
           <Star size={16} className="text-gray-300" />
         </div>
       </div>
-      <div className="h-[108px] w-[0.5px] bg-gray-200"></div>
+      <div className="h-[108px] w-[0.5px] bg-gray-200 "></div>
       <div className="flex-1 space-y-2">
         {[5, 4, 3, 2, 1].map(rating => (
           <div key={rating} className="flex items-center text-xs">
