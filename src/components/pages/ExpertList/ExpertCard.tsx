@@ -31,12 +31,10 @@ export default function ExpertCard({
     e.stopPropagation();
 
     try {
-      // 낙관적 업데이트
       setLocalBookmarkState(!localBookmarkState);
 
       await toggleBookmarkMutation.mutateAsync(expert.id);
     } catch (error) {
-      // 실패 시 원래 상태로 되돌림
       setLocalBookmarkState(localBookmarkState);
       console.error('북마크 토글 실패:', error);
     }

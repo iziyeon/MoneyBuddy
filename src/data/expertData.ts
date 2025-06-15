@@ -1,15 +1,12 @@
-// HASHTAGS 타입 정의
 type ExpertField = '소비' | '지역' | '투자' | '부채' | '기타';
 type HashtagMap = Record<ExpertField | '부동산', readonly string[]>;
 
-// 프로필 이미지 배열 생성
 const profileImages = [
   '/jpg/experts/expert1.png',
   '/jpg/experts/expert2.png',
   '/jpg/experts/expert3.png',
 ];
 
-// 각 분야별 해시태그 정의
 const HASHTAGS: HashtagMap = {
   소비: ['가계부작성', '소비분석', '재무설계'],
   투자: ['부동산', '해외주식', '국내주식', '코인'],
@@ -38,7 +35,6 @@ export type Expert = {
 };
 
 export const expertData: Expert[] = [
-  // 소비 분야 전문가들
   {
     id: 1,
     nickname: '김소비',
@@ -50,11 +46,11 @@ export const expertData: Expert[] = [
     consultation_count: 128,
     review_count: 98,
     bookmarks: 45,
-    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    profile_image: profileImages[0],
     description: '체계적인 소비 습관 개선을 도와드립니다',
-    bio: '소비 분석가', // 6자
+    bio: '소비 분석가',
     is_online: true,
-    hashtags: ['가계부작성'], // 한 개만 선택
+    hashtags: ['가계부작성'],
   },
   {
     id: 2,
@@ -67,11 +63,11 @@ export const expertData: Expert[] = [
     consultation_count: 45,
     review_count: 20,
     bookmarks: 12,
-    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    profile_image: profileImages[1],
     description: '친절한 머니 엑스퍼트',
-    bio: '재무 상담가', // 6자
+    bio: '재무 상담가',
     is_online: true,
-    hashtags: ['근로장려금'], // 한 개만 선택
+    hashtags: ['근로장려금'],
   },
   {
     id: 3,
@@ -84,11 +80,11 @@ export const expertData: Expert[] = [
     consultation_count: 120,
     review_count: 98,
     bookmarks: 45,
-    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    profile_image: profileImages[2],
     description: '재무설계 전문가',
-    bio: '재무 설계사', // 6자
+    bio: '재무 설계사',
     is_online: false,
-    hashtags: ['소비분석', '재무설계'], // 두 개 선택
+    hashtags: ['소비분석', '재무설계'],
   },
   {
     id: 4,
@@ -101,11 +97,11 @@ export const expertData: Expert[] = [
     consultation_count: 60,
     review_count: 45,
     bookmarks: 25,
-    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    profile_image: profileImages[0],
     description: '가계부 관리 전문가',
-    bio: '가계부 관리사', // 7자
+    bio: '가계부 관리사',
     is_online: false,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
   {
     id: 5,
@@ -118,11 +114,11 @@ export const expertData: Expert[] = [
     consultation_count: 198,
     review_count: 156,
     bookmarks: 67,
-    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    profile_image: profileImages[1],
     description: '현직 은행원 재무설계사',
-    bio: '재무 설계 전문가', // 9자
+    bio: '재무 설계 전문가',
     is_online: true,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
   {
     id: 6,
@@ -135,11 +131,11 @@ export const expertData: Expert[] = [
     consultation_count: 150,
     review_count: 110,
     bookmarks: 50,
-    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    profile_image: profileImages[2],
     description: '소비 심리 전문가',
-    bio: '소비 심리 분석가', // 8자
+    bio: '소비 심리 분석가',
     is_online: true,
-    hashtags: ['가계부작성', '소비분석'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '소비분석'],
   },
   {
     id: 7,
@@ -152,11 +148,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 130,
     bookmarks: 70,
-    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    profile_image: profileImages[0],
     description: '스마트 소비 코치',
-    bio: '스마트한 소비 코치', // 8자
+    bio: '스마트한 소비 코치',
     is_online: true,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
   {
     id: 8,
@@ -169,11 +165,11 @@ export const expertData: Expert[] = [
     consultation_count: 90,
     review_count: 60,
     bookmarks: 30,
-    profile_image: profileImages[1], // 3개 이미지 중 두번째
+    profile_image: profileImages[1],
     description: '가계부 및 재무 상담 전문가',
-    bio: '가계부 및 재무 상담가', // 8자
+    bio: '가계부 및 재무 상담가',
     is_online: true,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
   {
     id: 9,
@@ -186,11 +182,11 @@ export const expertData: Expert[] = [
     consultation_count: 180,
     review_count: 140,
     bookmarks: 80,
-    profile_image: profileImages[2], // 3개 이미지 중 세번째
+    profile_image: profileImages[2],
     description: '소비 패턴 분석 및 개선 전문가',
-    bio: '소비 패턴 분석가', // 8자
+    bio: '소비 패턴 분석가',
     is_online: true,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
   {
     id: 10,
@@ -203,13 +199,12 @@ export const expertData: Expert[] = [
     consultation_count: 160,
     review_count: 120,
     bookmarks: 75,
-    profile_image: profileImages[0], // 3개 이미지 중 첫번째
+    profile_image: profileImages[0],
     description: '효율적인 소비 전략 제안 전문가',
-    bio: '소비 전략 제안가', // 8자
+    bio: '소비 전략 제안가',
     is_online: true,
-    hashtags: ['가계부작성', '재무설계'], // 개별 해시태그 설정
+    hashtags: ['가계부작성', '재무설계'],
   },
-  // 지역 분야 전문가들 (10명)
   {
     id: 11,
     nickname: '이부동산',
@@ -223,9 +218,9 @@ export const expertData: Expert[] = [
     bookmarks: 89,
     profile_image: profileImages[1],
     description: '부동산 투자 전문가입니다',
-    bio: '부동산 투자가', // 7자
+    bio: '부동산 투자가',
     is_online: false,
-    hashtags: ['부동산'], // 한 개만 선택
+    hashtags: ['부동산'],
   },
   {
     id: 12,
@@ -240,9 +235,9 @@ export const expertData: Expert[] = [
     bookmarks: 100,
     profile_image: profileImages[2],
     description: '전문적인 부동산 투자 및 관리',
-    bio: '부동산 관리사', // 7자
+    bio: '부동산 관리사',
     is_online: true,
-    hashtags: ['주택시장', '상권분석'], // 두 개 선택
+    hashtags: ['주택시장', '상권분석'],
   },
   {
     id: 13,
@@ -257,9 +252,9 @@ export const expertData: Expert[] = [
     bookmarks: 55,
     profile_image: profileImages[0],
     description: '부동산 중개 및 투자 컨설팅',
-    bio: '부동산 중개 및 투자', // 8자
+    bio: '부동산 중개 및 투자',
     is_online: true,
-    hashtags: ['부동산', '주택시장'], // 2개로 제한
+    hashtags: ['부동산', '주택시장'],
   },
   {
     id: 14,
@@ -274,9 +269,9 @@ export const expertData: Expert[] = [
     bookmarks: 70,
     profile_image: profileImages[1],
     description: '신뢰할 수 있는 부동산 파트너',
-    bio: '신뢰할 수 있는 파트너', // 8자
+    bio: '신뢰할 수 있는 파트너',
     is_online: true,
-    hashtags: ['부동산'], // 1개로 제한
+    hashtags: ['부동산'],
   },
   {
     id: 15,
@@ -291,9 +286,9 @@ export const expertData: Expert[] = [
     bookmarks: 45,
     profile_image: profileImages[2],
     description: '부동산 투자 및 자산 관리 전문가',
-    bio: '부동산 투자 및 자산 관리', // 8자
+    bio: '부동산 투자 및 자산 관리',
     is_online: true,
-    hashtags: ['상권분석'], // 1개로 제한
+    hashtags: ['상권분석'],
   },
   {
     id: 16,
@@ -308,9 +303,9 @@ export const expertData: Expert[] = [
     bookmarks: 80,
     profile_image: profileImages[0],
     description: '전문가의 부동산 투자 전략',
-    bio: '부동산 투자 전략', // 8자
+    bio: '부동산 투자 전략',
     is_online: true,
-    hashtags: ['부동산', '주택시장'], // 2개로 제한
+    hashtags: ['부동산', '주택시장'],
   },
   {
     id: 17,
@@ -325,9 +320,9 @@ export const expertData: Expert[] = [
     bookmarks: 75,
     profile_image: profileImages[1],
     description: '부동산 시장 분석 및 투자 상담',
-    bio: '부동산 시장 분석가', // 8자
+    bio: '부동산 시장 분석가',
     is_online: true,
-    hashtags: ['주택시장', '상권분석'], // 2개로 제한
+    hashtags: ['주택시장', '상권분석'],
   },
   {
     id: 18,
@@ -342,9 +337,9 @@ export const expertData: Expert[] = [
     bookmarks: 100,
     profile_image: profileImages[2],
     description: '부동산 개발 및 투자 전문가',
-    bio: '부동산 개발 및 투자', // 8자
+    bio: '부동산 개발 및 투자',
     is_online: true,
-    hashtags: ['부동산', '상권분석'], // 2개로 제한
+    hashtags: ['부동산', '상권분석'],
   },
   {
     id: 19,
@@ -359,9 +354,9 @@ export const expertData: Expert[] = [
     bookmarks: 90,
     profile_image: profileImages[0],
     description: '프리미엄 부동산 투자 컨설턴트',
-    bio: '프리미엄 부동산 투자', // 8자
+    bio: '프리미엄 부동산 투자',
     is_online: true,
-    hashtags: ['부동산', '주택시장'], // 2개로 제한
+    hashtags: ['부동산', '주택시장'],
   },
   {
     id: 20,
@@ -376,11 +371,10 @@ export const expertData: Expert[] = [
     bookmarks: 70,
     profile_image: profileImages[1],
     description: '신뢰할 수 있는 부동산 투자 고수',
-    bio: '신뢰할 수 있는 투자 고수', // 8자
+    bio: '신뢰할 수 있는 투자 고수',
     is_online: true,
-    hashtags: ['주택시장', '상권분석'], // 2개로 제한
+    hashtags: ['주택시장', '상권분석'],
   },
-  // 투자 분야 전문가들 (10명)
   {
     id: 21,
     nickname: '김투자',
@@ -392,11 +386,11 @@ export const expertData: Expert[] = [
     consultation_count: 245,
     review_count: 178,
     bookmarks: 89,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '주식투자 15년차 전문가',
-    bio: '주식 투자 전문', // 8자
+    bio: '주식 투자 전문',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 22,
@@ -409,11 +403,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 184,
     bookmarks: 75,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '주식투자 전문가',
-    bio: '투자 전략가', // 6자
+    bio: '투자 전략가',
     is_online: true,
-    hashtags: ['코인'], // 한 개만 선택
+    hashtags: ['코인'],
   },
   {
     id: 23,
@@ -426,11 +420,11 @@ export const expertData: Expert[] = [
     consultation_count: 180,
     review_count: 215,
     bookmarks: 60,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '20년차 투자전문가',
     bio: '20년차 투자 엑스퍼트',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 24,
@@ -443,11 +437,11 @@ export const expertData: Expert[] = [
     consultation_count: 150,
     review_count: 134,
     bookmarks: 55,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '스마트한 투자 전략 제안',
-    bio: '스마트한 투자 전략', // 8자
+    bio: '스마트한 투자 전략',
     is_online: true,
-    hashtags: ['국내주식', '코인'], // 2개로 제한
+    hashtags: ['국내주식', '코인'],
   },
   {
     id: 25,
@@ -460,11 +454,11 @@ export const expertData: Expert[] = [
     consultation_count: 120,
     review_count: 98,
     bookmarks: 45,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '안정적인 수익을 추구하는 투자 전문가',
-    bio: '안정적인 수익 투자', // 8자
+    bio: '안정적인 수익 투자',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 26,
@@ -477,11 +471,11 @@ export const expertData: Expert[] = [
     consultation_count: 300,
     review_count: 200,
     bookmarks: 100,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '부동산 및 주식 투자 전문가',
-    bio: '부동산 및 주식 투자', // 8자
+    bio: '부동산 및 주식 투자',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 27,
@@ -494,11 +488,11 @@ export const expertData: Expert[] = [
     consultation_count: 250,
     review_count: 156,
     bookmarks: 89,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '투자 포트폴리오 전문가',
     bio: '투자 포트폴리오 엑스퍼트',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 28,
@@ -511,11 +505,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 120,
     bookmarks: 70,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '위험 관리 및 수익 극대화 전문가',
-    bio: '위험 관리 및 수익 극대화', // 12자
+    bio: '위험 관리 및 수익 극대화',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 29,
@@ -528,11 +522,11 @@ export const expertData: Expert[] = [
     consultation_count: 180,
     review_count: 130,
     bookmarks: 75,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '단기 및 장기 투자 전략 전문가',
-    bio: '단기 및 장기 투자 전략', // 12자
+    bio: '단기 및 장기 투자 전략',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
   {
     id: 30,
@@ -545,13 +539,12 @@ export const expertData: Expert[] = [
     consultation_count: 220,
     review_count: 140,
     bookmarks: 80,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '글로벌 투자 및 자산 배분 전문가',
-    bio: '글로벌 투자 및 자산 배분', // 12자
+    bio: '글로벌 투자 및 자산 배분',
     is_online: true,
-    hashtags: ['해외주식', '국내주식'], // 2개로 제한
+    hashtags: ['해외주식', '국내주식'],
   },
-  // 부채 분야 전문가들 (10명)
   {
     id: 31,
     nickname: '김채무',
@@ -563,11 +556,11 @@ export const expertData: Expert[] = [
     consultation_count: 90,
     review_count: 67,
     bookmarks: 30,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '체계적인 부채 관리와 맞춤형 상환 계획을 제시합니다',
     bio: '부채 관리사',
     is_online: true,
-    hashtags: ['빚투', '전세대출'], // 두 개 선택
+    hashtags: ['빚투', '전세대출'],
   },
   {
     id: 32,
@@ -580,11 +573,11 @@ export const expertData: Expert[] = [
     consultation_count: 110,
     review_count: 89,
     bookmarks: 40,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '개인 맞춤형 채무조정 방안을 제시하는 전문가입니다',
     bio: '채무 조정가',
     is_online: false,
-    hashtags: ['담보대출'], // 한 개만 선택
+    hashtags: ['담보대출'],
   },
   {
     id: 33,
@@ -597,11 +590,11 @@ export const expertData: Expert[] = [
     consultation_count: 145,
     review_count: 89,
     bookmarks: 34,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '신용회복과 채무조정을 통한 재기를 도와드립니다',
     bio: '신용 상담사',
     is_online: true,
-    hashtags: ['빚투'], // 1개로 제한
+    hashtags: ['빚투'],
   },
   {
     id: 34,
@@ -614,11 +607,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 150,
     bookmarks: 80,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '부채 문제 해결을 위한 종합 재무 상담을 제공합니다',
     bio: '재무 상담사',
     is_online: true,
-    hashtags: ['빚투', '담보대출'], // 2개로 제한
+    hashtags: ['빚투', '담보대출'],
   },
   {
     id: 35,
@@ -631,11 +624,11 @@ export const expertData: Expert[] = [
     consultation_count: 180,
     review_count: 120,
     bookmarks: 70,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '합리적인 부채 해결 방안과 재무 설계를 제안합니다',
     bio: '부채 해결사',
     is_online: true,
-    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+    hashtags: ['전세대출', '학자금대출'],
   },
   {
     id: 36,
@@ -648,11 +641,11 @@ export const expertData: Expert[] = [
     consultation_count: 250,
     review_count: 160,
     bookmarks: 90,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '전문적인 채무 상담과 효율적인 부채 관리 방안을 제시합니다',
     bio: '채무 상담가',
     is_online: true,
-    hashtags: ['담보대출', '빚투'], // 2개로 제한
+    hashtags: ['담보대출', '빚투'],
   },
   {
     id: 37,
@@ -665,11 +658,11 @@ export const expertData: Expert[] = [
     consultation_count: 220,
     review_count: 140,
     bookmarks: 85,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '신용회복과 재무상태 개선을 위한 전문 상담을 제공합니다',
     bio: '신용 전문가',
     is_online: true,
-    hashtags: ['빚투', '전세대출'], // 2개로 제한
+    hashtags: ['빚투', '전세대출'],
   },
   {
     id: 38,
@@ -682,11 +675,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 130,
     bookmarks: 75,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '개인 맞춤형 부채 해결 방안과 재무 구조 개선을 제안합니다',
     bio: '부채 컨설턴트',
     is_online: true,
-    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+    hashtags: ['전세대출', '학자금대출'],
   },
   {
     id: 39,
@@ -699,11 +692,11 @@ export const expertData: Expert[] = [
     consultation_count: 150,
     review_count: 100,
     bookmarks: 60,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '개인과 기업의 부채 문제 해결을 위한 전문 상담을 제공합니다',
     bio: '부채 전문가',
     is_online: true,
-    hashtags: ['빚투', '전세대출'], // 2개로 제한
+    hashtags: ['빚투', '전세대출'],
   },
   {
     id: 40,
@@ -716,13 +709,12 @@ export const expertData: Expert[] = [
     consultation_count: 280,
     review_count: 180,
     bookmarks: 95,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '전문적인 재무 상담으로 건강한 금융 생활을 도와드립니다',
     bio: '재무 전문가',
     is_online: true,
-    hashtags: ['전세대출', '학자금대출'], // 2개로 제한
+    hashtags: ['전세대출', '학자금대출'],
   },
-  // 기타 분야 전문가들 (10명)
   {
     id: 41,
     nickname: '이재무',
@@ -734,11 +726,11 @@ export const expertData: Expert[] = [
     consultation_count: 180,
     review_count: 156,
     bookmarks: 85,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '종합 재무설계 전문가',
-    bio: '종합 재무 설계', // 8자
+    bio: '종합 재무 설계',
     is_online: true,
-    hashtags: ['근로장려금'], // 한 개만 선택
+    hashtags: ['근로장려금'],
   },
   {
     id: 42,
@@ -751,11 +743,11 @@ export const expertData: Expert[] = [
     consultation_count: 212,
     review_count: 167,
     bookmarks: 91,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '세무사 & 절세 전문가',
-    bio: '세무 전문가', // 6자
+    bio: '세무 전문가',
     is_online: true,
-    hashtags: ['청년지원사업', '연말정산'], // 두 개 선택
+    hashtags: ['청년지원사업', '연말정산'],
   },
   {
     id: 43,
@@ -768,11 +760,11 @@ export const expertData: Expert[] = [
     consultation_count: 150,
     review_count: 134,
     bookmarks: 78,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '세무 및 회계 전문가',
     bio: '세무 및 회계 엑스퍼트',
     is_online: true,
-    hashtags: ['근로장려금', '연말정산'], // 2개로 제한
+    hashtags: ['근로장려금', '연말정산'],
   },
   {
     id: 44,
@@ -785,11 +777,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 120,
     bookmarks: 75,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '전문 세무 상담 및 절세 전략',
-    bio: '세무 상담 및 절세 전략', // 12자
+    bio: '세무 상담 및 절세 전략',
     is_online: true,
-    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+    hashtags: ['청년지원사업', '실업급여'],
   },
   {
     id: 45,
@@ -802,11 +794,11 @@ export const expertData: Expert[] = [
     consultation_count: 250,
     review_count: 180,
     bookmarks: 90,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '세무 및 재무 상담의 권위자',
     bio: '세무 및 재무 상담 엑스퍼트',
     is_online: true,
-    hashtags: ['연말정산', '근로장려금'], // 2개로 제한
+    hashtags: ['연말정산', '근로장려금'],
   },
   {
     id: 46,
@@ -819,11 +811,11 @@ export const expertData: Expert[] = [
     consultation_count: 220,
     review_count: 140,
     bookmarks: 85,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '글로벌 세무 및 재무 전문가',
     bio: '글로벌 세무 및 재무 엑스퍼트',
     is_online: true,
-    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+    hashtags: ['청년지원사업', '실업급여'],
   },
   {
     id: 47,
@@ -836,11 +828,11 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 130,
     bookmarks: 75,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '전문가의 세무 및 회계 서비스',
     bio: '세무 및 회계 서비스 엑스퍼트',
     is_online: true,
-    hashtags: ['연말정산', '근로장려금'], // 2개로 제한
+    hashtags: ['연말정산', '근로장려금'],
   },
   {
     id: 48,
@@ -853,11 +845,11 @@ export const expertData: Expert[] = [
     consultation_count: 300,
     review_count: 200,
     bookmarks: 100,
-    profile_image: profileImages[2], // 수정
+    profile_image: profileImages[2],
     description: '세무 및 재무 컨설팅 전문가',
-    bio: '세무 및 재무 컨설팅', // 12자
+    bio: '세무 및 재무 컨설팅',
     is_online: true,
-    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+    hashtags: ['청년지원사업', '실업급여'],
   },
   {
     id: 49,
@@ -870,11 +862,11 @@ export const expertData: Expert[] = [
     consultation_count: 250,
     review_count: 160,
     bookmarks: 90,
-    profile_image: profileImages[0], // 수정
+    profile_image: profileImages[0],
     description: '전문 세무 및 재무 상담가',
-    bio: '세무 및 재무 상담가', // 8자
+    bio: '세무 및 재무 상담가',
     is_online: true,
-    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+    hashtags: ['청년지원사업', '실업급여'],
   },
   {
     id: 50,
@@ -887,17 +879,16 @@ export const expertData: Expert[] = [
     consultation_count: 200,
     review_count: 130,
     bookmarks: 75,
-    profile_image: profileImages[1], // 수정
+    profile_image: profileImages[1],
     description: '세무 및 회계 전문가',
     bio: '세무 및 회계 엑스퍼트',
     is_online: true,
-    hashtags: ['청년지원사업', '실업급여'], // 2개로 제한
+    hashtags: ['청년지원사업', '실업급여'],
   },
 ];
 
 export const EXPERT_FIELDS = ['소비', '지역', '투자', '부채', '기타'] as const;
 
-// 카테고리 데이터 수정
 export const categories = [
   { id: 1, name: '소비' as const, hashtags: [...HASHTAGS.소비] },
   { id: 2, name: '지역' as const, hashtags: [...HASHTAGS.지역] },

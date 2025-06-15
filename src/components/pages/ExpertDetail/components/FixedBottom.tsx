@@ -24,7 +24,7 @@ export default function FixedBottom({
             localBookmarkState ? 'fill-red-500 text-red-500' : 'text-gray-500'
           }
         />
-        <span className="text-xs text-gray-500 mt-1">북마크</span>
+        <span className="text-xs text-gray-500 mt-1"></span>
       </button>
       <button className="flex-1 ml-4 bg-primary text-white py-3 rounded font-medium">
         지금 상담하기

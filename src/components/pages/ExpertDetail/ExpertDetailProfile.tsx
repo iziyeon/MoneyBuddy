@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import type { Expert } from '../../../types/expert';
-import { useToggleBookmark } from '../../../hooks/useBookmarks';
-import { COMMA_NUMBER_FORMAT } from '../../../utils';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileTabs from './components/ProfileTabs';
 import ExpertInfo from './components/ExpertInfo';
@@ -13,7 +11,6 @@ import ExpertCareer from './components/ExpertCareer';
 import LectureTab from './components/tabs/LectureTab';
 import MagazineTab from './components/tabs/MagazineTab';
 import ReviewTab from './components/tabs/ReviewTab';
-import FixedBottom from './components/FixedBottom';
 
 interface ExpertDetailProfileProps {
   expert: Expert & {
@@ -31,20 +28,7 @@ export default function ExpertDetailProfile({
   expert,
   isBookmarked = false,
 }: ExpertDetailProfileProps) {
-  const [localBookmarkState, setLocalBookmarkState] = useState(isBookmarked);
   const [activeTab, setActiveTab] = useState('전문가');
-  const toggleBookmarkMutation = useToggleBookmark();
-
-  const handleLikeClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      setLocalBookmarkState(!localBookmarkState);
-      await toggleBookmarkMutation.mutateAsync(expert.id);
-    } catch (error) {
-      setLocalBookmarkState(localBookmarkState);
-      console.error('좋아요 토글 실패:', error);
-    }
-  };
 
   return (
     <div className="relative w-full pb-20">
@@ -63,11 +47,6 @@ export default function ExpertDetailProfile({
       {activeTab === '강의' && <LectureTab />}
       {activeTab === '매거진' && <MagazineTab />}
       {activeTab === '후기' && <ReviewTab />}
-
-      <FixedBottom
-        localBookmarkState={localBookmarkState}
-        handleLikeClick={handleLikeClick}
-      />
     </div>
   );
 }
