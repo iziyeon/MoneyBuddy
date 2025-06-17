@@ -1,6 +1,6 @@
 import { setupWorker } from 'msw/browser';
-import { handlers } from './handlers';
-import { advisorHandlers } from './handlers/advisor/advisorHandlers';
+import { handlers } from './index';
 
-// 모든 핸들러를 명시적으로 등록
-export const worker = setupWorker(...handlers, ...advisorHandlers);
+console.log('🔧 MSW 핸들러 개수:', handlers.length);
+
+export const worker = setupWorker(...handlers);

@@ -3,4 +3,8 @@ export * from './auth/loginApi';
 export * from './auth/findIdApi';
 export * from './auth/resetPasswordApi';
 export * from './auth/signupApi';
+export * from './auth/userApi';
 export * from './experts/expertApi';
+export * from './reservation/reservationApi';
+export * from './payment/paymentApi';
+// export * from './mypage/mypageApi';

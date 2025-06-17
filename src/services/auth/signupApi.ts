@@ -1,12 +1,11 @@
-import axios from 'axios';
-import type { SignupRequest } from '../../types/api/auth/signup';
+import { axiosInstance } from '../api';
+import type { SignupRequest, SignupResponse } from '../../types/auth';
 
-export async function signupApi(
+export const signupApi = async (
   data: SignupRequest,
-): Promise<{ message: string }> {
-  const response = await axios.post<{ message: string }>(
-    '/api/v1/users/signup',
-    data,
-  );
+): Promise<SignupResponse> => {
+  console.log('📝 회원가입 API 호출');
+  const response = await axiosInstance.post('/api/v1/auth/register', data);
+  console.log('✅ 회원가입 성공');
   return response.data;
-}
+};
