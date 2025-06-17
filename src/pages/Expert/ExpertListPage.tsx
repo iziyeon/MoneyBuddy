@@ -7,12 +7,8 @@ import PageHeader from '../../components/layout/PageHeader';
 import ExpertCard from '../../components/pages/ExpertList/ExpertCard';
 import Text from '../../components/common/Text';
 import ScrollContainer from 'react-indiana-drag-scroll';
-import { expertData } from '../../data/expertData';
-import {
-  EXPERT_FIELDS,
-  SORT_OPTIONS,
-  PAGINATION,
-} from '../../config/constants';
+import { expertData, EXPERT_FIELDS } from '../../data/expertData';
+import { SORT_OPTIONS, PAGINATION } from '../../config/constants';
 import type { Expert, ExpertField, SortType } from '../../types/expert';
 import type { InfiniteQueryData } from '../../types/common';
 
