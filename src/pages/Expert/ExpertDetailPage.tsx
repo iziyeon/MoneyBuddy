@@ -2,12 +2,12 @@
 import { useParams } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import type { ReactNode } from 'react';
-import PageWrapper from '../components/layout/PageWrapper';
-import PageHeader from '../components/layout/PageHeader';
-import ExpertDetailProfile from '../components/pages/ExpertDetail/ExpertDetailProfile';
-import { useExpert } from '../hooks/useExpert';
-import FixedBottom from '../components/pages/ExpertDetail/components/FixedBottom';
-import { useToggleBookmark } from '../hooks/useBookmarks';
+import PageWrapper from '../../components/layout/PageWrapper';
+import PageHeader from '../../components/layout/PageHeader';
+import ExpertDetailProfile from '../../components/pages/ExpertDetail/ExpertDetailProfile';
+import { useExpert } from '../../hooks/useExpert';
+import FixedBottom from '../../components/pages/ExpertDetail/components/FixedBottom';
+import { useToggleBookmark } from '../../hooks/useBookmarks';
 
 // 스크롤 컨테이너 컴포넌트 추출
 const ScrollContainer = ({
@@ -26,9 +26,13 @@ const ScrollContainer = ({
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarColor: 'transparent transparent',
       }}
     >
-      <PageHeader title={title} showBackButton />
+      <div className="sticky top-0 bg-white z-20">
+        <PageHeader title={title} showBackButton />
+      </div>
       {children}
     </div>
   );

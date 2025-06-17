@@ -5,16 +5,21 @@ import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import MyPage from '../pages/MyPage';
 import SettingsPage from '../pages/SettingsPage';
-import FindAccountPage from '../pages/FindPage/FindAccountPage';
-import ResetPasswordVerifyPage from '../pages/FindPage/ResetPasswordVerifyPage';
-import ResetPasswordPage from '../pages/FindPage/ResetPasswordPage';
+import FindAccountPage from '../pages/Find/FindAccountPage';
+import ResetPasswordVerifyPage from '../pages/Find/ResetPasswordVerifyPage';
+import ResetPasswordPage from '../pages/Find/ResetPasswordPage';
 import PrivateRoute from './PrivateRoute';
 import DefaultLayout from '../components/layout/DefaultLayout';
 import PublicLayout from '../components/layout/PublicLayout';
-import ExpertPage from '../pages/ExpertPage';
-import ExpertListPage from '../pages/ExpertListPage';
-import ExpertDetailPage from '../pages/ExpertDetailPage';
+import ExpertPage from '../pages/Expert/ExpertPage';
+import ExpertListPage from '../pages/Expert/ExpertListPage';
+import ExpertDetailPage from '../pages/Expert/ExpertDetailPage';
 import SearchPage from '../pages/SearchPage';
+import PaymentPage from '../pages/Payment/PaymentPage';
+import PaymentSuccessPage from '../pages/Payment/PaymentSuccessPage';
+import PaymentFailPage from '../pages/Payment/PaymentFailPage';
+import ReservationDetailPage from '../pages/Reservation/ReservationDetailPage';
+import ReservationListPage from '../pages/Reservation/ReservationListPage';
 
 export default function Router() {
   return (
@@ -119,6 +124,58 @@ export default function Router() {
           <DefaultLayout>
             <SearchPage />
           </DefaultLayout>
+        }
+      />
+      <Route
+        path="/payment"
+        element={
+          <DefaultLayout>
+            <PaymentPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/payment/:expertId"
+        element={
+          <DefaultLayout>
+            <PaymentPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/payment/success"
+        element={
+          <DefaultLayout>
+            <PaymentSuccessPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/payment/fail"
+        element={
+          <DefaultLayout>
+            <PaymentFailPage />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/reserve"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ReservationListPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/reserve/detail/:id"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ReservationDetailPage />
+            </DefaultLayout>
+          </PrivateRoute>
         }
       />
     </Routes>
