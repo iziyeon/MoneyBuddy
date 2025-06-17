@@ -1,9 +1,12 @@
 // src/services/auth/findIdApi.ts
 import { axiosInstance } from '../api';
-import { API_ENDPOINTS } from '../../config/api';
 import type { FindIdRequest, FindIdResponse } from '../../types/auth';
 
-export async function findIdApi(data: FindIdRequest): Promise<FindIdResponse> {
-  const response = await axiosInstance.post(API_ENDPOINTS.findId, data);
+export const findIdApi = async (
+  data: FindIdRequest,
+): Promise<FindIdResponse> => {
+  console.log('🔍 아이디 찾기 API 호출');
+  const response = await axiosInstance.post('/api/v1/users/find-id', data);
+  console.log('✅ 아이디 찾기 성공');
   return response.data;
-}
+};

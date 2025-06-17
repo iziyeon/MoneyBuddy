@@ -4,7 +4,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { API_BASE_URL } from '../config/api';
 
 export const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_BASE_URL, // 환경변수에서 자동으로 설정
   headers: {
     'Content-Type': 'application/json',
   },
@@ -14,11 +14,15 @@ export const axiosInstance = axios.create({
 // 요청 인터셉터
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 프로덕션 환경이 아닐 때만 로깅
-    if (import.meta.env.DEV) {
-      console.debug(
-        `🔍 API 요청: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`,
-      );
+    // API 디버깅이 활성화된 경우에만 로깅
+    if (import.meta.env.VITE_API_DEBUG === 'true') {
+      console.log('🔍 API 요청:', {
+        method: config.method?.toUpperCase(),
+        url: (config.baseURL ?? '') + config.url,
+        fullURL: `${config.baseURL}${config.url}`, // 전체 URL 표시
+        data: config.data,
+        headers: config.headers,
+      });
     }
 
     const token = useAuthStore.getState().accessToken;
@@ -28,23 +32,54 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   error => {
-    // 오류 로깅은 유지
     console.error('❌ 요청 인터셉터 오류:', error);
     return Promise.reject(error);
   },
 );
 
-// 응답 인터셉터 수정
+// 응답 인터셉터
 axiosInstance.interceptors.response.use(
   response => {
-    // 프로덕션 환경이 아닐 때만 로깅
-    if (import.meta.env.DEV) {
-      console.debug(`✅ API 응답: ${response.status} ${response.config.url}`);
+    if (import.meta.env.VITE_API_DEBUG === 'true') {
+      console.log('✅ API 응답:', {
+        status: response.status,
+        url: response.config.url,
+        data: response.data,
+      });
     }
+
+    // 실제 API가 { success: true, data: {...} } 형식이라면
+    if (response.data && response.data.data !== undefined) {
+      return { ...response, data: response.data.data };
+    }
+
+    // 또는 실제 API가 { result: {...} } 형식이라면
+    if (response.data && response.data.result !== undefined) {
+      return { ...response, data: response.data.result };
+    }
+
     return response;
   },
   error => {
-    // API 오류 로깅 제거(캡처는 하되 콘솔 출력 안함)
+    // if (import.meta.env.VITE_API_DEBUG === 'true') {
+    //   console.error('❌ API 에러:', {
+    //     status: error.response?.status,
+    //     url: error.config?.url,
+    //     data: error.response?.data,
+    //   });
+    // }
+
+    // // 실제 API 에러 처리
+    // if (error.response?.status === 401) {
+    //   useAuthStore.getState().clearAuth();
+    //   window.location.href = '/login';
+    // }
+
+    // // 실제 API 에러 메시지 처리
+    // if (error.response?.data?.message) {
+    //   error.message = error.response.data.message;
+    // }
+
     return Promise.reject(error);
   },
 );

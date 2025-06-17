@@ -19,8 +19,6 @@ export const VALIDATION_RULES = {
   PASSWORD_REGEX: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{10,}$/,
 } as const;
 
-export const EXPERT_FIELDS = ['소비', '지역', '투자', '부채', '기타'] as const;
-
 export const SORT_OPTIONS = [
   '최신순',
   '북마크순',
@@ -38,3 +36,6 @@ export const MOCK_CONFIG = {
   TEST_EMAIL: 'test@example.com',
   TEST_PASSWORD: 'password123',
 } as const;
+
+// EXPERT_FIELDS는 expertData.ts에서 import하여 사용
+export { EXPERT_FIELDS } from '../data/expertData';

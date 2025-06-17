@@ -1,37 +1,46 @@
 import { http, HttpResponse } from 'msw';
 
-export const userInfoHandlers = [
-  // 기존 GET 핸들러 (이미 작성 완료)
-  http.get('/api/v1/users/:id', ({ params }) => {
-    const { id } = params;
+const mockUser = {
+  nickname: '테스트사용자',
+  email: 'test@example.com',
+  role: 'USER',
+  profile_image: '/jpg/experts/expert1.png',
+};
 
-    return HttpResponse.json(
-      {
-        id: Number(id),
-        email: 'user@example.com',
-        nickname: '사용자닉네임',
-        profile_image: 'http://your-cdn.com/profile.jpg',
-        role: 'USER',
-      },
-      { status: 200 },
-    );
+export const userInfoHandlers = [
+  // 현재 사용자 정보 조회
+  http.get('/api/v1/users/me', () => {
+    return HttpResponse.json({
+      id: 1,
+      nickname: '테스트사용자',
+      email: 'test@example.com',
+      role: 'USER',
+      profile_image: '/jpg/experts/expert1.png',
+    });
   }),
 
-  // PATCH 사용자 정보 수정 핸들러 추가
-  http.patch('/api/v1/users/:id', async ({ request, params }) => {
-    const { nickname, profile_image } = (await request.json()) as {
-      nickname: string;
-      profile_image: string;
-    };
-    const { id } = params;
+  // 사용자 정보 업데이트
+  http.patch('/api/v1/users/:id', async ({ params, request }) => {
+    const body = await request.json();
+    return HttpResponse.json({
+      id: Number(params.id),
+      nickname: (body as any).nickname || '업데이트된닉네임',
+      profile_image: (body as any).profile_image || '/jpg/experts/expert1.png',
+    });
+  }),
 
-    return HttpResponse.json(
-      {
-        id: Number(id),
-        nickname,
-        profile_image,
-      },
-      { status: 200 },
-    );
+  // 사용자 포인트 조회
+  http.get('/api/v1/users/points', () => {
+    return HttpResponse.json({
+      availablePoints: 2000,
+      totalEarned: 5000,
+      totalUsed: 3000,
+    });
+  }),
+
+  // 사용자 정보 조회 (ID로)
+  http.get('/api/v1/users/:id', ({ params }) => {
+    const id = Number(params.id);
+    return HttpResponse.json({ ...mockUser, id });
   }),
 ];

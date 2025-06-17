@@ -1,10 +1,18 @@
 import { http, HttpResponse } from 'msw';
 import { API_ENDPOINTS } from '../../../config/api';
 import { expertData } from '../../../data/expertData';
-import type { ExpertListResponse } from '../../../services/experts/expertApi';
+
+// ExpertListResponse 타입을 직접 정의
+interface ExpertListResponse {
+  advisors: typeof expertData;
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
 
 export const advisorHandlers = [
-  // 전문가 목록 조회
+  // 전문가 목록 조회 - API 엔드포인트 일관성 확보
   http.get(API_ENDPOINTS.advisors, ({ request }) => {
     try {
       const url = new URL(request.url);
@@ -98,37 +106,54 @@ export const advisorHandlers = [
         hasMore,
       };
 
+      console.log(
+        `✅ MSW: 전문가 목록 조회 성공 - ${response.advisors.length}개`,
+      );
       return HttpResponse.json(response);
     } catch (error) {
       console.error('❌ MSW - 전문가 목록 처리 오류:', error);
-      return new HttpResponse(
-        JSON.stringify({
-          message: '서버 오류가 발생했습니다.',
-          details: error instanceof Error ? error.message : '알 수 없는 오류',
-        }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
       );
     }
   }),
 
-  // 전문가 상세 조회 - 단순화하여 MSW 오류 예방
-  http.get(`${API_ENDPOINTS.advisors}/:id`, () => {
-    // 항상 성공하는 기본 응답 반환 (MSW 오류 방지를 위해)
-    const mockExpert = expertData[0];
+  // 전문가 상세 조회 - 안정성 개선
+  http.get(`${API_ENDPOINTS.advisors}/:id`, ({ params }) => {
+    try {
+      const expertId = Number(params.id);
+      const expert = expertData.find(e => e.id === expertId);
 
-    // 추가 정보를 포함한 전문가 데이터 확장
-    const enhancedExpert = {
-      ...mockExpert,
-      skills: ['디지털 소비 분석', '예산 관리', '재정 계획'],
-      education: ['서울대학교 경영학과', 'CFA Level 3'],
-      career: ['금융투자협회 10년', '재무상담사 5년'],
-      contact_hours: '평일 10:00 - 19:00',
-      response_time: '평균 2시간 이내',
-      consultation_formats: ['채팅', '화상', '이메일'],
-    };
+      console.log(`🔍 MSW: 전문가 상세 조회 - ID: ${expertId}`);
 
-    // 성공 응답 반환
-    return HttpResponse.json(enhancedExpert, { status: 200 });
+      if (!expert) {
+        console.log(`❌ MSW: 전문가를 찾을 수 없음 - ID: ${expertId}`);
+        return HttpResponse.json(
+          { message: '전문가를 찾을 수 없습니다.' },
+          { status: 404 },
+        );
+      }
+
+      const enhancedExpert = {
+        ...expert,
+        skills: ['디지털 소비 분석', '예산 관리', '재정 계획'],
+        education: ['서울대학교 경영학과', 'CFA Level 3'],
+        career: ['금융투자협회 10년', '재무상담사 5년'],
+        contact_hours: '평일 10:00 - 19:00',
+        response_time: '평균 2시간 이내',
+        consultation_formats: ['채팅', '화상', '이메일'],
+      };
+
+      console.log(`✅ MSW: 전문가 상세 정보 반환 - ${expert.nickname}`);
+      return HttpResponse.json(enhancedExpert);
+    } catch (error) {
+      console.error('❌ MSW - 전문가 상세 조회 오류:', error);
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
+      );
+    }
   }),
 
   // 카테고리 목록 조회
@@ -145,15 +170,15 @@ export const advisorHandlers = [
       return HttpResponse.json(categories);
     } catch (error) {
       console.error('❌ MSW - 카테고리 목록 조회 오류:', error);
-      return new HttpResponse(
-        JSON.stringify({ message: '서버 오류가 발생했습니다.' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
       );
     }
   }),
 
-  // 북마크 토글
-  http.post('/api/v1/bookmarks/:advisorId', ({ params }) => {
+  // 북마크 토글 - API 엔드포인트 일관성
+  http.post(`${API_ENDPOINTS.bookmarks}/:advisorId`, ({ params }) => {
     try {
       const advisorId = Number(params.advisorId);
       const expert = expertData.find(e => e.id === advisorId);
@@ -165,13 +190,16 @@ export const advisorHandlers = [
         );
       }
 
-      console.log('북마크 토글 성공:', expert.nickname);
-      return HttpResponse.json({ bookmarked: true });
+      console.log(`✅ MSW: 북마크 토글 성공 - ${expert.nickname}`);
+      return HttpResponse.json({
+        bookmarked: true,
+        message: '북마크가 토글되었습니다.',
+      });
     } catch (error) {
       console.error('❌ MSW - 북마크 토글 오류:', error);
-      return new HttpResponse(
-        JSON.stringify({ message: '서버 오류가 발생했습니다.' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
       );
     }
   }),
@@ -179,14 +207,16 @@ export const advisorHandlers = [
   // 북마크 목록 조회
   http.get(API_ENDPOINTS.bookmarks, () => {
     try {
-      // Mock에서는 처음 5개 전문가를 북마크된 것으로 가정
       const bookmarkedExperts = expertData.slice(0, 5);
+      console.log(
+        `✅ MSW: 북마크 목록 조회 성공 - ${bookmarkedExperts.length}개`,
+      );
       return HttpResponse.json(bookmarkedExperts);
     } catch (error) {
       console.error('❌ MSW - 북마크 목록 조회 오류:', error);
-      return new HttpResponse(
-        JSON.stringify({ message: '서버 오류가 발생했습니다.' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
       );
     }
   }),

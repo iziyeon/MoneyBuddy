@@ -1,46 +1,27 @@
-import { API_ENDPOINTS } from '../../config/api';
-import type { UpdateUserRequest } from '../../types/auth';
+import { axiosInstance } from '../api';
+import type {
+  User,
+  UpdateUserRequest,
+  UpdateUserResponse,
+} from '../../types/auth';
 
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  nickname: string;
-  role: string;
-}
-
-export const getUserById = async (userId: number): Promise<User> => {
-  const response = await fetch(`/api/v1/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  if (!response.ok) throw new Error('Failed to fetch user');
-  return response.json();
+// 현재 사용자 정보 조회
+export const getCurrentUser = async (): Promise<User> => {
+  const response = await axiosInstance.get('/api/v1/users/me');
+  return response.data;
 };
 
+// 사용자 정보 수정
 export const updateUser = async (
   id: number,
   data: UpdateUserRequest,
-): Promise<User> => {
-  const response = await fetch(`/api/v1/users/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) throw new Error('Failed to update user');
-  return response.json();
+): Promise<UpdateUserResponse> => {
+  const response = await axiosInstance.patch(`/api/v1/users/${id}`, data);
+  return response.data;
 };
 
-export const getCurrentUser = async (): Promise<User> => {
-  const response = await fetch('/api/v1/users/me', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  if (!response.ok) throw new Error('Failed to fetch current user');
-  return response.json();
+// 사용자 정보 조회 (ID로)
+export const getUserById = async (id: number): Promise<User> => {
+  const response = await axiosInstance.get(`/api/v1/users/${id}`);
+  return response.data;
 };
