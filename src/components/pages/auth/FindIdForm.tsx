@@ -29,7 +29,7 @@ export default function FindIdForm({ onSwitchTab }: FindIdFormProps) {
     mode: 'onChange',
     defaultValues: {
       name: '',
-      phone: '', // 초기값 추가
+      phone: '',
     },
   });
 
@@ -73,7 +73,6 @@ export default function FindIdForm({ onSwitchTab }: FindIdFormProps) {
           <div className={authStyles.resultBox}>
             <div className="flex items-center px-2">
               {' '}
-              {/* justify-between 제거 */}
               <Text type="B2" className="w-20">
                 아이디
               </Text>
@@ -81,7 +80,6 @@ export default function FindIdForm({ onSwitchTab }: FindIdFormProps) {
             </div>
             <div className="flex items-center px-2">
               {' '}
-              {/* justify-between 제거 */}
               <Text type="B2" className="w-20">
                 가입일
               </Text>

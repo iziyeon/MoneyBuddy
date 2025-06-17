@@ -42,7 +42,7 @@ export default function GlobalHeader() {
     <header className="flex justify-between items-center px-4 py-3">
       <div onClick={() => navigate('/')} className="cursor-pointer font-bold">
         <img
-          src="/jpg/logo_small.png" // public 폴더에서 이미지 가져오기
+          src="/jpg/logo_small.png"
           alt="MoneyBuddy"
           className="w-[120px] h-[60px]"
         />

@@ -1,6 +1,6 @@
 // C:\project\FE\src\components\pages\ExpertDetail\ExpertDetailProfile.tsx
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { Expert } from '../../../types/expert';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileTabs from './components/ProfileTabs';
@@ -31,7 +31,7 @@ export default function ExpertDetailProfile({
   const [activeTab, setActiveTab] = useState('전문가');
 
   return (
-    <div className="relative w-full pb-20">
+    <div className="relative w-full">
       <ProfileHeader expert={expert} />
       <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 

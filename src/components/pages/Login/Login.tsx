@@ -15,7 +15,7 @@ export default function Login() {
     <div className={loginStyles.wrapper}>
       <div className="mb-12 text-center">
         <img
-          src="/jpg/logo_small.png" // public 제거
+          src="/jpg/logo_small.png"
           alt="MoneyBuddy"
           className="w-[120px] h-[60px] mx-auto"
         />
