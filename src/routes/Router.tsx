@@ -20,6 +20,8 @@ import PaymentSuccessPage from '../pages/Payment/PaymentSuccessPage';
 import PaymentFailPage from '../pages/Payment/PaymentFailPage';
 import ReservationDetailPage from '../pages/Reservation/ReservationDetailPage';
 import ReservationListPage from '../pages/Reservation/ReservationListPage';
+import ConsultationHistoryPage from '../pages/Consultation/ConsultationHistoryPage';
+import ConsultationDetailPage from '../pages/Consultation/ConsultationDetailPage';
 
 export default function Router() {
   return (
@@ -174,6 +176,26 @@ export default function Router() {
           <PrivateRoute>
             <DefaultLayout>
               <ReservationDetailPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/consultation/history"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ConsultationHistoryPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/consultation/detail/:id"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ConsultationDetailPage />
             </DefaultLayout>
           </PrivateRoute>
         }
