@@ -30,7 +30,10 @@ export default function PaymentFailPage() {
     <PageWrapper>
       <PageHeader showBackButton={false} />
       <div className="flex flex-col items-center justify-center px-5 py-12">
-        <AlertCircle className="w-24 h-24 text-red-500 mb-6" />
+        <img
+          src="../../../public/jpg/icon/paymentfail.png"
+          className="w-24 h-24 text-red-500 mb-6"
+        />
         <h1 className="text-2xl font-bold mb-2">결제 실패</h1>
         <p className="text-gray-600 text-center mb-8">
           {errorMessage}

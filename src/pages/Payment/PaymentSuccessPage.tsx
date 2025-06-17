@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
 
@@ -20,13 +19,12 @@ export default function PaymentSuccessPage() {
   const handleGoToReservationDetail = () => {
     // 예약 상세 페이지로 이동 (expertId가 있으면 해당 ID를 포함)
     if (state?.expertId) {
-      navigate(`/reserve/detail/${state.expertId}`);
+      navigate(`/consultation/detail/${state.expertId}`);
     } else {
       // expertId가 없으면 예약 목록 페이지로 이동
-      navigate('/reserve');
+      navigate('/consultation/history');
     }
   };
-
   // state 데이터가 없을 경우에도 결제 성공 화면 표시
   const expertName = state?.expertName || '전문가';
   const price = state?.price || 0;
@@ -37,7 +35,10 @@ export default function PaymentSuccessPage() {
     <PageWrapper>
       <PageHeader showBackButton={false} />
       <div className="flex flex-col items-center justify-center px-5 py-12">
-        <CheckCircle className="w-24 h-24 text-primary mb-6" />
+        <img
+          src="../../../public/jpg/icon/paymentsuccess.png"
+          className="w-24 h-24 text-primary mb-6"
+        />
         <h1 className="text-2xl font-bold mb-2 text-center">결제 완료</h1>
         <p className="text-gray-600 text-center mb-8">
           상담 결제가 완료되었습니다.
