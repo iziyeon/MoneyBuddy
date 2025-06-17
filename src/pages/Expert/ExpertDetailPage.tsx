@@ -1,6 +1,6 @@
 // filepath: c:\project\FE\src\pages\ExpertDetailPage.tsx
 import { useParams } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
@@ -40,7 +40,14 @@ const ScrollContainer = ({
 
 export default function ExpertDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const expertId = id ? parseInt(id) : undefined;
+
+  // ID 파싱을 더 안전하게 처리
+  const expertId = useMemo(() => {
+    if (!id) return undefined;
+    const parsed = parseInt(id, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  }, [id]);
+
   const { data: expert, isLoading, error } = useExpert(expertId);
   const [localBookmarkState, setLocalBookmarkState] = useState(false);
   const toggleBookmarkMutation = useToggleBookmark();
