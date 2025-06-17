@@ -4,7 +4,7 @@ import Text from '../common/Text';
 import Button from '../common/Button';
 
 type PageHeaderProps = {
-  title: string;
+  title?: string;
   showBackButton?: boolean;
   onBackClick?: () => void;
   isLoginPage?: boolean;

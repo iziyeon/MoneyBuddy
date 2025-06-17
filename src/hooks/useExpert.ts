@@ -1,23 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { expertData } from '../data/expertData';
+import { getExpertById } from '../services/experts/expertApi';
 import type { Expert } from '../types/expert';
 
-// 간소화된 훅으로 개선
 export const useExpert = (id: number | undefined) => {
   return useQuery<Expert>({
     queryKey: ['expert', id],
     queryFn: async () => {
-      if (!id) throw new Error('전문가 ID가 필요합니다');
+      if (!id) {
+        throw new Error('전문가 ID가 필요합니다');
+      }
 
       try {
-        // 서버 요청 대신 로컬 데이터 사용
-        const expert = expertData.find(expert => expert.id === id);
+        // API 호출을 통한 전문가 정보 가져오기
+        const expert = await getExpertById(id);
 
-        if (!expert) {
-          throw new Error('전문가를 찾을 수 없습니다');
-        }
-
-        // 추가 정보를 포함한 전문가 데이터 확장
         const enhancedExpert = {
           ...expert,
           skills: ['디지털 소비 분석', '예산 관리', '재정 계획'],

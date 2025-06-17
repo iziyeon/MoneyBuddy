@@ -6,7 +6,7 @@ import Button from '../../common/Button';
 import { verifyResetCodeApi } from '../../../services/auth/resetPasswordApi';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Text from '../../common/Text';
-import { authStyles } from '../../../styles/auth.styles'; // 수정된 부분
+import { authStyles } from '../../../styles/auth.styles';
 
 export default function ResetPasswordVerifyForm() {
   const [params] = useSearchParams();
