@@ -1,11 +1,13 @@
 import { axiosInstance } from '../api';
+import { API_ENDPOINTS } from '../../config/api';
 
 export interface PaymentRequest {
   expertId: number;
   amount: number;
   method: string;
-  consultationDate: string;
-  consultationTime: string;
+  consultationType: string;
+  date: string;
+  time: string;
   request?: string;
   usedPoints?: number;
 }
@@ -29,24 +31,24 @@ export interface PaymentStatus {
 export const processPayment = async (
   data: PaymentRequest,
 ): Promise<PaymentResponse> => {
-  const response = await axiosInstance.post('/api/v1/payments', data);
+  const response = await axiosInstance.post(API_ENDPOINTS.payments, data);
   return response.data;
 };
 
-// 결제 상태 확인
+// 결제 상태 조회
 export const getPaymentStatus = async (
   paymentId: string,
 ): Promise<PaymentStatus> => {
-  const response = await axiosInstance.get(`/api/v1/payments/${paymentId}`);
+  const response = await axiosInstance.get(
+    `${API_ENDPOINTS.payments}/${paymentId}`,
+  );
   return response.data;
 };
 
 // 결제 취소
-export const cancelPayment = async (
-  paymentId: string,
-): Promise<{ message: string }> => {
+export const cancelPayment = async (paymentId: string) => {
   const response = await axiosInstance.post(
-    `/api/v1/payments/${paymentId}/cancel`,
+    `${API_ENDPOINTS.payments}/${paymentId}/cancel`,
   );
   return response.data;
 };

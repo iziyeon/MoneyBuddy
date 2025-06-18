@@ -47,7 +47,8 @@ export const paymentDetailStyles = {
     buttonGroup: 'flex gap-3',
     profileButton:
       'flex-1 py-3 border border-primary text-primary rounded-lg font-medium',
-    cancelButton: 'flex-1 py-3 bg-red-600 text-white rounded-lg font-medium',
+    cancelButton:
+      'flex-1 py-3 border border-red-500 text-red-500 bg-white rounded-lg font-medium',
   },
 
   // 모달

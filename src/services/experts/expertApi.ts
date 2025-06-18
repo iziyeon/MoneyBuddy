@@ -4,9 +4,9 @@ import type {
   Expert,
   ExpertFilterParams,
   ExpertListResponse,
-  CategoryResponse,
 } from '../../types/expert';
 import type { MonthlyExpert } from '../../types/api/expert/expert';
+import type { CategoryResponse } from '../../types/expert';
 
 // 월간 전문가 조회
 export const getMonthlyExperts = async (): Promise<MonthlyExpert[]> => {
@@ -14,24 +14,11 @@ export const getMonthlyExperts = async (): Promise<MonthlyExpert[]> => {
   return response.data;
 };
 
-// 전문가 목록 조회
+// 전문가 목록 조회 (필터링, 정렬, 검색 포함)
 export const getExperts = async (
   params?: ExpertFilterParams,
 ): Promise<ExpertListResponse> => {
-  const queryParams = new URLSearchParams();
-
-  if (params?.category_id)
-    queryParams.append('category_id', params.category_id.toString());
-  if (params?.is_online !== undefined)
-    queryParams.append('is_online', params.is_online.toString());
-  if (params?.sort) queryParams.append('sort', params.sort);
-  if (params?.page) queryParams.append('page', params.page.toString());
-  if (params?.limit) queryParams.append('limit', params.limit.toString());
-  if (params?.search) queryParams.append('search', params.search);
-
-  const response = await axiosInstance.get(
-    `${API_ENDPOINTS.advisors}?${queryParams.toString()}`,
-  );
+  const response = await axiosInstance.get(API_ENDPOINTS.advisors, { params });
   return response.data;
 };
 

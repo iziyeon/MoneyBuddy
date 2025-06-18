@@ -1,9 +1,11 @@
-import { CalendarIcon } from 'lucide-react';
-import type { Expert } from '../../../types/expert';
+import { Calendar } from 'lucide-react';
 import { paymentStyles } from '../../../styles/payment.styles';
 
 interface PaymentExpertInfoProps {
-  expert: Expert;
+  expert: {
+    nickname: string;
+    profile_image: string;
+  };
   consultationDate: string;
   consultationTime: string;
 }
@@ -49,7 +51,7 @@ export default function PaymentExpertInfo({
       <div
         className={`${paymentStyles.dateContainer} ${paymentStyles.dateGradientBorder}`}
       >
-        <CalendarIcon className={paymentStyles.dateIcon} />
+        <Calendar className={paymentStyles.dateIcon} />
         <span className={paymentStyles.dateText}>{consultationDate}</span>
         <span className={paymentStyles.dateText}>{consultationTime}</span>
       </div>
