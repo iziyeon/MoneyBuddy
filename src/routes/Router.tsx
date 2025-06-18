@@ -15,6 +15,10 @@ import ExpertPage from '../pages/Expert/ExpertPage';
 import ExpertListPage from '../pages/Expert/ExpertListPage';
 import ExpertDetailPage from '../pages/Expert/ExpertDetailPage';
 import SearchPage from '../pages/SearchPage';
+import ConcernSelectPage from '../pages/ReservePage/ConcernSelectPage';
+import ReservationPage from '../pages/ReservationPage';
+import EnterConcernPage from '../pages/ReservePage/EnterConcernPage';
+import ConsultReservePage from '../pages/ReservePage/ConsultReservePage';
 import PaymentPage from '../pages/Payment/PaymentPage';
 import PaymentSuccessPage from '../pages/Payment/PaymentSuccessPage';
 import PaymentFailPage from '../pages/Payment/PaymentFailPage';
@@ -120,6 +124,20 @@ export default function Router() {
           </DefaultLayout>
         }
       />
+      <Route
+        path="/reservation/*"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ReservationPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      >
+        <Route path="step1" element={<ConcernSelectPage />} />
+        <Route path="step2" element={<EnterConcernPage />} />
+        <Route path="step3" element={<ConsultReservePage />} />
+      </Route>
       <Route
         path="/search"
         element={

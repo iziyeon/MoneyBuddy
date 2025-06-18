@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, JSX } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'disabled' | 'text';
+  variant?: 'primary' | 'secondary' | 'disabled' | 'text' | 'text2';
 }
 
 export default function Button({
@@ -38,6 +38,10 @@ export default function Button({
 			text-primary
 			text-h4
 			bg-transparent
+		`,
+    text2: `
+			text-[#777777]
+			text-h4
 		`,
   };
 
