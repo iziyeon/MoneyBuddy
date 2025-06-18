@@ -17,8 +17,6 @@ export default function ConsultationHistoryCard({
         return 'bg-green-100 text-green-800';
       case '취소됨':
         return 'bg-red-100 text-red-800';
-      case '노쇼':
-        return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-600';
     }

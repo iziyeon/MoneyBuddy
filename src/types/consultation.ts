@@ -1,3 +1,10 @@
+export type ConsultationStatus =
+  | '예약완료'
+  | '상담중'
+  | '상담완료'
+  | '취소중'
+  | '취소완료';
+
 export interface ConsultationHistory {
   id: number;
   expertId: number;
@@ -5,15 +12,14 @@ export interface ConsultationHistory {
   field: string;
   date: string;
   time: string;
-  type: '화상상담' | '전화상담' | '채팅상담' | '이메일상담';
-  status: '예약완료' | '상담완료' | '취소됨' | '노쇼';
+  type: string;
+  status: ConsultationStatus;
   amount: number;
   paymentMethod: string;
   paymentDate: string;
   consultationArea: string;
   consultationNotes: string;
   reviewStatus?: 'available' | 'completed';
-  expertProfileImage?: string;
 }
 
 export interface ConsultationListResponse {
