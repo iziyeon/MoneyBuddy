@@ -1,73 +1,74 @@
 import { useState } from 'react';
-import { categories } from '../../../data/expertData';
+import { ChevronDown } from 'lucide-react';
 import type { SortType } from '../../../types/expert';
 
-type Props = {
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
-  sortBy: SortType;
+interface ExpertFiltersProps {
+  selectedSort: SortType;
   onSortChange: (sort: SortType) => void;
-};
+  totalCount: number;
+}
 
 const SORT_OPTIONS: SortType[] = [
+  '최신순',
+  '북마크순',
   '평점순',
-  '리뷰많은순',
+  '상담건순',
   '낮은가격순',
   '높은가격순',
+  '이름순',
+  '리뷰많은순',
 ];
 
 export default function ExpertFilters({
-  selectedCategory,
-  onCategoryChange,
-  sortBy,
+  selectedSort,
   onSortChange,
-}: Props) {
-  const [showDropdown, setShowDropdown] = useState(false);
+  totalCount,
+}: ExpertFiltersProps) {
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  const handleSortSelect = (sort: SortType) => {
+    onSortChange(sort);
+    setShowSortDropdown(false);
+  };
 
   return (
-    <div className="sticky top-0 bg-white z-10 px-5 py-4">
-      {/* 카테고리 선택 */}
-      <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4">
-        <button
-          onClick={() => onCategoryChange('전체')}
-          className={`px-4 py-2 rounded-full shrink-0 border ${
-            selectedCategory === '전체'
-              ? 'bg-primary text-white border-primary'
-              : 'border-gray-300'
-          }`}
-        >
-          전체
-        </button>
-        {categories.map(category => (
-          <button
-            key={category.id}
-            onClick={() => onCategoryChange(category.name)}
-            className={`px-4 py-2 rounded-full shrink-0 border whitespace-nowrap ${
-              selectedCategory === category.name
-                ? 'bg-primary text-white border-primary'
-                : 'border-gray-300'
-            }`}
-          >
-            {category.name}
-          </button>
-        ))}
-      </div>
+    <div className="flex justify-between items-center px-5 mb-4 sticky top-[50px] bg-white z-10">
+      <span className="text-sm font-medium text-gray-700">
+        총 {totalCount}명의 전문가가 있어요
+      </span>
 
-      {/* 정렬 옵션 */}
-      <div className="flex justify-end gap-2">
-        {SORT_OPTIONS.map(sort => (
-          <button
-            key={sort}
-            onClick={() => onSortChange(sort)}
-            className={`px-3 py-1 rounded-full text-sm ${
-              sortBy === sort
-                ? 'bg-primary text-white'
-                : 'bg-gray-100 text-gray-600'
+      <div className="relative">
+        <button
+          onClick={() => setShowSortDropdown(!showSortDropdown)}
+          className="flex items-center justify-between text-xs text-primary border border-primary rounded-full w-[95px] h-[32px] px-3"
+        >
+          <span>{selectedSort}</span>
+          <ChevronDown
+            size={16}
+            className={`transition-transform ${
+              showSortDropdown ? 'rotate-180' : ''
             }`}
-          >
-            {sort}
-          </button>
-        ))}
+          />
+        </button>
+
+        {showSortDropdown && (
+          <div className="absolute right-0 bg-white border rounded-lg shadow-lg z-10 w-[95px] p-2 top-[36px]">
+            {SORT_OPTIONS.map((option, index) => (
+              <button
+                key={option}
+                onClick={() => handleSortSelect(option)}
+                className={`w-full text-left text-xs leading-none hover:text-primary transition-colors ${
+                  index !== SORT_OPTIONS.length - 1 ? 'mb-2' : ''
+                }`}
+                style={{
+                  color: selectedSort === option ? '#6488FF' : '#777777',
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

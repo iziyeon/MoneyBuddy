@@ -1,23 +1,32 @@
 import { EXPERT_FIELDS, SORT_OPTIONS } from '../config/constants';
 
-export type ExpertField = (typeof EXPERT_FIELDS)[number];
-export type SortType = (typeof SORT_OPTIONS)[number];
+export type ExpertField = '소비' | '지역' | '투자' | '부채' | '기타';
+export type SortType =
+  | '최신순'
+  | '북마크순'
+  | '평점순'
+  | '상담건순'
+  | '낮은가격순'
+  | '높은가격순'
+  | '이름순'
+  | '리뷰많은순';
 
 export type Field = ExpertField;
 
 // 전문가 필터링 파라미터 타입
 export interface ExpertFilterParams {
-  category_id?: number;
+  category_id?: string;
   is_online?: boolean;
   sort?: string;
   page?: number;
   limit?: number;
-  search?: string;
+  search?: string; // search 속성 추가
 }
 
 // 전문가 목록 응답 타입
 export interface ExpertListResponse {
-  advisors: Expert[];
+  advisors?: Expert[];
+  experts?: Expert[];
   total: number;
   page: number;
   limit: number;
@@ -43,8 +52,8 @@ export type SortOptionType =
 export interface Expert {
   id: number;
   nickname: string;
-  field: string;
-  category: string;
+  field: ExpertField;
+  category: ExpertField;
   rating: number;
   price: number;
   experience: number;
@@ -56,6 +65,7 @@ export interface Expert {
   bio: string;
   is_online: boolean;
   hashtags: string[];
+  // 상세 정보 (선택적)
   skills?: string[];
   education?: string[];
   career?: string[];
