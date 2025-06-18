@@ -1,39 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
-import { expertData } from '../data/expertData';
+import { getExpertById } from '../services/experts/expertApi';
 import type { Expert } from '../types/expert';
 
-// 간소화된 훅으로 개선
+// 전문가 상세 정보 조회 - MSW/실제 API 모두 지원
 export const useExpert = (id: number | undefined) => {
   return useQuery<Expert>({
     queryKey: ['expert', id],
     queryFn: async () => {
-      if (!id) throw new Error('전문가 ID가 필요합니다');
+      if (!id) {
+        throw new Error('전문가 ID가 필요합니다');
+      }
 
       try {
-        // 서버 요청 대신 로컬 데이터 사용
-        const expert = expertData.find(expert => expert.id === id);
+        console.log(`🔍 useExpert: 전문가 정보 조회 시작 - ID: ${id}`);
+        const expert = await getExpertById(id);
+        console.log(`✅ useExpert: 전문가 정보 조회 성공 - ${expert.nickname}`);
+        return expert;
+      } catch (error) {
+        console.error(`❌ useExpert: 전문가 정보 조회 실패 - ID: ${id}`, error);
 
-        if (!expert) {
-          throw new Error('전문가를 찾을 수 없습니다');
+        // 네트워크 에러인 경우 더 구체적인 에러 메시지
+        if (error instanceof Error && error.message === 'Network Error') {
+          throw new Error('네트워크 연결을 확인해주세요');
         }
 
-        // 추가 정보를 포함한 전문가 데이터 확장
-        const enhancedExpert = {
-          ...expert,
-          skills: ['디지털 소비 분석', '예산 관리', '재정 계획'],
-          education: ['서울대학교 경영학과', 'CFA Level 3'],
-          career: ['금융투자협회 10년', '재무상담사 5년'],
-          contact_hours: '평일 10:00 - 19:00',
-          response_time: '평균 2시간 이내',
-          consultation_formats: ['채팅', '화상', '이메일'],
-        };
-
-        return enhancedExpert as Expert;
-      } catch (error) {
         throw new Error('전문가를 찾을 수 없습니다');
       }
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 5, // 5분
+    retry: (failureCount, error) => {
+      console.log(`🔄 useExpert: 재시도 ${failureCount}번째`, error);
+      return failureCount < 2; // 최대 2번까지 재시도
+    },
   });
 };

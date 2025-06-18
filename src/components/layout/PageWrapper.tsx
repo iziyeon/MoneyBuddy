@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 type PageWrapperProps = {
   children: ReactNode;
   className?: string;
-  bottomElement?: ReactNode; // 하단에 표시할 요소 추가
+  bottomElement?: ReactNode;
 };
 
 export default function PageWrapper({

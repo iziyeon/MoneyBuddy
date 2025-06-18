@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import PageHeader from '../components/layout/PageHeader';
-import PageWrapper from '../components/layout/PageWrapper';
-import CategoryNav from '../components/pages/Expert/CategoryNav';
-import MonthlyExpertList from '../components/pages/Expert/MonthlyExpertList';
+import PageHeader from '../../components/layout/PageHeader';
+import PageWrapper from '../../components/layout/PageWrapper';
+import CategoryNav from '../../components/pages/Expert/CategoryNav';
+import MonthlyExpertList from '../../components/pages/Expert/MonthlyExpertList';
 
 export default function ExpertPage() {
   const navigate = useNavigate();

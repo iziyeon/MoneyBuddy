@@ -2,15 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
-import PageWrapper from '../components/layout/PageWrapper';
-import PageHeader from '../components/layout/PageHeader';
-import ExpertCard from '../components/pages/ExpertList/ExpertCard';
-import Text from '../components/common/Text';
+import PageWrapper from '../../components/layout/PageWrapper';
+import PageHeader from '../../components/layout/PageHeader';
+import ExpertCard from '../../components/pages/ExpertList/ExpertCard';
+import Text from '../../components/common/Text';
 import ScrollContainer from 'react-indiana-drag-scroll';
-import { expertData } from '../data/expertData';
-import { EXPERT_FIELDS, SORT_OPTIONS, PAGINATION } from '../config/constants';
-import type { Expert, ExpertField, SortType } from '../types/expert';
-import type { InfiniteQueryData } from '../types/common';
+import { expertData, EXPERT_FIELDS } from '../../data/expertData';
+import { SORT_OPTIONS, PAGINATION } from '../../config/constants';
+import type { Expert, ExpertField, SortType } from '../../types/expert';
+import type { InfiniteQueryData } from '../../types/common';
 
 export default function ExpertListPage() {
   const navigate = useNavigate();

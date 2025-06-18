@@ -1,49 +1,27 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
-export type TextType = 'H1' | 'H2' | 'H3' | 'H4' | 'B1' | 'B2' | 'B3';
+export type TextType = 'H1' | 'H2' | 'H3' | 'H4' | 'B1' | 'B2' | 'B3' | 'B4';
 
-type TextProps = {
+interface TextProps {
   type: TextType;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
+}
+
+const textStyles: Record<TextType, string> = {
+  H1: 'text-xl font-bold',
+  H2: 'text-lg font-semibold',
+  H3: 'text-base font-medium',
+  H4: 'text-sm font-medium',
+  B1: 'text-base font-normal',
+  B2: 'text-sm font-normal',
+  B3: 'text-xs font-normal',
+  B4: 'text-xs font-light',
 };
 
-const textSize = {
-  H1: 'text-h1',
-  H2: 'text-h2',
-  H3: 'text-h3',
-  H4: 'text-h4',
-  B1: 'text-b1',
-  B2: 'text-b2',
-  B3: 'text-b3',
-} as const;
-
-const textColor = {
-  H1: 'text-font1',
-  H2: 'text-font1',
-  H3: 'text-font1',
-  H4: 'text-font1',
-  B1: 'text-font1',
-  B2: 'text-font2',
-  B3: 'text-font3',
-} as const;
-
-const textWeight = {
-  H1: 'font-semibold',
-  H2: 'font-semibold',
-  H3: 'font-semibold',
-  H4: 'font-semibold',
-  B1: 'font-normal',
-  B2: 'font-normal',
-  B3: 'font-normal',
-} as const;
-
 export default function Text({ type, children, className = '' }: TextProps) {
-  return (
-    <span
-      className={`${textSize[type]} ${textWeight[type]} ${textColor[type]} ${className}`}
-    >
-      {children}
-    </span>
-  );
+  const baseStyles = textStyles[type];
+  const combinedStyles = `${baseStyles} ${className}`.trim();
+
+  return <span className={combinedStyles}>{children}</span>;
 }

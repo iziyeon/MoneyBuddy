@@ -56,7 +56,7 @@ export default function ResetPasswordForm() {
   const onSubmit = async (data: { newPassword: string }) => {
     try {
       await resetPasswordApi({ token, newPassword: data.newPassword });
-      setIsSuccess(true); // 성공 상태로 변경
+      setIsSuccess(true);
     } catch (err: any) {
       setErrorMessage('비밀번호 재설정에 실패했습니다.');
     }

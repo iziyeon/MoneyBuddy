@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Text from '../../common/Text';
 import { categories } from '../../../data/expertData';
 import type { SortType } from '../../../types/expert';
 
