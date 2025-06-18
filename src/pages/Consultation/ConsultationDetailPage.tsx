@@ -45,12 +45,33 @@ export default function ConsultationDetailPage() {
 
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
-  // expertData를 활용한 상담 상세 데이터 생성
+  // expertData를 활용한 상담 상세 데이터 생성 - 상태 정보 동기화
   const consultation = useMemo<ConsultationHistory | null>(() => {
     if (consultationId <= 0 || consultationId > expertData.length) return null;
 
     const expert = expertData[consultationId - 1];
     const consultationIndex = consultationId - 1;
+
+    // 상담 내역 페이지와 동일한 상태 로직 적용
+    const statusOptions = [
+      '예약완료',
+      '상담중',
+      '상담완료',
+      '취소중',
+      '취소완료',
+    ] as const;
+    const typeOptions = [
+      '전화상담',
+      '화상상담',
+      '채팅상담',
+      '이메일상담',
+    ] as const;
+    const paymentOptions = [
+      '네이버페이먼츠',
+      '카카오페이',
+      '토스페이',
+      '신용카드',
+    ];
 
     return {
       id: consultationId,
@@ -61,45 +82,30 @@ export default function ConsultationDetailPage() {
         consultationIndex === 0
           ? '2025년 1월 25일 월요일'
           : consultationIndex === 1
-            ? '2025년 1월 20일 토요일'
-            : '2025년 1월 15일 월요일',
+            ? '2025년 1월 25일 월요일'
+            : consultationIndex === 2
+              ? '2025년 1월 25일 월요일'
+              : consultationIndex === 3
+                ? '2025년 1월 25일 월요일'
+                : '2025년 1월 25일 월요일',
       time:
-        consultationIndex === 0
+        consultationIndex % 3 === 0
           ? '오전 10:00~오전 10:30'
-          : consultationIndex === 1
+          : consultationIndex % 3 === 1
             ? '오후 2:00~오후 2:30'
             : '오후 4:00~오후 4:30',
-      type:
-        consultationIndex === 0
-          ? '전화상담'
-          : consultationIndex === 1
-            ? '화상상담'
-            : '채팅상담',
-      status:
-        consultationIndex === 0
-          ? '예약완료'
-          : consultationIndex === 1
-            ? '예약완료'
-            : '상담완료',
+      type: typeOptions[consultationIndex % typeOptions.length],
+      // 상담 내역 페이지와 동일한 상태 로직 적용
+      status: statusOptions[consultationIndex % statusOptions.length],
       amount: 30000,
-      paymentMethod:
-        consultationIndex === 0
-          ? '네이버페이먼츠'
-          : consultationIndex === 1
-            ? '카카오페이'
-            : '토스페이',
-      paymentDate:
-        consultationIndex === 0
-          ? '2024.01.20'
-          : consultationIndex === 1
-            ? '2024.01.18'
-            : '2024.01.10',
+      paymentMethod: paymentOptions[consultationIndex % paymentOptions.length],
+      paymentDate: `2025.01.${20 - Math.floor(consultationIndex / 2)}`,
       consultationArea: '금융 문제 고민',
       consultationNotes: `더미 텍스트 최근 경제 상황의 불확실성이 커지면서 자산 포트폴리오 재조정에 대한 고민이 많습니다. 현재 주식, 예금, 펀드 등으로 나뉘어 있는데, 인플레이션과 금리 변동에 대비하여 안정적인 수익을 창출할 수 있는 방법이 궁금합니다. 특히 은퇴 후를 위한 노후 자금 마련과 연금 설계는 어떻게 해야 할지 막막합니다. 또한, 예상치 못한 상황에 대비한 비상 자금 확보와 보험의 필요성에 대해서도 상담받고 싶습니다. 전체적인 재무 목표를 설정하고 효율적인 자산 관리 전략을 세우는 데 전문가의 도움이 절실합니다.`,
       reviewStatus:
-        consultationIndex === 0
+        consultationIndex === 2 || consultationIndex === 5
           ? 'available'
-          : consultationIndex === 2
+          : consultationIndex === 7
             ? 'completed'
             : undefined,
     };
@@ -121,14 +127,19 @@ export default function ConsultationDetailPage() {
     },
   });
 
+  // 취소 상태인지 확인하는 함수 추가
+  const isCancelledStatus = (status: string) => {
+    return status === '취소중' || status === '취소완료';
+  };
+
   function handleCancelConsultation() {
     if (consultation) {
       cancelConsultationMutation.mutate(consultation.id);
     }
   }
 
-  // 하단에 고정될 버튼 컴포넌트
-  const BottomButtons = (
+  // 하단에 고정될 버튼 컴포넌트 - 취소 상태일 때는 버튼 숨김
+  const BottomButtons = !isCancelledStatus(consultation?.status || '') ? (
     <div className="bg-white border-t border-gray-200 p-4 w-full">
       <div className={paymentDetailStyles.buttonSection.buttonGroup}>
         <button
@@ -145,7 +156,7 @@ export default function ConsultationDetailPage() {
         </button>
       </div>
     </div>
-  );
+  ) : null;
 
   return (
     <PageWrapper bottomElement={BottomButtons}>
@@ -168,11 +179,23 @@ export default function ConsultationDetailPage() {
                     className={
                       paymentDetailStyles.consultationSection.statusBadge
                     }
+                    style={{
+                      backgroundColor: isCancelledStatus(
+                        consultation?.status || '',
+                      )
+                        ? '#E9E9E9'
+                        : 'rgba(100,136,255,0.1)',
+                    }}
                   >
                     <span
                       className={
                         paymentDetailStyles.consultationSection.statusText
                       }
+                      style={{
+                        color: isCancelledStatus(consultation?.status || '')
+                          ? '#777777'
+                          : '#6488FF',
+                      }}
                     >
                       {consultation?.status || '예약완료'}
                     </span>
@@ -234,21 +257,6 @@ export default function ConsultationDetailPage() {
                   <span
                     className={paymentDetailStyles.consultationSection.label}
                   >
-                    상담 영역
-                  </span>
-                  <span
-                    className={paymentDetailStyles.consultationSection.value}
-                  >
-                    {consultation?.consultationArea || '금융 문제 고민'}
-                  </span>
-                </div>
-
-                <div
-                  className={paymentDetailStyles.consultationSection.infoRow}
-                >
-                  <span
-                    className={paymentDetailStyles.consultationSection.label}
-                  >
                     결제 방식
                   </span>
                   <span
@@ -263,7 +271,7 @@ export default function ConsultationDetailPage() {
                   className={paymentDetailStyles.consultationSection.divider}
                 ></div>
 
-                {/* 결제 금액 */}
+                {/* 결제 금액 - 취소 상태일 때 색상 변경 */}
                 <div
                   className={paymentDetailStyles.consultationSection.amountRow}
                 >
@@ -278,6 +286,11 @@ export default function ConsultationDetailPage() {
                     className={
                       paymentDetailStyles.consultationSection.amountValue
                     }
+                    style={{
+                      color: isCancelledStatus(consultation?.status || '')
+                        ? '#9C9C9C'
+                        : '#191919',
+                    }}
                   >
                     30,000원
                   </span>
@@ -285,7 +298,7 @@ export default function ConsultationDetailPage() {
               </div>
             </div>
 
-            {/* 상담 고민 등록 */}
+            {/* 상담 고민 등록 - 취소 상태일 때 스타일 변경 */}
             <div
               className={`${
                 paymentDetailStyles.consultationConcernSection.container
@@ -301,11 +314,21 @@ export default function ConsultationDetailPage() {
                 className={
                   paymentDetailStyles.consultationConcernSection.contentBox
                 }
+                style={{
+                  backgroundColor: isCancelledStatus(consultation?.status || '')
+                    ? '#F1F1F1'
+                    : '#FFFFFF',
+                }}
               >
                 <p
                   className={
                     paymentDetailStyles.consultationConcernSection.contentText
                   }
+                  style={{
+                    color: isCancelledStatus(consultation?.status || '')
+                      ? '#888888'
+                      : '#000000',
+                  }}
                 >
                   {consultation?.consultationNotes ||
                     '더미 텍스트 최근 경제 상황의 불확실성이 커지면서 자산 포트폴리오 재조정에 대한 고민이 많습니다. 현재 주식, 예금, 펀드 등으로 나뉘어 있는데, 인플레이션과 금리 변동에 대비하여 안정적인 수익을 창출할 수 있는 방법이 궁금합니다. 특히 은퇴 후를 위한 노후 자금 마련과 연금 설계는 어떻게 해야 할지 막막합니다. 또한, 예상치 못한 상황에 대비한 비상 자금 확보와 보험의 필요성에 대해서도 상담받고 싶습니다. 전체적인 재무 목표를 설정하고 효율적인 자산 관리 전략을 세우는 데 전문가의 도움이 절실합니다.'}
@@ -316,8 +339,8 @@ export default function ConsultationDetailPage() {
         </div>
       </ScrollContainer>
 
-      {/* 취소 확인 모달 */}
-      {showCancelConfirm && (
+      {/* 취소 확인 모달 - 취소 상태일 때는 표시하지 않음 */}
+      {showCancelConfirm && !isCancelledStatus(consultation?.status || '') && (
         <div className={paymentDetailStyles.modal.backdrop}>
           <div className={paymentDetailStyles.modal.container}>
             <h4 className={paymentDetailStyles.modal.title}>상담 취소</h4>

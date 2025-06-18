@@ -118,11 +118,6 @@ if (typeof document !== 'undefined') {
       color: #dc2626;
     }
     
-    .status-노쇼 {
-      background-color: #f3f4f6;
-      color: #374151;
-    }
-    
     .consultation-info {
       display: flex;
       flex-direction: column;
