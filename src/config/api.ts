@@ -7,15 +7,17 @@ export const API_ENDPOINTS = {
   login: '/api/v1/auth/login',
   signup: '/api/v1/auth/register',
   findId: '/api/v1/auth/find-email',
+  resetPassword: '/api/v1/auth/reset-password',
 
-  // 전문가 관련 - 일관성 확보
+  // 전문가 관련
   getMonthlyExperts: '/api/v1/experts/monthly',
-  advisors: '/api/v1/experts', // MSW와 실제 API 모두 호환
+  advisors: '/api/v1/experts',
   categories: '/api/v1/categories',
   bookmarks: '/api/v1/users/bookmarks',
 
-  // 예약 관련
-  reservations: '/api/v1/consultations',
+  // 예약/상담 관련
+  reservations: '/api/v1/reservations',
+  consultations: '/api/v1/consultations',
 
   // 결제 관련
   payments: '/api/v1/payments',
@@ -23,13 +25,21 @@ export const API_ENDPOINTS = {
   // 사용자 관련
   userProfile: '/api/v1/users/profile',
   userPoints: '/api/v1/users/points',
-  userConsultations: '/api/v1/users/consultations',
+  users: '/api/v1/users',
 } as const;
 
-// MSW 디버깅 설정 개선
+// MSW 설정
 export const MSW_CONFIG = {
   enabled: import.meta.env.VITE_USE_MSW === 'true',
   debug: import.meta.env.VITE_API_DEBUG === 'true',
-  logRequests: true,
-  logResponses: true,
+  logRequests: import.meta.env.DEV,
+  logResponses: import.meta.env.DEV,
+} as const;
+
+// API 환경별 설정
+export const API_CONFIG = {
+  timeout: 10000,
+  retries: 2,
+  isDev: import.meta.env.DEV,
+  isProd: import.meta.env.PROD,
 } as const;
