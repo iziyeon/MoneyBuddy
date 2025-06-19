@@ -1,17 +1,27 @@
-// C:\project\FE\src\components\pages\ExpertDetail\components\FixedBottom.tsx
-
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
-
-interface FixedBottomProps {
-  localBookmarkState: boolean;
-  handleLikeClick: (e: React.MouseEvent) => void;
-}
+import { useReservationStore } from '../../../../stores/useReservationStore';
+import type { Expert } from '../../../../types';
 
 export default function FixedBottom({
   localBookmarkState,
   handleLikeClick,
-}: FixedBottomProps) {
+  expert,
+}: {
+  localBookmarkState: boolean;
+  handleLikeClick: (e: React.MouseEvent) => void;
+  expert: Expert;
+}) {
+  const navigate = useNavigate();
+  const { setExpert } = useReservationStore();
+
+  const handleConsultClick = () => {
+    setExpert(expert);
+    navigate('/reservation/step1');
+  };
+
+  console.log(expert);
+
   return (
     <div className="w-full bg-white border-t border-gray-200 py-4 px-5 flex items-center justify-between">
       <button
@@ -24,9 +34,11 @@ export default function FixedBottom({
             localBookmarkState ? 'fill-red-500 text-red-500' : 'text-gray-500'
           }
         />
-        <span className="text-xs text-gray-500 mt-1"></span>
       </button>
-      <button className="flex-1 ml-4 bg-primary text-white py-3 rounded font-medium">
+      <button
+        onClick={handleConsultClick}
+        className="flex-1 ml-4 bg-primary text-white py-3 rounded font-medium"
+      >
         지금 상담하기
       </button>
     </div>
