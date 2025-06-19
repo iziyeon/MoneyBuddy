@@ -15,10 +15,10 @@ import ExpertPage from '../pages/Expert/ExpertPage';
 import ExpertListPage from '../pages/Expert/ExpertListPage';
 import ExpertDetailPage from '../pages/Expert/ExpertDetailPage';
 import SearchPage from '../pages/SearchPage';
-import ConcernSelectPage from '../pages/ReservePage/ConcernSelectPage';
+import ConcernSelectPage from '../pages/Reservation/ConcernSelectPage';
 import ReservationPage from '../pages/ReservationPage';
-import EnterConcernPage from '../pages/ReservePage/EnterConcernPage';
-import ConsultReservePage from '../pages/ReservePage/ConsultReservePage';
+import EnterConcernPage from '../pages/Reservation/EnterConcernPage';
+import SelectSchedulePage from '../pages/Reservation/SelectSchedulePage';
 import PaymentPage from '../pages/Payment/PaymentPage';
 import PaymentSuccessPage from '../pages/Payment/PaymentSuccessPage';
 import PaymentFailPage from '../pages/Payment/PaymentFailPage';
@@ -26,6 +26,7 @@ import ReservationDetailPage from '../pages/Reservation/ReservationDetailPage';
 import ReservationListPage from '../pages/Reservation/ReservationListPage';
 import ConsultationHistoryPage from '../pages/Consultation/ConsultationHistoryPage';
 import ConsultationDetailPage from '../pages/Consultation/ConsultationDetailPage';
+import SelectTimePage from '../pages/Reservation/SelectTimePage';
 
 export default function Router() {
   return (
@@ -136,7 +137,8 @@ export default function Router() {
       >
         <Route path="step1" element={<ConcernSelectPage />} />
         <Route path="step2" element={<EnterConcernPage />} />
-        <Route path="step3" element={<ConsultReservePage />} />
+        <Route path="step3" element={<SelectSchedulePage />} />
+        <Route path="step4" element={<SelectTimePage />} />
       </Route>
       <Route
         path="/search"

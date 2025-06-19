@@ -7,6 +7,7 @@ interface CalendarHeaderProps {
   thisMonth: number;
   onPrev?: () => void;
   onNext?: () => void;
+  disablePrev?: boolean;
 }
 
 export default function CalendarHeader({
@@ -14,13 +15,13 @@ export default function CalendarHeader({
   thisMonth,
   onPrev,
   onNext,
+  disablePrev,
 }: CalendarHeaderProps): JSX.Element {
-  const formatMonth =
-    thisMonth !== undefined ? String(thisMonth + 1).padStart(2, '0') : '--';
+  const formatMonth = String(thisMonth + 1).padStart(2, '0');
 
   return (
-    <div className="rounded-[30px] border py-2 flex justify-between px-4">
-      <Button variant="text2" onClick={onPrev}>
+    <div className="rounded-[30px] border py-2 flex justify-between px-4 items-center">
+      <Button variant="text2" onClick={onPrev} disabled={disablePrev}>
         <ChevronLeft />
       </Button>
       <span className="text-b1 font-semibold">

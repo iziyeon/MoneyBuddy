@@ -1,3 +1,5 @@
+import type { Expert } from '../types';
+
 type ExpertField = '소비' | '지역' | '투자' | '부채' | '기타';
 type HashtagMap = Record<ExpertField | '부동산', readonly string[]>;
 
@@ -15,24 +17,6 @@ const HASHTAGS: HashtagMap = {
   지역: ['부동산', '주택시장', '상권분석'],
   부동산: ['부동산', '주택시장', '상권분석'],
 } as const;
-
-export type Expert = {
-  id: number;
-  nickname: string;
-  field: ExpertField;
-  category: ExpertField;
-  rating: number;
-  price: number;
-  experience: number;
-  consultation_count: number;
-  review_count: number;
-  bookmarks: number;
-  profile_image: string;
-  description: string;
-  bio: string;
-  is_online: boolean;
-  hashtags: string[];
-};
 
 export const expertData: Expert[] = [
   {

@@ -1,18 +1,22 @@
 import type { JSX } from 'react';
 import CalendarHeader from './CalendarHeader';
 import CalendarGrid from './CalendarGrid';
+import { useCalendarStore } from '../../stores/useCalendarStore';
 
 export default function Calendar(): JSX.Element {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  console.log(today, year, month + 1);
+  const { year, month, goToPrevMonth, goToNextMonth, isCurrentMonth } =
+    useCalendarStore();
 
-  console.log(today);
   return (
     <div>
       <div className="text-h3 my-4 mx-2">상담 일자 선택</div>
-      <CalendarHeader thisYear={year} thisMonth={month} />
+      <CalendarHeader
+        thisYear={year}
+        thisMonth={month}
+        onPrev={goToPrevMonth}
+        onNext={goToNextMonth}
+        disablePrev={isCurrentMonth()}
+      />
       <CalendarGrid year={year} month={month} />
     </div>
   );
