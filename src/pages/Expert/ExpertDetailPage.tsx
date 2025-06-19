@@ -90,8 +90,9 @@ export default function ExpertDetailPage() {
   return (
     <PageWrapper>
       <ScrollContainer title={headerTitle}>{content}</ScrollContainer>
-      {!isLoading && expert && (
+      {expert && (
         <FixedBottom
+          expert={expert}
           localBookmarkState={localBookmarkState}
           handleLikeClick={handleLikeClick}
         />
