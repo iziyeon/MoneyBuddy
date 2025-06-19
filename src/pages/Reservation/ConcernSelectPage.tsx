@@ -4,10 +4,17 @@ import ConcernCard from '../../components/pages/Reservation/ConcernCard';
 import { concernOptions } from '../../data/concernOptionData';
 import { useReservationStore } from '../../stores/useReservationStore';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function ConcernSelectPage(): JSX.Element {
-  const { selectedConcern, setSelectedConcern } = useReservationStore();
+  const { selectedConcern, setSelectedConcern, expert } = useReservationStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!expert) {
+      navigate(-1);
+    }
+  }, [expert, navigate]);
 
   return (
     <div>
@@ -28,9 +35,8 @@ export default function ConcernSelectPage(): JSX.Element {
           variant={selectedConcern ? 'primary' : 'disabled'}
           onClick={() => {
             if (selectedConcern) {
-              console.log('다음 단계로 이동', selectedConcern);
+              navigate('/reservation/step2');
             }
-            navigate('/reservation/step2');
           }}
         >
           다음
