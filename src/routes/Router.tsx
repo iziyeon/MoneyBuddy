@@ -27,7 +27,8 @@ import ReservationListPage from '../pages/Reservation/ReservationListPage';
 import ConsultationHistoryPage from '../pages/Consultation/ConsultationHistoryPage';
 import ConsultationDetailPage from '../pages/Consultation/ConsultationDetailPage';
 import SelectTimePage from '../pages/Reservation/SelectTimePage';
-
+import BookmarkedExpertsPage from '../pages/Bookmarks/BookmarkedExpertsPage';
+import ChallengeStatusPage from '../pages/Challenge/ChallengeStatusPage';
 export default function Router() {
   return (
     <Routes>
@@ -221,7 +222,7 @@ export default function Router() {
         }
       />
       <Route
-        path="/bookmarks/experts"
+        path="/bookmarked/experts"
         element={
           <PrivateRoute>
             <DefaultLayout>
