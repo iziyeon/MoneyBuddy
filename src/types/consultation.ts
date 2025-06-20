@@ -13,13 +13,14 @@ export interface ConsultationHistory {
   date: string;
   time: string;
   type: string;
-  status: ConsultationStatus;
+  status: string;
   amount: number;
   paymentMethod: string;
   paymentDate: string;
   consultationArea: string;
   consultationNotes: string;
   reviewStatus?: 'available' | 'completed';
+  dateObject?: Date; // 정렬을 위한 날짜 객체 추가
 }
 
 export interface ConsultationListResponse {

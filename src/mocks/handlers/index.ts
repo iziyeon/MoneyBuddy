@@ -275,16 +275,28 @@ const expertListHandlers = [
 
   // 북마크 목록 조회
   http.get('/api/v1/users/bookmarks', () => {
-    const bookmarkedExperts = expertData.slice(0, 3).map(expert => ({
-      id: expert.id,
-      nickname: expert.nickname,
-      field: expert.field,
-      rating: expert.rating,
-      price: expert.price,
-      profile_image: expert.profile_image,
-      description: expert.description,
-    }));
-    return HttpResponse.json(bookmarkedExperts);
+    try {
+      // 북마크된 엑스퍼트는 평점이 높거나 리뷰가 많은 엑스퍼트들로 구성
+      const bookmarkedExperts = expertData
+        .filter(expert => expert.rating >= 4.7) // 평점 4.7 이상
+        .slice(0, 8) // 최대 8명
+        .map(expert => ({
+          ...expert,
+          // 북마크된 상태임을 명시
+          isBookmarked: true,
+        }));
+
+      console.log(
+        `✅ MSW: 북마크 목록 조회 성공 - ${bookmarkedExperts.length}개`,
+      );
+      return HttpResponse.json(bookmarkedExperts);
+    } catch (error) {
+      console.error('❌ MSW - 북마크 목록 조회 오류:', error);
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
+      );
+    }
   }),
 ];
 
@@ -362,6 +374,45 @@ const consultationHandlers = [
   }),
 ];
 
+// 마이페이지 관련 핸들러 추가
+const mypageHandlers = [
+  // 사용자 정보 조회
+  http.get('/api/v1/users/me', () => {
+    return HttpResponse.json({
+      id: 1,
+      nickname: '머니버디맨',
+      email: 'user@example.com',
+      profileImage: '/jpg/experts/expert1.png',
+    });
+  }),
+
+  // 상담 내역 조회 (마이페이지용)
+  http.get('/api/v1/mypage/consultations', () => {
+    const consultation = {
+      id: 1,
+      expertName: '박재현',
+      expertImage: '/jpg/experts/expert1.png',
+      date: '2025년 1월 25일 월요일',
+      time: '오전 10:00~오전 10:30',
+      type: '전화 상담',
+      status: '예약 완료',
+      duration: '1시간',
+    };
+    return HttpResponse.json(consultation);
+  }),
+
+  // 챌린지 정보 조회
+  http.get('/api/v1/mypage/challenges', () => {
+    const challenge = {
+      id: 1,
+      title: '챌린지를 수행해주세요',
+      deadline: '2025.12.25 까지 (D-00)',
+      percentage: 20,
+    };
+    return HttpResponse.json(challenge);
+  }),
+];
+
 // 기본 헬스체크 핸들러만 유지
 export const defaultHandlers = [
   http.get('/api/health', () => {
@@ -378,6 +429,7 @@ export const handlers = [
   ...reservationHandlers,
   ...paymentHandlers,
   ...consultationHandlers,
+  ...mypageHandlers,
   ...defaultHandlers,
 ];
 export const otherHandlers = [

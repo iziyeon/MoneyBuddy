@@ -220,6 +220,26 @@ export default function Router() {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/bookmarks/experts"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <BookmarkedExpertsPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/challenge/status"
+        element={
+          <PrivateRoute>
+            <DefaultLayout>
+              <ChallengeStatusPage />
+            </DefaultLayout>
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
