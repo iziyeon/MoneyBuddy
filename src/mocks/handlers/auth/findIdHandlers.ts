@@ -9,7 +9,7 @@ const MOCK_USER_DATA = {
 };
 
 export const findIdHandlers = [
-  http.post('/api/v1/users/find-id', async ({ request }) => {
+  http.post('/api/v1/auth/find-id', async ({ request }) => {
     const body = (await request.json()) as FindIdRequest;
     console.log('Request body:', body); // 디버깅용 로그
 

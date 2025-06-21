@@ -19,6 +19,11 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   user: User;
+  // MSW 모드용 토큰 구조 지원
+  tokens?: {
+    access_token: string;
+    refresh_token: string;
+  };
 }
 
 export interface FindIdRequest {
