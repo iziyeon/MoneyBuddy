@@ -1,9 +1,8 @@
 import { http, HttpResponse } from 'msw';
-import { API_ENDPOINTS } from '../../../config/api';
 import type { SignupRequest } from '../../../types/api/auth/signup';
 
 export const signupHandlers = [
-  http.post(API_ENDPOINTS.signup, async ({ request }) => {
+  http.post('/api/v1/users', async ({ request }) => {
     const { name, phone, email, password, agreementTerm } =
       (await request.json()) as SignupRequest;
 

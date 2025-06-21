@@ -12,7 +12,7 @@ const MOCK_USER = {
 
 export const resetPasswordHandlers = [
   // 비밀번호 재설정 요청
-  http.post('/api/v1/users/reset-password/request', async ({ request }) => {
+  http.post('/api/v1/auth/request-reset-password', async ({ request }) => {
     const body = (await request.json()) as RequestResetPasswordRequest;
     console.log('Reset password request:', body); // 디버깅용
 
@@ -33,7 +33,7 @@ export const resetPasswordHandlers = [
   }),
 
   // 인증 코드 확인
-  http.post('/api/v1/users/reset-password/verify', async ({ request }) => {
+  http.post('/api/v1/auth/verify-reset-code', async ({ request }) => {
     const body = (await request.json()) as VerifyResetCodeRequest;
 
     if (
@@ -55,7 +55,7 @@ export const resetPasswordHandlers = [
   }),
 
   // 새 비밀번호 설정
-  http.post('/api/v1/users/reset-password', async ({ request }) => {
+  http.post('/api/v1/auth/reset-password', async ({ request }) => {
     const body = (await request.json()) as ResetPasswordRequest;
 
     if (body.token === 'valid-reset-token') {

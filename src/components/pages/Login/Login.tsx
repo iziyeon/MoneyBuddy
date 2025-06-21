@@ -7,10 +7,6 @@ import { loginStyles } from '../../../styles/login.styles';
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleSocialLogin = (provider: 'kakao' | 'google' | 'naver') => {
-    console.log(`${provider} 소셜 로그인 시작`);
-  };
-
   return (
     <div className={loginStyles.wrapper}>
       <div className="mb-12 text-center">
@@ -29,7 +25,7 @@ export default function Login() {
         <div className={loginStyles.dividerLine} />
       </div>
 
-      <SocialLoginButtons onSocialLogin={handleSocialLogin} />
+      <SocialLoginButtons />
 
       <div className={loginStyles.bottomLinks}>
         <button type="button" onClick={() => navigate('/signup')}>

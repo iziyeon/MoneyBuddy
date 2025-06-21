@@ -2,38 +2,35 @@
 import { axiosInstance } from '../api';
 import type {
   RequestResetPasswordRequest,
-  ResetPasswordRequest,
   VerifyResetCodeRequest,
+  ResetPasswordRequest,
 } from '../../types/auth';
 
+// 비밀번호 재설정 요청 (명세서에 맞춰 수정)
 export const requestResetPasswordApi = async (
   data: RequestResetPasswordRequest,
 ) => {
-  console.log('📧 비밀번호 재설정 요청 API 호출');
   const response = await axiosInstance.post(
-    '/api/v1/users/reset-password/request',
+    '/api/v1/auth/request-reset-password',
     data,
   );
-  console.log('✅ 비밀번호 재설정 요청 성공');
   return response.data;
 };
 
+// 비밀번호 재설정 코드 확인 (명세서에 맞춰 수정)
 export const verifyResetCodeApi = async (data: VerifyResetCodeRequest) => {
-  console.log('🔢 인증 코드 확인 API 호출');
   const response = await axiosInstance.post(
-    '/api/v1/users/reset-password/verify',
+    '/api/v1/auth/verify-reset-code',
     data,
   );
-  console.log('✅ 인증 코드 확인 성공');
   return response.data;
 };
 
+// 비밀번호 재설정 (명세서에 맞춰 수정)
 export const resetPasswordApi = async (data: ResetPasswordRequest) => {
-  console.log('🔒 비밀번호 재설정 API 호출');
   const response = await axiosInstance.post(
-    '/api/v1/users/reset-password',
+    '/api/v1/auth/reset-password',
     data,
   );
-  console.log('✅ 비밀번호 재설정 성공');
   return response.data;
 };

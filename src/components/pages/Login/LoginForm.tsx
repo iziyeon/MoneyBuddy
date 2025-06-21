@@ -23,12 +23,17 @@ export default function LoginForm() {
     mode: 'onChange',
     defaultValues: { email: '', password: '', autoLogin: false },
   });
-
   const onSubmit = async (data: LoginFormValues) => {
     try {
       const { autoLogin, ...loginData } = data;
       const response = await loginApi(loginData);
-      setAuth(response.user, response.accessToken, response.refreshToken);
+
+      // MSW 응답 구조에 따라 토큰 추출
+      const accessToken = response.tokens?.access_token || response.accessToken;
+      const refreshToken =
+        response.tokens?.refresh_token || response.refreshToken;
+
+      setAuth(response.user, accessToken, refreshToken);
       navigate('/');
     } catch (err: unknown) {
       if (
