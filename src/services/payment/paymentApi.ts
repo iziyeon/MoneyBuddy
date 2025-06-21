@@ -1,5 +1,4 @@
 import { axiosInstance } from '../api';
-import { API_ENDPOINTS } from '../../config/api';
 
 export interface PaymentRequest {
   expertId: number;
@@ -27,28 +26,37 @@ export interface PaymentStatus {
   paidAt?: string;
 }
 
-// 결제 처리
-export const processPayment = async (
-  data: PaymentRequest,
-): Promise<PaymentResponse> => {
-  const response = await axiosInstance.post(API_ENDPOINTS.payments, data);
+export interface PaymentHistory {
+  id: string;
+  expertId: number;
+  expertName: string;
+  amount: number;
+  method: string;
+  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  date: string;
+  consultationType: string;
+}
+
+// 결제 처리 API
+export const processPaymentApi = async (paymentData: any) => {
+  const response = await axiosInstance.post('/api/v1/payments', paymentData);
   return response.data;
 };
 
-// 결제 상태 조회
-export const getPaymentStatus = async (
-  paymentId: string,
-): Promise<PaymentStatus> => {
-  const response = await axiosInstance.get(
-    `${API_ENDPOINTS.payments}/${paymentId}`,
-  );
+// 결제 상태 조회 API
+export const getPaymentStatusApi = async (paymentId: string) => {
+  const response = await axiosInstance.get(`/api/v1/payments/${paymentId}`);
   return response.data;
 };
 
-// 결제 취소
-export const cancelPayment = async (paymentId: string) => {
-  const response = await axiosInstance.post(
-    `${API_ENDPOINTS.payments}/${paymentId}/cancel`,
-  );
+// 결제 취소 API
+export const cancelPaymentApi = async (paymentId: string) => {
+  const response = await axiosInstance.delete(`/api/v1/payments/${paymentId}`);
+  return response.data;
+};
+
+// 결제 내역 조회 API
+export const getPaymentHistoryApi = async () => {
+  const response = await axiosInstance.get('/api/v1/payments');
   return response.data;
 };
