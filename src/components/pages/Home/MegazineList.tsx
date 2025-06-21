@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import MegazineTab from './MegazineTab';
 import MegazineCard from './MegazineCard';
-import LoadMoreButton from './LoadMoreButton';
 import megazine1 from '../../../assets/images/megazine_1.png';
 import megazine2 from '../../../assets/images/megazine_2.png';
 import megazine3 from '../../../assets/images/megazine_3.png';
@@ -34,14 +33,20 @@ export default function MegazineList() {
   ];
 
   return (
-    <div className="px-4 py-5">
+    <div className="px-4 py-5 bg-[#F5F5F5]">
       <MegazineTab active={active} onChange={setActive} />
+
       <div className="flex flex-col gap-3">
         {dummyData.map((item, idx) => (
           <MegazineCard key={idx} {...item} />
         ))}
+
+        <div className="border rounded-xl p-4 bg-white">
+          <button className="w-full text-center text-b2 font-semibold text-[#111111]">
+            매거진 더 보러가기
+          </button>
+        </div>
       </div>
-      <LoadMoreButton label="매거진 더 보러가기" />
     </div>
   );
 }
