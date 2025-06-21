@@ -1,5 +1,5 @@
-import Text from '../../common/Text';
 import { ChevronRight } from 'lucide-react';
+import { mypageStateStyles } from '../../../styles/mypage-state.styles';
 
 interface CustomerSupportSectionProps {
   onCustomerCenterClick: () => void;
@@ -28,24 +28,26 @@ export default function CustomerSupportSection({
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200">
-      <div className="p-4 border-b border-gray-200">
-        <Text type="H4" className="font-bold">
-          고객지원
-        </Text>
-      </div>
-      <div>
+    <div className={mypageStateStyles.customerSupport.container}>
+      <h2 className={mypageStateStyles.customerSupport.title}>고객지원</h2>
+      <div className={mypageStateStyles.customerSupport.box}>
         {supportItems.map((item, index) => (
-          <button
-            key={item.label}
-            onClick={item.onClick}
-            className={`w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${
-              index < supportItems.length - 1 ? 'border-b border-gray-100' : ''
-            }`}
-          >
-            <Text type="B2">{item.label}</Text>
-            <ChevronRight size={16} className="text-gray-400" />
-          </button>
+          <div key={item.label}>
+            <div
+              className={mypageStateStyles.customerSupport.item}
+              onClick={item.onClick}
+            >
+              <span className={mypageStateStyles.customerSupport.itemText}>
+                {item.label}
+              </span>
+              <ChevronRight
+                className={mypageStateStyles.customerSupport.arrow}
+              />
+            </div>
+            {index < supportItems.length - 1 && (
+              <div className={mypageStateStyles.customerSupport.divider} />
+            )}
+          </div>
         ))}
       </div>
     </div>

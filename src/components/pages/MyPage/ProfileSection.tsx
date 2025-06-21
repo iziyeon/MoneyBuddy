@@ -1,9 +1,9 @@
-import Text from '../../common/Text';
-import { Edit } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { mypageStateStyles } from '../../../styles/mypage-state.styles';
 
 interface ProfileSectionProps {
   nickname: string;
-  profileImage?: string;
+  profileImage: string;
   onEditClick: () => void;
 }
 
@@ -13,27 +13,20 @@ export default function ProfileSection({
   onEditClick,
 }: ProfileSectionProps) {
   return (
-    <div className="bg-white rounded-lg p-4 border border-gray-200">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
-            {profileImage ? (
-              <img
-                src={profileImage}
-                alt="프로필"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                👤
-              </div>
-            )}
-          </div>
-          <div>
-            <Text type="H3" className="font-bold">
-              {nickname}님
-            </Text>
-          </div>
+    <div className={mypageStateStyles.content.profileSection}>
+      <img
+        src={profileImage}
+        alt="프로필"
+        className={mypageStateStyles.content.profileImage}
+      />
+      <div className={mypageStateStyles.content.profileInfo}>
+        <div className={mypageStateStyles.content.nickname}>{nickname}</div>
+        <div
+          className={mypageStateStyles.content.editButton}
+          onClick={onEditClick}
+        >
+          <span className="text-xs text-gray-500">프로필 수정</span>
+          <ChevronRight className="w-4 h-4 text-gray-500" />
         </div>
       </div>
     </div>
