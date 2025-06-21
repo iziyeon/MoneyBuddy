@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, type ReactNode } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
 import { useExpert } from '../../hooks/useExpert';
@@ -10,6 +10,9 @@ import PaymentRequestInfo from '../../components/pages/Payment/PaymentRequestInf
 import PaymentPointInfo from '../../components/pages/Payment/PaymentPointInfo';
 import PaymentPriceInfo from '../../components/pages/Payment/PaymentPriceInfo';
 import PaymentMethodInfo from '../../components/pages/Payment/PaymentMethodInfo';
+import { useProcessPayment } from '../../hooks/usePayment';
+
+import { useReservationStore } from '../../stores/useReservationStore';
 
 // 결제 타입 정의
 type PaymentMethodType = 'card' | 'npay' | 'kakaopay' | 'payco' | 'tosspay';
@@ -44,19 +47,28 @@ const ScrollContainer = ({
 };
 
 export default function PaymentPage() {
-  const { expertId } = useParams<{ expertId: string }>();
   const navigate = useNavigate();
-  const { data: expert, isLoading } = useExpert(
+  const location = useLocation();
+  const { expertId } = useParams();
+  const {
+    expert: storeExpert,
+    selectedDate,
+    selectedTime,
+  } = useReservationStore();
+  const { data: expertData, isLoading: expertLoading } = useExpert(
     expertId ? parseInt(expertId) : undefined,
   );
+  const processPaymentMutation = useProcessPayment();
 
+  // expert 정보는 store에서 먼저 가져오고, 없으면 API에서 가져옴
+  const expert = storeExpert || expertData;
   // 상태 관리
-  const [phone, setPhone] = useState('010-0000-0000');
-  const [isSameAsUser, setIsSameAsUser] = useState(true);
-  const [request, setRequest] = useState('');
-  const [usedPoint, setUsedPoint] = useState(0);
+  const [phone, setPhone] = useState<string>('');
+  const [isSameAsUser, setIsSameAsUser] = useState<boolean>(false);
+  const [request, setRequest] = useState<string>('');
+  const [usedPoint, setUsedPoint] = useState<number>(0);
   const [isAgreed, setIsAgreed] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 결제 수단 상태
   const [selectedMethod, setSelectedMethod] =
@@ -75,54 +87,51 @@ export default function PaymentPage() {
   const price = expert?.price || 30000;
   const totalPrice = Math.max(0, price - usedPoint);
 
-  // 모의 상담 날짜와 시간
-  const consultationDate = '2024.01.25';
-  const consultationTime = '오전 10:00';
-
-  const handlePayment = () => {
-    // 결제 전 유효성 검사
+  // 결제 처리 함수
+  const handlePayment = async () => {
     if (!selectedMethod) {
       alert('결제 수단을 선택해주세요.');
       return;
     }
 
-    if (!isAgreed) {
-      alert('결제 약관에 동의해주세요.');
-      return;
+    try {
+      setIsLoading(true);
+
+      const paymentData = {
+        expert_id: expert?.id,
+        amount: totalPrice,
+        payment_method: selectedMethod,
+        used_point: usedPoint,
+        phone: phone,
+        request: request,
+      };
+
+      const result = await processPaymentMutation.mutateAsync(paymentData);
+
+      // 결제 성공 시 성공 페이지로 이동
+      navigate('/payment/success', {
+        state: {
+          expertId: expert?.id,
+          expertName: expert?.nickname,
+          price: totalPrice,
+          date: selectedDate,
+          time: selectedTime,
+          paymentId: result.payment_id,
+        },
+      });
+    } catch (error) {
+      console.error('결제 실패:', error);
+      navigate('/payment/fail', {
+        state: {
+          errorMessage: '결제 처리 중 오류가 발생했습니다.',
+          expertId: expert?.id,
+        },
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    // 결제 처리 시작
-    setIsProcessing(true);
-
-    // 결제 프로세스 모의 구현 (실제로는 PG사 API 호출)
-    setTimeout(() => {
-      setIsProcessing(false);
-
-      // 성공 케이스 (90% 확률로 성공)
-      if (Math.random() > 0.1) {
-        // 결제 성공 시 성공 페이지로 이동
-        navigate('/payment/success', {
-          state: {
-            expertId: expertId,
-            expertName: expert?.nickname,
-            price: totalPrice,
-            date: consultationDate,
-            time: consultationTime,
-          },
-        });
-      } else {
-        // 결제 실패 시 실패 페이지로 이동
-        navigate('/payment/fail', {
-          state: {
-            errorMessage: '결제 중 오류가 발생했습니다.',
-            expertId: expertId,
-          },
-        });
-      }
-    }, 1500); // 결제 처리 시간 시뮬레이션
   };
-
-  if (isLoading) {
+  if (isLoading || expertLoading) {
     return (
       <PageWrapper>
         <div className="flex justify-center items-center h-[600px]">
@@ -131,8 +140,7 @@ export default function PaymentPage() {
       </PageWrapper>
     );
   }
-
-  if (!expert) {
+  if (!expert && !expertLoading) {
     return (
       <PageWrapper>
         <div className="p-5 text-center">
@@ -151,16 +159,17 @@ export default function PaymentPage() {
   // 하단에 고정될 버튼 컴포넌트
   const BottomButton = (
     <div className="bg-white border-t border-gray-200 p-4 w-full">
+      {' '}
       <button
         onClick={handlePayment}
-        disabled={!isAgreed || isProcessing}
+        disabled={!isAgreed || isLoading}
         className={
-          isAgreed && !isProcessing
+          isAgreed && !isLoading
             ? 'w-full bg-primary text-white py-3 rounded-md text-center'
             : 'w-full bg-gray-300 text-white py-3 rounded-md text-center'
         }
       >
-        {isProcessing ? (
+        {isLoading ? (
           <span className="flex items-center justify-center">
             <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span>
             처리 중...
@@ -194,13 +203,15 @@ export default function PaymentPage() {
           </div>
 
           <div className="p-5">
+            {' '}
             {/* 전문가 정보 */}
-            <PaymentExpertInfo
-              expert={expert}
-              consultationDate={consultationDate}
-              consultationTime={consultationTime}
-            />
-
+            {expert && (
+              <PaymentExpertInfo
+                expert={expert}
+                consultationDate={selectedDate || ''}
+                consultationTime={selectedTime || ''}
+              />
+            )}
             {/* 연락처 정보 */}
             <PaymentContactInfo
               phone={phone}
@@ -208,10 +219,8 @@ export default function PaymentPage() {
               isSameAsUser={isSameAsUser}
               setIsSameAsUser={setIsSameAsUser}
             />
-
             {/* 요청사항 */}
             <PaymentRequestInfo request={request} setRequest={setRequest} />
-
             {/* 포인트 사용 - 포인트가 있을 때만 표시 */}
             {hasAvailablePoints && (
               <PaymentPointInfo
@@ -220,20 +229,17 @@ export default function PaymentPage() {
                 setUsedPoint={setUsedPoint}
               />
             )}
-
             {/* 결제 금액 */}
             <PaymentPriceInfo
               price={price}
               usedPoint={usedPoint}
               totalPrice={totalPrice}
             />
-
             {/* 결제수단 */}
             <PaymentMethodInfo
               selectedMethod={selectedMethod}
               setSelectedMethod={setSelectedMethod}
             />
-
             <div>
               <div className="flex items-center gap-[7px]">
                 <input
