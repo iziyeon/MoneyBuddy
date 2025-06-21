@@ -5,18 +5,25 @@ import HeartIcon from '../../../assets/icons/common/heart.png';
 import HeartEmptyIcon from '../../../assets/icons/common/heartEmpty.png';
 import { useExpertStore } from '../../../stores/useExpertStore';
 
-export default function ExpertCard({
-  id,
-  rank,
-  name,
-  tags,
-  description,
-  rating,
-  reviewCount,
-  imgUrl,
-  isLiked = false,
-}: MonthlyExpert): JSX.Element {
+interface ExpertCardProps {
+  expert: MonthlyExpert;
+}
+
+export default function ExpertCard({ expert }: ExpertCardProps): JSX.Element {
+  const {
+    id,
+    rank,
+    name,
+    tags,
+    description,
+    rating,
+    reviewCount,
+    imgUrl,
+    isLiked = false,
+  } = expert;
+
   const toggleLike = useExpertStore(state => state.toggleLike);
+
   const rankColors: Record<number, string> = {
     1: 'bg-yellow-400',
     2: 'bg-gray-400',
