@@ -34,7 +34,7 @@ export const MOCK_CONFIG = {
   VERIFICATION_CODE: '123456',
   RESET_TOKEN: 'valid-reset-token',
   TEST_EMAIL: 'test@example.com',
-  TEST_PASSWORD: 'password123',
+  TEST_PASSWORD: 'password123!',
 } as const;
 
 // EXPERT_FIELDS는 expertData.ts에서 import하여 사용

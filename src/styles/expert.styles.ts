@@ -9,20 +9,20 @@ export const expertCardStyles = {
   monthlyInfo: 'mt-3',
   monthlyHeader: 'flex items-center gap-1',
   monthlyNickname:
-    'font-semibold text-[14px] leading-[130%] tracking-[0%] flex items-center',
+    'font-semibold text-sm leading-[130%] tracking-[0%] flex items-center',
   monthlyRating: 'flex items-center gap-1',
-  monthlyRatingStar: 'text-[#FF7497] fill-[#FF7497] flex-shrink-0',
+  monthlyRatingStar: 'text-pink-500 fill-current flex-shrink-0',
   monthlyRatingText:
-    'text-[12px] leading-[100%] tracking-[0%] flex items-center text-[#111111]',
+    'text-xs leading-[100%] tracking-[0%] flex items-center text-gray-900',
   monthlyRatingCount:
-    'text-[12px] leading-[100%] tracking-[0%] flex items-center text-[#9C9C9C]',
+    'text-xs leading-[100%] tracking-[0%] flex items-center text-gray-400',
   monthlyBio:
-    'mt-1 font-normal text-[14px] leading-[130%] tracking-[-2%] flex items-center text-[#777777] line-clamp-1',
+    'mt-1 font-normal text-sm leading-[130%] tracking-[-2%] flex items-center text-gray-500 line-clamp-1',
   monthlyPrice: 'mt-2 flex items-center',
   monthlyPriceAmount:
-    'font-semibold text-[14px] leading-[130%] tracking-[0%] flex items-center text-[#000000]',
+    'font-semibold text-sm leading-[130%] tracking-[0%] flex items-center text-black',
   monthlyPriceUnit:
-    'font-normal text-[12px] leading-[130%] tracking-[0%] text-[#777777] flex items-center',
+    'font-normal text-xs leading-[130%] tracking-[0%] text-gray-500 flex items-center',
 
   // Regular Expert Card
   regularWrapper: 'p-4 border-b border-stroke cursor-pointer',
@@ -33,21 +33,21 @@ export const expertCardStyles = {
   regularHeaderLeft: 'flex items-center gap-[5px]',
   regularHashtags: 'flex flex-wrap gap-1',
   regularHashtag:
-    'font-normal text-[9px] leading-[130%] tracking-[-2%] align-middle text-[#777777]',
+    'font-normal text-[9px] leading-[130%] tracking-[-2%] align-middle text-gray-500',
   regularLikeButton: 'w-8 h-8 flex items-center justify-center',
   regularDescription:
-    'mt-0 font-normal text-[14px] leading-[130%] tracking-[-2%] align-middle text-[#777777] line-clamp-1',
+    'mt-0 font-normal text-sm leading-[130%] tracking-[-2%] align-middle text-gray-500 line-clamp-1',
   regularRatingWrapper: 'flex items-center gap-1 mt-2',
   regularRating: 'flex items-center gap-1',
-  regularRatingStar: 'text-[#FF7497] fill-[#FF7497] flex-shrink-0',
+  regularRatingStar: 'text-pink-500 fill-current flex-shrink-0',
   regularRatingNumbers: 'flex items-center gap-1',
   regularRatingText:
-    'text-[12px] leading-[100%] tracking-[0%] flex items-center text-[#111111]',
+    'text-xs leading-[100%] tracking-[0%] flex items-center text-gray-900',
   regularRatingCount:
-    'text-[12px] leading-[100%] tracking-[0%] flex items-center text-[#9C9C9C]',
+    'text-xs leading-[100%] tracking-[0%] flex items-center text-gray-400',
   regularPriceWrapper: 'mt-2 flex items-center',
   regularPriceAmount:
-    'font-semibold text-[14px] leading-[130%] tracking-[0%] align-middle text-[#000000]',
+    'font-semibold text-sm leading-[130%] tracking-[0%] align-middle text-black',
   regularPriceUnit:
-    'font-normal text-[12px] leading-[130%] tracking-[0%] align-middle text-[#777777]',
+    'font-normal text-xs leading-[130%] tracking-[0%] align-middle text-gray-500',
 };
