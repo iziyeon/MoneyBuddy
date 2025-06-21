@@ -12,6 +12,7 @@ interface Challenge {
 
 interface ChallengeStatusCardProps {
   challenge: Challenge;
+  onDetailClick?: (challengeId: number) => void;
 }
 
 // SVG 반원형 진행률 바 컴포넌트
@@ -116,6 +117,7 @@ const CircularProgress = ({
 
 export default function ChallengeStatusCard({
   challenge,
+  onDetailClick,
 }: ChallengeStatusCardProps) {
   const getStatusBadge = () => {
     switch (challenge.status) {
@@ -372,7 +374,15 @@ export default function ChallengeStatusCard({
             height: '40px',
           }}
         >
+          {' '}
           <button
+            onClick={() => {
+              if (onDetailClick) {
+                onDetailClick(challenge.id);
+              } else {
+                console.log('챌린지 상세보기:', challenge.id);
+              }
+            }}
             style={{
               boxSizing: 'border-box',
               display: 'flex',

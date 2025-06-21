@@ -1,4 +1,5 @@
 import { useState, useRef, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
 import ChallengeStatusCard from '../../components/pages/Challenge/ChallengeStatusCard';
@@ -111,6 +112,11 @@ interface Challenge {
 
 export default function ChallengeStatusPage() {
   const [activeTab, setActiveTab] = useState('all');
+  const navigate = useNavigate();
+
+  const handleChallengeDetailClick = (challengeId: number) => {
+    navigate(`/challenge/${challengeId}`);
+  };
 
   // 모의 챌린지 데이터 - 다양한 상태 포함
   const challenges: Challenge[] = [
@@ -180,8 +186,7 @@ export default function ChallengeStatusPage() {
         >
           {/* 탭 섹션 */}
           <TabSection activeTab={activeTab} onTabChange={setActiveTab} />
-
-          {/* 챌린지 목록 */}
+          {/* 챌린지 목록 */}{' '}
           <div
             style={{
               display: 'flex',
@@ -193,7 +198,14 @@ export default function ChallengeStatusPage() {
             }}
           >
             {filteredChallenges.map(challenge => (
-              <ChallengeStatusCard key={challenge.id} challenge={challenge} />
+              <ChallengeStatusCard
+                key={challenge.id}
+                challenge={challenge}
+                onDetailClick={challengeId => {
+                  // 챌린지 상세 페이지로 이동
+                  navigate(`/challenge/${challengeId}`);
+                }}
+              />
             ))}
           </div>
         </div>
