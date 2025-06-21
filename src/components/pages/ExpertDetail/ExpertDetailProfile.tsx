@@ -11,6 +11,7 @@ import ExpertCareer from './components/ExpertCareer';
 import LectureTab from './components/tabs/LectureTab';
 import MagazineTab from './components/tabs/MagazineTab';
 import ReviewTab from './components/tabs/ReviewTab';
+import FixedBottom from './components/FixedBottom';
 
 interface ExpertDetailProfileProps {
   expert: Expert & {
@@ -29,9 +30,15 @@ export default function ExpertDetailProfile({
   isBookmarked = false,
 }: ExpertDetailProfileProps) {
   const [activeTab, setActiveTab] = useState('전문가');
+  const [localBookmarkState, setLocalBookmarkState] = useState(isBookmarked);
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLocalBookmarkState(!localBookmarkState);
+  };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full pb-20">
       <ProfileHeader expert={expert} />
       <ProfileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -47,6 +54,14 @@ export default function ExpertDetailProfile({
       {activeTab === '강의' && <LectureTab />}
       {activeTab === '매거진' && <MagazineTab />}
       {activeTab === '후기' && <ReviewTab />}
+
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[390px] z-10">
+        <FixedBottom
+          localBookmarkState={localBookmarkState}
+          handleLikeClick={handleLikeClick}
+          expert={expert}
+        />
+      </div>
     </div>
   );
 }

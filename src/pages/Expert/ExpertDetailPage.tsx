@@ -1,13 +1,11 @@
 // filepath: c:\project\FE\src\pages\ExpertDetailPage.tsx
 import { useParams } from 'react-router-dom';
-import { useState, useRef, useMemo } from 'react';
+import { useRef, useMemo } from 'react';
 import type { ReactNode } from 'react';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
 import ExpertDetailProfile from '../../components/pages/ExpertDetail/ExpertDetailProfile';
 import { useExpert } from '../../hooks/useExpert';
-import FixedBottom from '../../components/pages/ExpertDetail/components/FixedBottom';
-import { useToggleBookmark } from '../../hooks/useBookmarks';
 
 // 스크롤 컨테이너 컴포넌트 추출
 const ScrollContainer = ({
@@ -47,22 +45,7 @@ export default function ExpertDetailPage() {
     const parsed = parseInt(id, 10);
     return isNaN(parsed) ? undefined : parsed;
   }, [id]);
-
   const { data: expert, isLoading, error } = useExpert(expertId);
-  const [localBookmarkState, setLocalBookmarkState] = useState(false);
-  const toggleBookmarkMutation = useToggleBookmark();
-
-  const handleLikeClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!expert) return;
-    try {
-      setLocalBookmarkState(!localBookmarkState);
-      await toggleBookmarkMutation.mutateAsync(expert.id);
-    } catch (error) {
-      setLocalBookmarkState(localBookmarkState);
-      console.error('좋아요 토글 실패:', error);
-    }
-  };
 
   let content: ReactNode;
   let headerTitle = '전문가 상세';
@@ -82,21 +65,11 @@ export default function ExpertDetailPage() {
     );
   } else {
     headerTitle = expert.nickname;
-    content = (
-      <ExpertDetailProfile expert={expert} isBookmarked={localBookmarkState} />
-    );
+    content = <ExpertDetailProfile expert={expert} />;
   }
-
   return (
     <PageWrapper>
       <ScrollContainer title={headerTitle}>{content}</ScrollContainer>
-      {expert && (
-        <FixedBottom
-          expert={expert}
-          localBookmarkState={localBookmarkState}
-          handleLikeClick={handleLikeClick}
-        />
-      )}
     </PageWrapper>
   );
 }
