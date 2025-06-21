@@ -1,4 +1,4 @@
-import Text from '../../common/Text';
+import { mypageStateStyles } from '../../../styles/mypage-state.styles';
 
 interface QuickMenuProps {
   onChallengeClick: () => void;
@@ -15,47 +15,45 @@ export default function QuickMenu({
 }: QuickMenuProps) {
   const menuItems = [
     {
-      id: 'challenge',
+      icon: '/jpg/icon/paymentsuccess.png',
       label: '챌린지 현황',
-      icon: '🎯',
       onClick: onChallengeClick,
     },
     {
-      id: 'consultation',
+      icon: '/jpg/icon/image-1.png',
       label: '상담 내역',
-      icon: '💬',
       onClick: onConsultationClick,
     },
     {
-      id: 'expert',
-      label: '찜한 전문가',
-      icon: '❤️',
+      icon: '/jpg/icon/image 56.png',
+      label: '엑스퍼트',
       onClick: onExpertClick,
     },
     {
-      id: 'class',
+      icon: '/jpg/icon/image 52.png',
       label: '마이클래스',
-      icon: '📚',
       onClick: onClassClick,
     },
   ];
-
   return (
-    <div className="bg-white rounded-lg p-4 border border-gray-200">
-      <div className="grid grid-cols-4 gap-4">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
+    <div className={mypageStateStyles.quickMenu.container}>
+      {menuItems.map((item, index) => (
+        <div key={item.label}>
+          <div
+            className={mypageStateStyles.quickMenu.item}
             onClick={item.onClick}
-            className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <span className="text-2xl mb-2">{item.icon}</span>
-            <Text type="B3" className="text-gray-700 text-center">
+            <img
+              src={item.icon}
+              alt={item.label}
+              className={mypageStateStyles.quickMenu.icon}
+            />
+            <span className={mypageStateStyles.quickMenu.text}>
               {item.label}
-            </Text>
-          </button>
-        ))}
-      </div>
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
