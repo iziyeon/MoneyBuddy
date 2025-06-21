@@ -50,7 +50,7 @@ export default function BottomNavigation() {
   ];
 
   return (
-    <div className="fixed bottom-0 flex gap-4 border rounded-t-xl justify-between">
+    <div className="bg-[#FFFFFF] fixed bottom-0 flex gap-4 border rounded-t-xl justify-between">
       {navItems.map(item => (
         <NavLink
           key={item.id}
