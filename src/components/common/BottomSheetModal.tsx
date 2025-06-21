@@ -56,32 +56,30 @@ export default function BottomSheetModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50"
-      onClick={handleBackdropClick}
+      className={`fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-30 ${
+        isOpen ? '' : 'hidden'
+      }`}
+      onClick={onClose}
     >
       <div
-        ref={modalRef}
-        className={`
-          w-[390px] 
-          flex flex-col 
-          items-start 
-          bg-white 
-          shadow-[0px_-4px_4px_rgba(0,0,0,0.05)] 
-          rounded-t-[8px] 
-          animate-slide-up
-          ${className}
-        `}
-        onClick={e => e.stopPropagation()}
+        className={className}
         style={{
-          maxHeight: '90vh',
-          transform: 'translateZ(0)', // 모바일 렌더링 성능 향상
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          padding: 0,
+          position: 'absolute',
+          width: 390,
+          height: 240,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          bottom: 0,
+          background: '#FFFFFF',
+          boxShadow: '0px -4px 4px rgba(0, 0, 0, 0.05)',
+          borderRadius: '8px 8px 0px 0px',
         }}
+        onClick={e => e.stopPropagation()}
       >
-        {/* 드래그 핸들 */}
-        <div className="w-full flex justify-center py-2">
-          <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
-        </div>
-
         {children}
       </div>
     </div>
