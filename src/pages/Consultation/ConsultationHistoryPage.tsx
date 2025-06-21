@@ -89,9 +89,8 @@ export default function ConsultationHistoryPage() {
   const handleConsultationDetail = (consultation: ConsultationHistory) => {
     navigate(`/consultation/detail/${consultation.id}`);
   };
-
   const handleChatClick = (consultation: ConsultationHistory) => {
-    console.log('채팅으로 이동:', consultation.expertName);
+    navigate(`/consultation/chat/${consultation.id}`);
   };
 
   const handleCancelClick = (consultation: ConsultationHistory) => {

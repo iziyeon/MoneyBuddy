@@ -4,13 +4,6 @@ import { expertData } from './expertData';
 // 상담 내역 데이터 생성 함수
 export const generateConsultationData = (): ConsultationHistory[] => {
   return expertData.slice(0, 8).map((expert, index) => {
-    const statusOptions = [
-      '예약완료',
-      '상담중',
-      '상담완료',
-      '취소중',
-      '취소완료',
-    ] as const;
     const typeOptions = [
       '전화상담',
       '화상상담',
@@ -45,7 +38,6 @@ export const generateConsultationData = (): ConsultationHistory[] => {
       const weekday = weekdays[date.getDay()];
       return `2025년 ${month}월 ${day}일 ${weekday}`;
     };
-
     return {
       id: index + 1,
       expertId: expert.id,
@@ -59,7 +51,9 @@ export const generateConsultationData = (): ConsultationHistory[] => {
             ? '오후 2:00~오후 2:30'
             : '오후 4:00~오후 4:30',
       type: typeOptions[index % typeOptions.length],
-      status: statusOptions[index % statusOptions.length],
+      // 기본적으로 모든 새로 생성된 상담은 "예약완료" 상태
+      // 특정 상담만 다른 상태로 설정
+      status: index === 4 ? '취소완료' : index === 6 ? '상담완료' : '예약완료',
       amount: expert.price,
       paymentMethod: paymentOptions[index % paymentOptions.length],
       paymentDate: `2025.01.${20 - dayOffset}`,
