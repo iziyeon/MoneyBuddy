@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import PageWrapper from '../../components/layout/PageWrapper';
@@ -7,39 +6,51 @@ import PageHeader from '../../components/layout/PageHeader';
 import ExpertCard from '../../components/pages/ExpertList/ExpertCard';
 import Text from '../../components/common/Text';
 import ScrollContainer from 'react-indiana-drag-scroll';
-import { expertData, EXPERT_FIELDS } from '../../data/expertData';
-import { SORT_OPTIONS, PAGINATION } from '../../config/constants';
-import type { Expert, ExpertField, SortType } from '../../types/expert';
-import type { InfiniteQueryData } from '../../types/common';
+import { useInfiniteExpertList } from '../../hooks/useExpertList';
+import type { SortType } from '../../types/expert';
+
+const EXPERT_FIELDS_WITH_ALL = [
+  '전체',
+  '소비',
+  '저축',
+  '투자',
+  '부채',
+  '기타',
+] as const;
+
+const SORT_OPTIONS: SortType[] = [
+  '최신순',
+  '북마크순',
+  '평점순',
+  '상담건순',
+  '낮은가격순',
+  '높은가격순',
+  '이름순',
+  '리뷰많은순',
+];
 
 export default function ExpertListPage() {
   const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = useState<ExpertField>('소비');
+  const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [selectedSort, setSelectedSort] = useState<SortType>('최신순');
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // URL 파라미터에서 tab 읽어서 초기 탭 설정
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabFromUrl = urlParams.get('tab');
+    if (tabFromUrl && EXPERT_FIELDS_WITH_ALL.includes(tabFromUrl as any)) {
+      setSelectedTab(tabFromUrl);
+    }
+  }, []);
+  // 실제 API 호출
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery<InfiniteQueryData<Expert>>({
-      queryKey: ['experts', selectedTab, selectedSort],
-      queryFn: ({ pageParam = 0 }) => {
-        const filtered = expertData.filter(
-          expert => expert.field === selectedTab,
-        );
-        const sorted = sortExperts(filtered);
-        const start = (pageParam as number) * PAGINATION.ITEMS_PER_PAGE;
-        const items = sorted.slice(start, start + PAGINATION.ITEMS_PER_PAGE);
-
-        return {
-          items,
-          nextPage:
-            start + PAGINATION.ITEMS_PER_PAGE < sorted.length
-              ? (pageParam as number) + 1
-              : undefined,
-        };
-      },
-      initialPageParam: 0,
-      getNextPageParam: lastPage => lastPage.nextPage,
+    useInfiniteExpertList({
+      category_id:
+        selectedTab === '전체' ? undefined : getCategoryId(selectedTab),
+      sort: getSortParam(selectedSort),
+      limit: 10,
     });
 
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -51,7 +62,7 @@ export default function ExpertListPage() {
           fetchNextPage();
         }
       },
-      { threshold: PAGINATION.INFINITE_SCROLL_THRESHOLD },
+      { threshold: 0.1 },
     );
 
     const currentTarget = observerTarget.current;
@@ -66,43 +77,36 @@ export default function ExpertListPage() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const monthlyExperts = expertData
-    .filter(expert => expert.field === selectedTab)
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 5);
+  // 카테고리 ID 매핑
+  function getCategoryId(category: string): string {
+    const categoryMap: Record<string, string> = {
+      소비: '1',
+      저축: '2',
+      투자: '3',
+      부채: '4',
+      기타: '5',
+    };
+    return categoryMap[category] || '1';
+  }
 
-  const sortExperts = (experts: Expert[]) => {
-    return [...experts].sort((a, b) => {
-      switch (selectedSort) {
-        case '최신순':
-          return b.id - a.id;
-        case '북마크순':
-          return b.bookmarks - a.bookmarks;
-        case '평점순':
-          return b.rating - a.rating;
-        case '상담건순':
-          return b.consultation_count - a.consultation_count;
-        case '낮은가격순':
-          return a.price - b.price;
-        case '높은가격순':
-          return b.price - a.price;
-        case '이름순':
-          return a.nickname.localeCompare(b.nickname);
-        case '리뷰많은순':
-          return b.review_count - a.review_count;
-        default:
-          return 0;
-      }
-    });
-  };
+  // 정렬 파라미터 매핑
+  function getSortParam(sort: SortType): string {
+    const sortMap: Record<SortType, string> = {
+      최신순: 'created_at,desc',
+      북마크순: 'bookmarks,desc',
+      평점순: 'rating,desc',
+      상담건순: 'consultation_count,desc',
+      낮은가격순: 'price,asc',
+      높은가격순: 'price,desc',
+      이름순: 'nickname,asc',
+      리뷰많은순: 'review_count,desc',
+    };
+    return sortMap[sort] || 'created_at,desc';
+  }
 
-  const currentCategoryExperts = expertData.filter(
-    expert => expert.field === selectedTab,
-  ).length;
-
-  const handleSearch = () => {
-    console.log('Search clicked');
-  };
+  // 전체 전문가 목록에서 월간 전문가 추출 (첫 페이지 데이터에서)
+  const monthlyExperts = data?.pages[0]?.experts?.slice(0, 5) || [];
+  const totalExperts = data?.pages[0]?.total || 0;
 
   return (
     <PageWrapper>
@@ -120,12 +124,17 @@ export default function ExpertListPage() {
             showBackButton={true}
             onBackClick={() => navigate('/search')}
           />
-
           <div className="flex border-b">
-            {EXPERT_FIELDS.map(field => (
+            {EXPERT_FIELDS_WITH_ALL.map(field => (
               <button
                 key={field}
-                onClick={() => setSelectedTab(field)}
+                onClick={() => {
+                  setSelectedTab(field);
+                  // URL 업데이트
+                  const url = new URL(window.location.href);
+                  url.searchParams.set('tab', field);
+                  window.history.replaceState({}, '', url.toString());
+                }}
                 className={`
                   flex-1 py-3 text-center transition-colors
                   ${
@@ -164,7 +173,7 @@ export default function ExpertListPage() {
 
           <div className="flex justify-between items-center px-5 mb-4 sticky top-[50px] bg-white z-10">
             <Text type="B2" className="text-font2">
-              총 {currentCategoryExperts}명의 전문가가 있어요
+              총 {totalExperts}명의 전문가가 있어요
             </Text>
 
             <div className="relative">
@@ -212,7 +221,7 @@ export default function ExpertListPage() {
               <>
                 {data?.pages.map((page, i) => (
                   <div key={i}>
-                    {page.items.map(expert => (
+                    {page.experts?.map(expert => (
                       <ExpertCard key={expert.id} expert={expert} />
                     ))}
                   </div>
