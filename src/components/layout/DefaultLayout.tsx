@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 export default function DefaultLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <PageWrapper className="mt-12">{children}</PageWrapper>
+      <PageWrapper className="mt-12 mb-20">{children}</PageWrapper>
       <BottomNavigation />
     </>
   );
