@@ -1,20 +1,48 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  getConsultations,
-  getConsultationById,
+  getConsultationsApi,
+  getConsultationDetailApi,
+  cancelConsultationApi,
+  createConsultationApi,
 } from '../services/consultation/consultationApi';
 
+// 상담 목록 조회
 export const useConsultations = () => {
   return useQuery({
     queryKey: ['consultations'],
-    queryFn: getConsultations,
+    queryFn: getConsultationsApi,
   });
 };
 
-export const useConsultation = (id: number) => {
+// 상담 상세 조회
+export const useConsultation = (roomId: number | undefined) => {
   return useQuery({
-    queryKey: ['consultation', id],
-    queryFn: () => getConsultationById(id),
-    enabled: !!id,
+    queryKey: ['consultation', roomId],
+    queryFn: () => (roomId ? getConsultationDetailApi(roomId) : null),
+    enabled: !!roomId,
+  });
+};
+
+// 상담 예약
+export const useCreateConsultation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createConsultationApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['consultations'] });
+    },
+  });
+};
+
+// 상담 취소
+export const useCancelConsultation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: cancelConsultationApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['consultations'] });
+    },
   });
 };
