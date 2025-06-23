@@ -37,6 +37,7 @@ import ConcernSelectPage from '../pages/Reservation/ConcernSelectPage';
 import EnterConcernPage from '../pages/Reservation/EnterConcernPage';
 import SelectSchedulePage from '../pages/Reservation/SelectSchedulePage';
 import SelectTimePage from '../pages/Reservation/SelectTimePage';
+import ConsultationRoomPage from '../pages/Chat/ConsultationRoomPage';
 
 export default function Router() {
   return (
@@ -270,6 +271,14 @@ export default function Router() {
         element={
           <PrivateRoute>
             <WithdrawPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/consultation/rooms/:roomId"
+        element={
+          <PrivateRoute>
+            <ConsultationRoomPage />
           </PrivateRoute>
         }
       />
