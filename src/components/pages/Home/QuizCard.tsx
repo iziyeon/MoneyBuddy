@@ -21,7 +21,7 @@ export default function QuizCard() {
 
   return (
     <div className="relative  my-14">
-      <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2">
         <img src={LightBulbIcon} alt="quiz icon" className="w-24 h-24" />
       </div>
 
