@@ -9,6 +9,7 @@ import { advisorHandlers } from './advisor/advisorHandlers';
 import { paymentHandlers as paymentHandlersFromFile } from './payment/paymentHandlers';
 import { withdrawHandlers as withdrawHandlersFromFile } from './withdrawHandlers';
 import { expertData } from '../../data/expertData';
+import { chatHandlers } from './chat/chatHandler';
 
 // 월간 전문가 데이터를 expertData에서 가져오도록 수정
 const getMonthlyExpertsData = () => {
@@ -568,6 +569,7 @@ export const handlers = [
   ...paymentHandlersFromFile,
   ...withdrawHandlersFromFile,
   ...defaultHandlers,
+  ...chatHandlers,
 ];
 export const otherHandlers = [
   ...reservationHandlers,
