@@ -1,6 +1,5 @@
 import type { JSX } from 'react';
 import { useReservationStore } from '../../../stores/useReservationStore';
-import Button from '../../common/Button';
 
 interface Props {
   time: string;
@@ -11,16 +10,17 @@ export default function TimeUnitButton({ time }: Props): JSX.Element {
   const isSelected = selectedTime === time;
 
   return (
-    <Button
+    <button
       onClick={() => setSelectedTime(time)}
-      variant={isSelected ? 'primary' : 'text2'}
-      className={`border ${
-        isSelected
-          ? 'bg-transparent border-[#6488FF] text-[#6790FF]'
-          : 'border-gray-300'
-      } rounded px-2 py-3 text-sm w-full`}
+      className={`w-full text-sm px-2 py-3 border rounded
+        ${
+          isSelected
+            ? 'border-[#6488FF] text-[#6488FF] font-semibold'
+            : 'border-gray-300 text-gray-800'
+        }
+      `}
     >
       {time}
-    </Button>
+    </button>
   );
 }
