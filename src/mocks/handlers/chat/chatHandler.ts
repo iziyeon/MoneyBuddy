@@ -1,4 +1,3 @@
-// chatHandlers.ts
 import { http, HttpResponse } from 'msw';
 import type { ConsultationMessage } from '../../../types';
 
