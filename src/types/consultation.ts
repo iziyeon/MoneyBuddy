@@ -30,3 +30,30 @@ export interface ConsultationListResponse {
   limit: number;
   hasMore: boolean;
 }
+
+export interface ConsultationMessage {
+  messageId: number;
+  consultationRoomId: number;
+  senderId: number;
+  senderNickname: string;
+  message: string;
+  type: 'TEXT' | 'IMAGE' | 'SYSTEM';
+  imageUrl?: string | null;
+  sentAt: string;
+  isReadByReceiver: boolean;
+  replyToMessage?: {
+    messageId: number;
+    senderNickname: string;
+    message: string;
+  };
+}
+
+export interface ChatMessage {
+  chatRoomId: number;
+  senderId: number;
+  senderNickname: string;
+  message: string;
+  type: string;
+  imageUrl?: string;
+  sentAt: string;
+}
