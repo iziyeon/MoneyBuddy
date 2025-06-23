@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/useAuthStore';
+import { logoutApi } from '../../services/auth/loginApi';
 
 export default function GlobalHeader() {
   const navigate = useNavigate();
@@ -7,6 +8,20 @@ export default function GlobalHeader() {
 
   const user = useAuthStore(state => state.user);
   const clearAuth = useAuthStore(state => state.clearAuth);
+
+  const handleLogout = async () => {
+    try {
+      // 명세서에 따른 로그아웃 API 호출
+      await logoutApi();
+      clearAuth();
+      navigate('/login');
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+      // 실패해도 로컬 상태는 초기화
+      clearAuth();
+      navigate('/login');
+    }
+  };
 
   const hideHeaderRoutes = [
     '/login',
@@ -28,17 +43,8 @@ export default function GlobalHeader() {
     return null;
   }
 
-  const handleLogout = () => {
-    clearAuth();
-    navigate('/');
-  };
-
-  if (hideHeaderRoutes.includes(location.pathname.toLowerCase())) {
-    return null;
-  }
-
   return (
-    <header className="flex justify-between items-center px-4 py-3">
+    <header className="flex justify-between items-center px-4 py-0 bg-white">
       <div onClick={() => navigate('/')} className="cursor-pointer font-bold">
         <img
           src="/jpg/logo_small.png"

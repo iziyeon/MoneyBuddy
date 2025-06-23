@@ -1,8 +1,13 @@
 import { http, HttpResponse } from 'msw';
 import { authHandlers } from './auth';
+import { findIdHandlers } from './auth/findIdHandlers';
+import { resetPasswordHandlers } from './auth/resetPasswordHandlers';
+import { authPasswordHandlers } from './auth/authPasswordHandlers';
 import { userInfoHandlers } from './user/userInfoHandlers';
 import { experthandlers } from './expert/expertHandlers';
 import { advisorHandlers } from './advisor/advisorHandlers';
+import { paymentHandlers as paymentHandlersFromFile } from './payment/paymentHandlers';
+import { withdrawHandlers as withdrawHandlersFromFile } from './withdrawHandlers';
 import { expertData } from '../../data/expertData';
 
 // 월간 전문가 데이터를 expertData에서 가져오도록 수정
@@ -26,7 +31,18 @@ const getMonthlyExpertsData = () => {
 // 북마크 핸들러를 별도로 먼저 정의
 const bookmarkHandler = http.post(
   '/api/v1/bookmarks/:advisorId',
-  ({ params }) => {
+  ({ params, request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 북마크: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
     console.log('🔖 북마크 핸들러 호출됨:', params);
     const advisorId = Number(params.advisorId);
     const expert = expertData.find(e => e.id === advisorId);
@@ -50,7 +66,18 @@ const bookmarkHandler = http.post(
 // 예약 관련 핸들러
 const reservationHandlers = [
   // 예약 목록 조회
-  http.get('/api/v1/reservations', () => {
+  http.get('/api/v1/reservations', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 예약 목록: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
     const reservations = [
       {
         id: 1,
@@ -254,16 +281,26 @@ const expertListHandlers = [
   http.get('/api/v1/categories', () => {
     const categories = [
       { id: 1, name: '소비', description: '소비 관리 및 절약' },
-      { id: 2, name: '지역', description: '부동산 및 지역 투자' },
+      { id: 2, name: '저축', description: '저축 및 자산 관리' },
       { id: 3, name: '투자', description: '주식 및 투자 상품' },
       { id: 4, name: '부채', description: '부채 관리 및 상환' },
       { id: 5, name: '기타', description: '기타 재무 상담' },
     ];
     return HttpResponse.json(categories);
   }),
-
   // 새로운 북마크 토글 (새 API 경로)
-  http.post('/api/v1/users/bookmarks/:expertId', ({ params }) => {
+  http.post('/api/v1/users/bookmarks/:expertId', ({ params, request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 북마크: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
     const expertId = Number(params.expertId);
     console.log('🔖 새 북마크 핸들러 호출됨:', expertId);
     return HttpResponse.json({
@@ -274,24 +311,58 @@ const expertListHandlers = [
   }),
 
   // 북마크 목록 조회
-  http.get('/api/v1/users/bookmarks', () => {
-    const bookmarkedExperts = expertData.slice(0, 3).map(expert => ({
-      id: expert.id,
-      nickname: expert.nickname,
-      field: expert.field,
-      rating: expert.rating,
-      price: expert.price,
-      profile_image: expert.profile_image,
-      description: expert.description,
-    }));
-    return HttpResponse.json(bookmarkedExperts);
+  http.get('/api/v1/users/bookmarks', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 북마크 목록: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    try {
+      // 북마크된 엑스퍼트는 평점이 높거나 리뷰가 많은 엑스퍼트들로 구성
+      const bookmarkedExperts = expertData
+        .filter(expert => expert.rating >= 4.7) // 평점 4.7 이상
+        .slice(0, 8) // 최대 8명
+        .map(expert => ({
+          ...expert,
+          // 북마크된 상태임을 명시
+          isBookmarked: true,
+        }));
+
+      console.log(
+        `✅ MSW: 북마크 목록 조회 성공 - ${bookmarkedExperts.length}개`,
+      );
+      return HttpResponse.json(bookmarkedExperts);
+    } catch (error) {
+      console.error('❌ MSW - 북마크 목록 조회 오류:', error);
+      return HttpResponse.json(
+        { message: '서버 오류가 발생했습니다.' },
+        { status: 500 },
+      );
+    }
   }),
 ];
 
 // 상담 관련 핸들러 추가
 const consultationHandlers = [
   // 상담 목록 조회
-  http.get('/api/v1/consultations', () => {
+  http.get('/api/v1/consultations', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 상담 목록: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
     const consultations = expertData.slice(0, 3).map((expert, index) => ({
       id: index + 1,
       expertId: expert.id,
@@ -362,6 +433,122 @@ const consultationHandlers = [
   }),
 ];
 
+// 마이페이지 관련 핸들러 추가
+const mypageHandlers = [
+  // 사용자 정보 조회
+  http.get('/api/v1/users/me', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 마이페이지: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    return HttpResponse.json({
+      id: 1,
+      nickname: '머니버디맨',
+      email: 'user@example.com',
+      profileImage: '/jpg/experts/expert1.png',
+    });
+  }),
+
+  // 상담 내역 조회 (마이페이지용)
+  http.get('/api/v1/mypage/consultations', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 마이페이지 상담내역: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    const consultation = {
+      id: 1,
+      expertName: '박재현',
+      expertImage: '/jpg/experts/expert1.png',
+      date: '2025년 1월 25일 월요일',
+      time: '오전 10:00~오전 10:30',
+      type: '전화 상담',
+      status: '예약 완료',
+      duration: '1시간',
+    };
+    return HttpResponse.json(consultation);
+  }),
+
+  // 챌린지 정보 조회
+  http.get('/api/v1/mypage/challenges', ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 마이페이지 챌린지: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    const challenge = {
+      id: 1,
+      title: '챌린지를 수행해주세요',
+      deadline: '2025.12.25 까지 (D-00)',
+      percentage: 20,
+    };
+    return HttpResponse.json(challenge);
+  }),
+];
+
+// 회원탈퇴 관련 핸들러 추가
+const withdrawHandlers = [
+  // 회원탈퇴 비밀번호 확인
+  http.post('/api/v1/auth/verify-password-withdraw', async ({ request }) => {
+    const { password } = (await request.json()) as { password: string };
+    console.log('🔐 탈퇴 비밀번호 확인:', password);
+
+    // 간단한 비밀번호 검증 (실제로는 서버에서 해시 비교)
+    if (password === 'wrongpassword') {
+      return HttpResponse.json(
+        { message: '틀린 비밀번호 입니다. 다시 입력해주세요.' },
+        { status: 400 },
+      );
+    }
+
+    return HttpResponse.json({
+      message: '비밀번호 확인 완료',
+      success: true,
+    });
+  }),
+  // 회원탈퇴
+  http.post('/api/v1/auth/withdraw', async ({ request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    // 인증 체크
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return HttpResponse.json(
+        { message: '인증이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    const { reason } = (await request.json()) as {
+      reason: string;
+    };
+    console.log('🗑️ 회원탈퇴:', { reason });
+
+    return HttpResponse.json({
+      message: '회원탈퇴가 완료되었습니다.',
+      success: true,
+    });
+  }),
+];
+
 // 기본 헬스체크 핸들러만 유지
 export const defaultHandlers = [
   http.get('/api/health', () => {
@@ -372,12 +559,14 @@ export const defaultHandlers = [
 // 모든 핸들러들을 하나로 통합하여 export
 export const handlers = [
   ...authHandlers,
+  ...findIdHandlers,
+  ...resetPasswordHandlers,
+  ...authPasswordHandlers,
   ...userInfoHandlers,
   ...experthandlers,
   ...advisorHandlers,
-  ...reservationHandlers,
-  ...paymentHandlers,
-  ...consultationHandlers,
+  ...paymentHandlersFromFile,
+  ...withdrawHandlersFromFile,
   ...defaultHandlers,
 ];
 export const otherHandlers = [

@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function ExpertHeader({ activeTab, onTabChange }: Props) {
-  const tabs = ['소비', '지역', '투자', '부채', '기타'];
+  const tabs = ['소비', '저축', '투자', '부채', '기타'];
 
   return (
     <div className="flex mb-6 border-b">

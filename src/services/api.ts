@@ -9,6 +9,7 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: API_CONFIG.timeout,
+  withCredentials: true, // 쿠키 기반 인증을 위해 추가
 });
 
 // 요청 인터셉터
@@ -62,11 +63,38 @@ axiosInstance.interceptors.response.use(
       });
     }
 
-    // 401 에러 처리 (토큰 만료)
+    // 401 에러 처리 (토큰 만료) - MSW 모드가 아닐 때만 실행
     if (error.response?.status === 401 && !MSW_CONFIG.enabled) {
-      useAuthStore.getState().clearAuth();
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      console.log('🔄 토큰 만료로 인한 토큰 재발급 시도');
+      // 토큰 재발급 시도 (쿠키 기반)
+      return axiosInstance
+        .post('/api/v1/auth/refresh', null, {
+          withCredentials: true,
+          headers: { Authorization: undefined },
+        })
+        .then(() => {
+          // 토큰 재발급 성공 시 원래 요청 재시도
+          return axiosInstance.request(error.config);
+        })
+        .catch(() => {
+          // 토큰 재발급 실패 시 로그아웃 처리
+          useAuthStore.getState().clearAuth();
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
+          return Promise.reject(error);
+        });
+    }
+
+    // 에러 형식 정규화 (명세서에 따라 텍스트 또는 JSON 처리)
+    if (error.response?.data) {
+      // 텍스트 응답인 경우 그대로 사용
+      if (typeof error.response.data === 'string') {
+        error.message = error.response.data;
+      }
+      // JSON 응답인 경우 message 필드 추출
+      else if (error.response.data.message) {
+        error.message = error.response.data.message;
       }
     }
 

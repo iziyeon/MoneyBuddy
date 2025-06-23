@@ -136,9 +136,8 @@ export const paymentStyles = {
   modalButton: 'w-full bg-primary text-white py-3 rounded-md text-center',
 };
 
-// CSS 추가를 위한 스타일 태그를 만듭니다
+// CSS 추가를 위한 스타일 태그 생성
 if (typeof document !== 'undefined') {
-  // 서버사이드 렌더링 환경에서 오류 방지
   const styleEl = document.createElement('style');
   styleEl.textContent = `
     .gradient-border {

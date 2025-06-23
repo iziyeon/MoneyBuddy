@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import PageWrapper from '../../components/layout/PageWrapper';
 import PageHeader from '../../components/layout/PageHeader';
-import { cancelConsultation } from '../../services/consultation/consultationApi';
+import { cancelConsultationApi } from '../../services/consultation/consultationApi';
 import type { ConsultationHistory } from '../../types/consultation';
 import { expertData } from '../../data/expertData';
 import { paymentDetailStyles } from '../../styles/paymentdetail.styles';
@@ -44,22 +44,13 @@ export default function ConsultationDetailPage() {
   const consultationId = id ? parseInt(id) : 0;
 
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-
-  // expertData를 활용한 상담 상세 데이터 생성 - 상태 정보 동기화
+  // 상담 목록 데이터와 동일한 로직 사용하여 상태 동기화
   const consultation = useMemo<ConsultationHistory | null>(() => {
     if (consultationId <= 0 || consultationId > expertData.length) return null;
 
     const expert = expertData[consultationId - 1];
     const consultationIndex = consultationId - 1;
 
-    // 상담 내역 페이지와 동일한 상태 로직 적용
-    const statusOptions = [
-      '예약완료',
-      '상담중',
-      '상담완료',
-      '취소중',
-      '취소완료',
-    ] as const;
     const typeOptions = [
       '전화상담',
       '화상상담',
@@ -73,21 +64,34 @@ export default function ConsultationDetailPage() {
       '신용카드',
     ];
 
+    // 날짜를 다양하게 생성 (최근 2주간)
+    const baseDate = new Date('2025-01-25');
+    const dayOffset = Math.floor(consultationIndex / 2);
+    const consultationDate = new Date(baseDate);
+    consultationDate.setDate(baseDate.getDate() - dayOffset);
+
+    const formatDate = (date: Date) => {
+      const weekdays = [
+        '일요일',
+        '월요일',
+        '화요일',
+        '수요일',
+        '목요일',
+        '금요일',
+        '토요일',
+      ];
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const weekday = weekdays[date.getDay()];
+      return `2025년 ${month}월 ${day}일 ${weekday}`;
+    };
+
     return {
       id: consultationId,
       expertId: expert.id,
       expertName: expert.nickname,
       field: expert.field,
-      date:
-        consultationIndex === 0
-          ? '2025년 1월 25일 월요일'
-          : consultationIndex === 1
-            ? '2025년 1월 25일 월요일'
-            : consultationIndex === 2
-              ? '2025년 1월 25일 월요일'
-              : consultationIndex === 3
-                ? '2025년 1월 25일 월요일'
-                : '2025년 1월 25일 월요일',
+      date: formatDate(consultationDate),
       time:
         consultationIndex % 3 === 0
           ? '오전 10:00~오전 10:30'
@@ -95,12 +99,17 @@ export default function ConsultationDetailPage() {
             ? '오후 2:00~오후 2:30'
             : '오후 4:00~오후 4:30',
       type: typeOptions[consultationIndex % typeOptions.length],
-      // 상담 내역 페이지와 동일한 상태 로직 적용
-      status: statusOptions[consultationIndex % statusOptions.length],
-      amount: 30000,
+      // 상담 목록과 동일한 상태 로직 적용
+      status:
+        consultationIndex === 4
+          ? '취소완료'
+          : consultationIndex === 6
+            ? '상담완료'
+            : '예약완료',
+      amount: expert.price,
       paymentMethod: paymentOptions[consultationIndex % paymentOptions.length],
-      paymentDate: `2025.01.${20 - Math.floor(consultationIndex / 2)}`,
-      consultationArea: '금융 문제 고민',
+      paymentDate: `2025.01.${20 - dayOffset}`,
+      consultationArea: `${expert.field} 관련 상담`,
       consultationNotes: `더미 텍스트 최근 경제 상황의 불확실성이 커지면서 자산 포트폴리오 재조정에 대한 고민이 많습니다. 현재 주식, 예금, 펀드 등으로 나뉘어 있는데, 인플레이션과 금리 변동에 대비하여 안정적인 수익을 창출할 수 있는 방법이 궁금합니다. 특히 은퇴 후를 위한 노후 자금 마련과 연금 설계는 어떻게 해야 할지 막막합니다. 또한, 예상치 못한 상황에 대비한 비상 자금 확보와 보험의 필요성에 대해서도 상담받고 싶습니다. 전체적인 재무 목표를 설정하고 효율적인 자산 관리 전략을 세우는 데 전문가의 도움이 절실합니다.`,
       reviewStatus:
         consultationIndex === 2 || consultationIndex === 5
@@ -108,11 +117,12 @@ export default function ConsultationDetailPage() {
           : consultationIndex === 7
             ? 'completed'
             : undefined,
+      // 정렬을 위한 날짜 객체 추가
+      dateObject: consultationDate,
     };
   }, [consultationId]);
-
   const cancelConsultationMutation = useMutation({
-    mutationFn: (id: number) => cancelConsultation(id),
+    mutationFn: (id: number) => cancelConsultationApi(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['consultation', consultationId],
@@ -120,16 +130,21 @@ export default function ConsultationDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['consultations'] });
       setShowCancelConfirm(false);
       alert('상담이 취소되었습니다.');
+      navigate('/experts-list'); // experts-list 페이지로 이동
     },
     onError: error => {
       console.error('상담 취소 실패:', error);
       alert('상담 취소에 실패했습니다.');
     },
   });
-
   // 취소 상태인지 확인하는 함수 추가
   const isCancelledStatus = (status: string) => {
     return status === '취소중' || status === '취소완료';
+  };
+
+  // 상담완료 상태인지 확인하는 함수 추가
+  const isCompletedStatus = (status: string) => {
+    return status === '상담완료';
   };
 
   function handleCancelConsultation() {
@@ -138,25 +153,27 @@ export default function ConsultationDetailPage() {
     }
   }
 
-  // 하단에 고정될 버튼 컴포넌트 - 취소 상태일 때는 버튼 숨김
-  const BottomButtons = !isCancelledStatus(consultation?.status || '') ? (
-    <div className="bg-white border-t border-gray-200 p-4 w-full">
-      <div className={paymentDetailStyles.buttonSection.buttonGroup}>
-        <button
-          onClick={() => navigate(`/experts/${consultation?.expertId || 1}`)}
-          className={paymentDetailStyles.buttonSection.profileButton}
-        >
-          전문가 상세보기
-        </button>
-        <button
-          onClick={() => setShowCancelConfirm(true)}
-          className={paymentDetailStyles.buttonSection.cancelButton}
-        >
-          취소하기
-        </button>
+  // 하단에 고정될 버튼 컴포넌트 - 취소 상태나 상담완료 상태일 때는 버튼 숨김
+  const BottomButtons =
+    !isCancelledStatus(consultation?.status || '') &&
+    !isCompletedStatus(consultation?.status || '') ? (
+      <div className="bg-white border-t border-gray-200 p-4 w-full">
+        <div className={paymentDetailStyles.buttonSection.buttonGroup}>
+          <button
+            onClick={() => navigate(`/experts/${consultation?.expertId || 1}`)}
+            className={paymentDetailStyles.buttonSection.profileButton}
+          >
+            전문가 상세보기
+          </button>
+          <button
+            onClick={() => setShowCancelConfirm(true)}
+            className={paymentDetailStyles.buttonSection.cancelButton}
+          >
+            취소하기
+          </button>
+        </div>
       </div>
-    </div>
-  ) : null;
+    ) : null;
 
   return (
     <PageWrapper bottomElement={BottomButtons}>

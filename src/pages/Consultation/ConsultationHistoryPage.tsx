@@ -7,7 +7,7 @@ import TabSection from '../../components/pages/ConsultationHistory/TabSection';
 import ConsultationCard from '../../components/pages/ConsultationHistory/ConsultationCard';
 import FilterDropdown from '../../components/pages/ConsultationHistory/FilterDropdown';
 import type { ConsultationHistory } from '../../types/consultation';
-import { expertData } from '../../data/expertData';
+import { generateConsultationData } from '../../data/consultationData';
 
 // 스크롤 컨테이너 컴포넌트
 const ScrollContainer = ({
@@ -47,78 +47,9 @@ export default function ConsultationHistoryPage() {
   const [activeTab, setActiveTab] = useState('all');
   const [selectedFilter, setSelectedFilter] = useState<string>('최신순');
 
-  // expertData를 활용한 모의 상담 내역 생성 - 더 많은 데이터 포함
+  // 공통 데이터 함수 사용
   const consultations = useMemo<ConsultationHistory[]>(() => {
-    return expertData.slice(0, 8).map((expert, index) => {
-      const statusOptions = [
-        '예약완료',
-        '상담중',
-        '상담완료',
-        '취소중',
-        '취소완료',
-      ] as const;
-      const typeOptions = [
-        '전화상담',
-        '화상상담',
-        '채팅상담',
-        '이메일상담',
-      ] as const;
-      const paymentOptions = [
-        '네이버페이먼츠',
-        '카카오페이',
-        '토스페이',
-        '신용카드',
-      ];
-
-      // 날짜를 다양하게 생성 (최근 2주간)
-      const baseDate = new Date('2025-01-25');
-      const dayOffset = Math.floor(index / 2); // 2개씩 같은 날
-      const consultationDate = new Date(baseDate);
-      consultationDate.setDate(baseDate.getDate() - dayOffset);
-
-      const formatDate = (date: Date) => {
-        const weekdays = [
-          '일요일',
-          '월요일',
-          '화요일',
-          '수요일',
-          '목요일',
-          '금요일',
-          '토요일',
-        ];
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const weekday = weekdays[date.getDay()];
-        return `2025년 ${month}월 ${day}일 ${weekday}`;
-      };
-
-      return {
-        id: index + 1,
-        expertId: expert.id,
-        expertName: expert.nickname,
-        field: expert.field,
-        date: formatDate(consultationDate),
-        time:
-          index % 3 === 0
-            ? '오전 10:00~오전 10:30'
-            : index % 3 === 1
-              ? '오후 2:00~오후 2:30'
-              : '오후 4:00~오후 4:30',
-        type: typeOptions[index % typeOptions.length],
-        status: statusOptions[index % statusOptions.length],
-        amount: expert.price,
-        paymentMethod: paymentOptions[index % paymentOptions.length],
-        paymentDate: `2025.01.${20 - dayOffset}`,
-        consultationArea: `${expert.field} 관련 상담`,
-        consultationNotes: `${expert.description}에 대한 상세한 상담을 받고 싶습니다. 현재 상황에 맞는 전문적인 조언이 필요합니다.`,
-        reviewStatus:
-          index === 2 || index === 5
-            ? 'available'
-            : index === 7
-              ? 'completed'
-              : undefined,
-      };
-    });
+    return generateConsultationData();
   }, []);
 
   // 탭에 따른 필터링 및 정렬
@@ -158,9 +89,8 @@ export default function ConsultationHistoryPage() {
   const handleConsultationDetail = (consultation: ConsultationHistory) => {
     navigate(`/consultation/detail/${consultation.id}`);
   };
-
   const handleChatClick = (consultation: ConsultationHistory) => {
-    console.log('채팅으로 이동:', consultation.expertName);
+    navigate(`/consultation/chat/${consultation.id}`);
   };
 
   const handleCancelClick = (consultation: ConsultationHistory) => {

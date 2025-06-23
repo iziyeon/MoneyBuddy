@@ -17,12 +17,11 @@ export default function ResetPasswordForm() {
   const token = params.get('token') || '';
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
-
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
     trigger,
   } = useForm<{ newPassword: string; confirmPassword: string }>({
     mode: 'onChange',
@@ -95,16 +94,14 @@ export default function ResetPasswordForm() {
           className={authStyles.icon}
         />
       </div>
-
       <Text type="H2" className="text-center">
         새 비밀번호 설정
       </Text>
       <Text type="B2" className="text-center mb-4">
         특수문자, 영문, 숫자를 포함하여 8자 이상 입력해주세요
-      </Text>
-
-      <div className="w-full space-y-4">
-        <div className="space-y-2">
+      </Text>{' '}
+      <div className="w-full space-y-4 flex flex-col items-center">
+        <div className="space-y-2 w-full max-w-[350px]">
           <Input
             {...register('newPassword', {
               required: true,
@@ -117,10 +114,16 @@ export default function ResetPasswordForm() {
             hasToggle
             placeholder="비밀번호를 입력해주세요"
             onChange={handlePasswordChange}
+            className="w-full"
           />
+          {errorMessage && (
+            <Text type="B3" className="text-red-500">
+              {errorMessage}
+            </Text>
+          )}
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2 w-full max-w-[350px]">
           <Input
             {...register('confirmPassword', {
               required: '비밀번호 확인을 입력해주세요',
@@ -130,6 +133,7 @@ export default function ResetPasswordForm() {
             type="password"
             hasToggle
             placeholder="비밀번호를 다시 입력해주세요"
+            className="w-full"
           />
           {errors.confirmPassword && (
             <Text type="B3" className="text-red-500">
@@ -138,7 +142,6 @@ export default function ResetPasswordForm() {
           )}
         </div>
       </div>
-
       <div className="mt-6">
         <Button
           type="submit"

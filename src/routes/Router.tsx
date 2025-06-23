@@ -1,31 +1,41 @@
 // src/routes/Router.tsx
 import { Routes, Route } from 'react-router-dom';
-import Homepage from '../pages/Homepage';
-import LoginPage from '../pages/LoginPage';
-import SignupPage from '../pages/SignupPage';
-import MyPage from '../pages/MyPage';
-import SettingsPage from '../pages/SettingsPage';
-import FindAccountPage from '../pages/Find/FindAccountPage';
-import ResetPasswordVerifyPage from '../pages/Find/ResetPasswordVerifyPage';
-import ResetPasswordPage from '../pages/Find/ResetPasswordPage';
-import PrivateRoute from './PrivateRoute';
 import DefaultLayout from '../components/layout/DefaultLayout';
 import PublicLayout from '../components/layout/PublicLayout';
+import PrivateRoute from './PrivateRoute';
+
+// Pages
+import HomePage from '../pages/Homepage';
+import LoginPage from '../pages/LoginPage';
+import SignupPage from '../pages/SignupPage';
+import FindAccountPage from '../components/pages/auth/FindAccountPage';
+import ResetPasswordVerifyForm from '../components/pages/auth/ResetPasswordVerifyForm';
+import ResetPasswordForm from '../components/pages/auth/ResetPasswordForm';
 import ExpertPage from '../pages/Expert/ExpertPage';
+import MyPage from '../pages/MyPage';
+import SettingsPage from '../pages/SettingsPage';
+import PasswordChangePage from '../pages/PasswordChangePage';
 import ExpertListPage from '../pages/Expert/ExpertListPage';
 import ExpertDetailPage from '../pages/Expert/ExpertDetailPage';
 import SearchPage from '../pages/SearchPage';
-import ConcernSelectPage from '../pages/Reservation/ConcernSelectPage';
-import ReservationPage from '../pages/ReservationPage';
-import EnterConcernPage from '../pages/Reservation/EnterConcernPage';
-import SelectSchedulePage from '../pages/Reservation/SelectSchedulePage';
 import PaymentPage from '../pages/Payment/PaymentPage';
 import PaymentSuccessPage from '../pages/Payment/PaymentSuccessPage';
 import PaymentFailPage from '../pages/Payment/PaymentFailPage';
-import ReservationDetailPage from '../pages/Reservation/ReservationDetailPage';
+import ReservationPage from '../pages/ReservationPage';
 import ReservationListPage from '../pages/Reservation/ReservationListPage';
+import ReservationDetailPage from '../pages/Reservation/ReservationDetailPage';
 import ConsultationHistoryPage from '../pages/Consultation/ConsultationHistoryPage';
 import ConsultationDetailPage from '../pages/Consultation/ConsultationDetailPage';
+import ConsultationChatPage from '../pages/Consultation/ConsultationChatPage';
+import BookmarkedExpertsPage from '../pages/Bookmarks/BookmarkedExpertsPage';
+import ChallengeStatusPage from '../pages/Challenge/ChallengeStatusPage';
+import ChallengeDetailPage from '../pages/Challenge/ChallengeDetailPage';
+import WithdrawPage from '../pages/WithdrawPage';
+
+// Reservation sub-pages
+import ConcernSelectPage from '../pages/Reservation/ConcernSelectPage';
+import EnterConcernPage from '../pages/Reservation/EnterConcernPage';
+import SelectSchedulePage from '../pages/Reservation/SelectSchedulePage';
 import SelectTimePage from '../pages/Reservation/SelectTimePage';
 
 export default function Router() {
@@ -36,7 +46,7 @@ export default function Router() {
         element={
           <PrivateRoute>
             <DefaultLayout>
-              <Homepage />
+              <HomePage />
             </DefaultLayout>
           </PrivateRoute>
         }
@@ -69,7 +79,7 @@ export default function Router() {
         path="/reset-password-verify"
         element={
           <PublicLayout>
-            <ResetPasswordVerifyPage />
+            <ResetPasswordVerifyForm />
           </PublicLayout>
         }
       />
@@ -77,16 +87,18 @@ export default function Router() {
         path="/reset-password"
         element={
           <PublicLayout>
-            <ResetPasswordPage />
+            <ResetPasswordForm />
           </PublicLayout>
         }
       />
       <Route
         path="/expert"
         element={
-          <DefaultLayout>
-            <ExpertPage />
-          </DefaultLayout>
+          <PrivateRoute>
+            <DefaultLayout>
+              <ExpertPage />
+            </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
@@ -98,7 +110,7 @@ export default function Router() {
             </DefaultLayout>
           </PrivateRoute>
         }
-      />
+      />{' '}
       <Route
         path="/settings"
         element={
@@ -108,30 +120,39 @@ export default function Router() {
             </DefaultLayout>
           </PrivateRoute>
         }
+      />{' '}
+      <Route
+        path="/password-change"
+        element={
+          <PrivateRoute>
+            <PasswordChangePage />
+          </PrivateRoute>
+        }
       />
       <Route
         path="/experts-list"
         element={
-          <DefaultLayout>
-            <ExpertListPage />
-          </DefaultLayout>
+          <PrivateRoute>
+            <DefaultLayout>
+              <ExpertListPage />
+            </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/experts/:id"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <ExpertDetailPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
+      {/* 예약 관련 라우트 */}
       <Route
-        path="/reservation/*"
+        path="/reservation"
         element={
           <PrivateRoute>
-            <DefaultLayout>
-              <ReservationPage />
-            </DefaultLayout>
+            <ReservationPage />
           </PrivateRoute>
         }
       >
@@ -143,50 +164,48 @@ export default function Router() {
       <Route
         path="/search"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <SearchPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/payment"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <PaymentPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/payment/:expertId"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <PaymentPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/payment/success"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <PaymentSuccessPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/payment/fail"
         element={
-          <DefaultLayout>
+          <PrivateRoute>
             <PaymentFailPage />
-          </DefaultLayout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/reserve"
         element={
           <PrivateRoute>
-            <DefaultLayout>
-              <ReservationListPage />
-            </DefaultLayout>
+            <ReservationListPage />
           </PrivateRoute>
         }
       />
@@ -194,9 +213,7 @@ export default function Router() {
         path="/reserve/detail/:id"
         element={
           <PrivateRoute>
-            <DefaultLayout>
-              <ReservationDetailPage />
-            </DefaultLayout>
+            <ReservationDetailPage />
           </PrivateRoute>
         }
       />
@@ -204,9 +221,7 @@ export default function Router() {
         path="/consultation/history"
         element={
           <PrivateRoute>
-            <DefaultLayout>
-              <ConsultationHistoryPage />
-            </DefaultLayout>
+            <ConsultationHistoryPage />
           </PrivateRoute>
         }
       />
@@ -214,9 +229,47 @@ export default function Router() {
         path="/consultation/detail/:id"
         element={
           <PrivateRoute>
-            <DefaultLayout>
-              <ConsultationDetailPage />
-            </DefaultLayout>
+            <ConsultationDetailPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/bookmarked/experts"
+        element={
+          <PrivateRoute>
+            <BookmarkedExpertsPage />
+          </PrivateRoute>
+        }
+      />{' '}
+      <Route
+        path="/challenge/status"
+        element={
+          <PrivateRoute>
+            <ChallengeStatusPage />
+          </PrivateRoute>
+        }
+      />{' '}
+      <Route
+        path="/challenge/:id"
+        element={
+          <PrivateRoute>
+            <ChallengeDetailPage />
+          </PrivateRoute>
+        }
+      />{' '}
+      <Route
+        path="/consultation/chat/:id"
+        element={
+          <PrivateRoute>
+            <ConsultationChatPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/withdraw"
+        element={
+          <PrivateRoute>
+            <WithdrawPage />
           </PrivateRoute>
         }
       />

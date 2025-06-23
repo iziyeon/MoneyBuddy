@@ -1,33 +1,48 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  processPayment,
-  getPaymentStatus,
-  cancelPayment,
-  type PaymentRequest,
-  type PaymentResponse,
-  type PaymentStatus,
+  processPaymentApi,
+  getPaymentHistoryApi,
+  getPaymentStatusApi,
+  cancelPaymentApi,
 } from '../services/payment/paymentApi';
 
 // 결제 처리
 export const useProcessPayment = () => {
-  return useMutation<PaymentResponse, Error, PaymentRequest>({
-    mutationFn: processPayment,
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: processPaymentApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['payments'] });
+    },
   });
 };
 
 // 결제 상태 조회
 export const usePaymentStatus = (paymentId: string | undefined) => {
-  return useQuery<PaymentStatus>({
+  return useQuery({
     queryKey: ['payment', paymentId],
-    queryFn: () => getPaymentStatus(paymentId!),
+    queryFn: () => (paymentId ? getPaymentStatusApi(paymentId) : null),
     enabled: !!paymentId,
-    refetchInterval: 1000, // 1초마다 상태 확인
   });
 };
 
 // 결제 취소
 export const useCancelPayment = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: cancelPayment,
+    mutationFn: cancelPaymentApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['payments'] });
+    },
+  });
+};
+
+// 결제 내역 조회
+export const usePaymentHistory = () => {
+  return useQuery({
+    queryKey: ['payments'],
+    queryFn: getPaymentHistoryApi,
   });
 };

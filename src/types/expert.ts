@@ -1,6 +1,6 @@
 import { EXPERT_FIELDS, SORT_OPTIONS } from '../config/constants';
 
-export type ExpertField = '소비' | '지역' | '투자' | '부채' | '기타';
+export type ExpertField = '소비' | '저축' | '투자' | '부채' | '기타';
 export type SortType =
   | '최신순'
   | '북마크순'
