@@ -50,22 +50,24 @@ export default function BottomNavigation() {
   ];
 
   return (
-    <div className="bg-[#FFFFFF] fixed bottom-0 flex gap-4 border rounded-t-xl justify-between">
-      {navItems.map(item => (
-        <NavLink
-          key={item.id}
-          to={item.path}
-          className="flex items-center justify-center p-5"
-        >
-          {({ isActive }) => (
-            <img
-              className="w-8"
-              src={isActive ? item.activeIcon : item.icon}
-              alt={item.label}
-            />
-          )}
-        </NavLink>
-      ))}
+    <div className="flex justify-center items-center mt-20">
+      <div className="bg-[#FFFFFF] fixed bottom-0 flex gap-4 border rounded-t-xl justify-between">
+        {navItems.map(item => (
+          <NavLink
+            key={item.id}
+            to={item.path}
+            className="flex items-center justify-center p-5"
+          >
+            {({ isActive }) => (
+              <img
+                className="w-8"
+                src={isActive ? item.activeIcon : item.icon}
+                alt={item.label}
+              />
+            )}
+          </NavLink>
+        ))}
+      </div>
     </div>
   );
 }
