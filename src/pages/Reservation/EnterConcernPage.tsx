@@ -20,7 +20,7 @@ export default function EnterConcernPage(): JSX.Element {
     <div>
       <div className="text-center">
         <ReservationNotice />
-        <div className="text-h3 mb-2">
+        <div className="text-h3 mb-2 mt-8">
           원하는 상담 내용을 자세히 적어주세요.
         </div>
         <div className="text-b2 text-[#777777]">
