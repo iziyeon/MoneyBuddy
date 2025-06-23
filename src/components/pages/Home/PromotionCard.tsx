@@ -23,7 +23,7 @@ export default function PromotionCard({
         <img
           src={images[0]}
           alt="icon-1"
-          className="absolute bottom-11 right-[60px] w-[76px] h-auto z-10"
+          className="absolute bottom-11 right-[60px] w-[76px] h-auto"
         />
       )}
 
@@ -31,11 +31,11 @@ export default function PromotionCard({
         <img
           src={images[1]}
           alt="icon-2"
-          className="absolute bottom-1 -right-1 w-32 h-auto z-10"
+          className="absolute bottom-1 -right-1 w-32 h-auto"
         />
       )}
 
-      <div className="absolute bottom-2 right-2 w-[32px] h-[20px] bg-[#000000] opacity-40 text-white text-[10px] flex items-center justify-center rounded-full z-20">
+      <div className="absolute bottom-2 right-2 w-[32px] h-[20px] bg-[#000000] opacity-40 text-white text-[10px] flex items-center justify-center rounded-full">
         {page}
       </div>
     </div>
