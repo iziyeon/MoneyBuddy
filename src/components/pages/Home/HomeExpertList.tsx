@@ -12,7 +12,7 @@ export default function HomeExpertList(): JSX.Element {
 
   return (
     <div>
-      <div className="flex justify-between items-center px-5 mb-[12px]">
+      <div className="flex justify-between items-center px-5 mb-[12px] mt-10">
         <Text type="H2" className="font-semibold">
           머니버디 추천 엑스퍼트
         </Text>
@@ -23,7 +23,7 @@ export default function HomeExpertList(): JSX.Element {
       </div>
 
       <ScrollContainer
-        className="scroll-container hide-scrollbar px-5"
+        className="scroll-container hide-scrollbar px-5 mb-8"
         vertical={false}
         horizontal={true}
         hideScrollbars={true}
