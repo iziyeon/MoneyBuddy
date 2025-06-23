@@ -23,12 +23,12 @@ export default function BottomButtons({
   rightDisabled,
 }: BottomButtonsProps): JSX.Element {
   return (
-    <div>
-      <div className="flex gap-2 mt-16">
+    <div className="fixed bottom-0 left-0 w-full bg-white p-4 mb-2 ">
+      <div className="w-full max-w-md mx-auto flex gap-2">
         <Button
           variant={leftDisabled ? 'disabled' : leftVariant}
           onClick={onLeftClick}
-          className="flex-1 border py-4"
+          className="flex-1 h-[46px] flex items-center justify-center border"
           disabled={leftDisabled}
         >
           {leftLabel}
@@ -36,7 +36,7 @@ export default function BottomButtons({
         <Button
           variant={rightDisabled ? 'disabled' : rightVariant}
           onClick={onRightClick}
-          className="flex-1 border py-4"
+          className="flex-1 h-[46px] flex items-center justify-center border"
           disabled={rightDisabled}
         >
           {rightLabel}

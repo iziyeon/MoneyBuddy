@@ -13,11 +13,11 @@ export default function ConsultContentInput({
 }: CounsultContentProps): JSX.Element {
   return (
     <div>
-      <div className="flex justify-center my-4">
+      <div className="flex justify-center my-6">
         <textarea
           onChange={e => onChange(e.target.value)}
           value={value}
-          className="w-[326px] h-[350px] border p-1"
+          className="w-[350px] h-[374px] border p-1"
           maxLength={maxLength}
         ></textarea>
       </div>

@@ -20,7 +20,7 @@ export default function ConcernCard({
       variant="text"
       onClick={onClick}
       className={clsx(
-        'w-full text-left border rounded-lg px-4 py-3 transition-all my-3',
+        'w-full text-left border rounded-lg px-4 py-3 transition-all my-6',
         isSelected ? 'border-primary bg-blue-50' : 'border-gray-200 bg-white',
         'hover:border-primary',
       )}
