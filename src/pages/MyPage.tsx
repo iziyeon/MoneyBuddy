@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, type ReactNode } from 'react';
+import { useRef, useMemo, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 import PageWrapper from '../components/layout/PageWrapper';

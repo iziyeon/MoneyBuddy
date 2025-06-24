@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useToggleBookmark } from '../../../hooks/useBookmarks';
 import { useExpert } from '../../../hooks/useExpert';
 import FixedBottom from './components/FixedBottom';
-import type { Expert } from '../../../types';
 
 export default function ExpertDetailPage() {
   const { expertId } = useParams<{ expertId: string }>();
