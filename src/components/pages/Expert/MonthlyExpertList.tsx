@@ -21,7 +21,7 @@ export default function MonthlyExpertList(): JSX.Element {
         </Button>
       </div>
       {experts.map(item => (
-        <ExpertCard expert={item} />
+        <ExpertCard key={item.id} expert={item} />
       ))}
     </div>
   );

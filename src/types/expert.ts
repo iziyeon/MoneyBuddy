@@ -65,6 +65,7 @@ export interface Expert {
   bio: string;
   is_online: boolean;
   hashtags: string[];
+  isBookmarked?: boolean;
   // 상세 정보 (선택적)
   skills?: string[];
   education?: string[];
