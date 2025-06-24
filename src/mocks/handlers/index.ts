@@ -11,10 +11,9 @@ import { withdrawHandlers as withdrawHandlersFromFile } from './withdrawHandlers
 import { expertData } from '../../data/expertData';
 import { chatHandlers } from './chat/chatHandler';
 
-// 월간 전문가 데이터를 expertData에서 가져오도록 수정
 const getMonthlyExpertsData = () => {
   return expertData
-    .sort((a, b) => b.rating - a.rating) // 평점 순으로 정렬
+    .sort((a, b) => b.rating - a.rating) // 평점 순
     .slice(0, 5) // 상위 5명만
     .map((expert, index) => ({
       id: expert.id,
@@ -29,9 +28,8 @@ const getMonthlyExpertsData = () => {
     }));
 };
 
-// 북마크 핸들러를 별도로 먼저 정의
 const bookmarkHandler = http.post(
-  '/api/v1/bookmarks/:advisorId',
+  '/api/v1/advisors/:advisorId/bookmark',
   ({ params, request }) => {
     const authHeader = request.headers.get('Authorization');
 
@@ -63,6 +61,49 @@ const bookmarkHandler = http.post(
     });
   },
 );
+
+// 추가 북마크 핸들러들
+const additionalBookmarkHandlers = [
+  // 기존 북마크 토글 API 경로
+  http.post('/api/v1/bookmarks/:advisorId', ({ params, request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 북마크: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    const advisorId = Number(params.advisorId);
+    console.log('🔖 기존 북마크 핸들러 호출됨:', advisorId);
+    return HttpResponse.json({
+      bookmarked: true,
+      message: '북마크가 토글되었습니다.',
+    });
+  }),
+
+  // bookmarkApi.ts에서 사용하는 토글 경로
+  http.post('/api/v1/bookmarks/toggle/:advisorId', ({ params, request }) => {
+    const authHeader = request.headers.get('Authorization');
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('❌ 북마크: 인증되지 않은 사용자');
+      return HttpResponse.json(
+        { message: '로그인이 필요합니다.' },
+        { status: 401 },
+      );
+    }
+
+    const advisorId = Number(params.advisorId);
+    console.log('🔖 토글 북마크 핸들러 호출됨:', advisorId);
+    return HttpResponse.json({
+      bookmarked: true,
+      message: '북마크가 토글되었습니다.',
+    });
+  }),
+];
 
 // 예약 관련 핸들러
 const reservationHandlers = [
@@ -506,28 +547,10 @@ const mypageHandlers = [
   }),
 ];
 
-// 회원탈퇴 관련 핸들러 추가
-const withdrawHandlers = [
-  // 회원탈퇴 비밀번호 확인
-  http.post('/api/v1/auth/verify-password-withdraw', async ({ request }) => {
-    const { password } = (await request.json()) as { password: string };
-    console.log('🔐 탈퇴 비밀번호 확인:', password);
-
-    // 간단한 비밀번호 검증 (실제로는 서버에서 해시 비교)
-    if (password === 'wrongpassword') {
-      return HttpResponse.json(
-        { message: '틀린 비밀번호 입니다. 다시 입력해주세요.' },
-        { status: 400 },
-      );
-    }
-
-    return HttpResponse.json({
-      message: '비밀번호 확인 완료',
-      success: true,
-    });
-  }),
-  // 회원탈퇴
-  http.post('/api/v1/auth/withdraw', async ({ request }) => {
+// 회원탈퇴 핸들러
+const withdrawHandler = http.post(
+  '/api/v1/auth/withdraw',
+  async ({ request }) => {
     const authHeader = request.headers.get('Authorization');
 
     // 인증 체크
@@ -547,8 +570,8 @@ const withdrawHandlers = [
       message: '회원탈퇴가 완료되었습니다.',
       success: true,
     });
-  }),
-];
+  },
+);
 
 // 기본 헬스체크 핸들러만 유지
 export const defaultHandlers = [
@@ -570,7 +593,11 @@ export const handlers = [
   ...withdrawHandlersFromFile,
   ...defaultHandlers,
   ...chatHandlers,
+  bookmarkHandler,
+  ...additionalBookmarkHandlers,
+  withdrawHandler,
 ];
+
 export const otherHandlers = [
   ...reservationHandlers,
   ...paymentHandlers,
