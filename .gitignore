@@ -19,8 +19,6 @@ dist-ssr/
 .env
 
 # Editor directories and files
-.vscode/
-!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -31,6 +29,3 @@ dist-ssr/
 
 # Test coverage
 coverage/
-
-# MSW mock service worker
-public/mockServiceWorker.js
